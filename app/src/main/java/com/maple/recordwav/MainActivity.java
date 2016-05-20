@@ -1,81 +1,73 @@
 package com.maple.recordwav;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TabHost;
+import android.widget.TextView;
 
-import java.io.File;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.ResType;
+import com.lidroid.xutils.view.annotation.ResInject;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.maple.recordwav.ui.fragment.GetInfoPage;
+import com.maple.recordwav.ui.fragment.PlayPage;
+import com.maple.recordwav.ui.fragment.VoicePage;
 
-public class MainActivity extends Activity implements View.OnClickListener {
-    private Button start;
-    private Button stop;
+public class MainActivity extends FragmentActivity {
+    @ViewInject(R.id.tv_title)
+    private TextView mTitle;
+    @ViewInject(R.id.tabhost)
+    private FragmentTabHost mTabHost;
 
-
-    ExtAudioRecorder extAudioRecorder = null;
-    MiShi miShi;
-    String dataPath = "/201/source11.wav";
+    // Fragment界面
+    private Class[] fragmentArray = {VoicePage.class, PlayPage.class, GetInfoPage.class};
+    // 选项卡图片
+    private int[] mImageViewArray = {R.drawable.tab_home_btn, R.drawable.tab_message_btn, R.drawable.tab_square_btn};
+    // 选项卡文字
+    @ResInject(id = R.array.tab_fun_array, type = ResType.StringArray)
+    private String[] mTextViewArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ViewUtils.inject(this);
 
+        initView();
+    }
 
-        String ROOT = "";// /storage/emulated/0
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            ROOT = Environment.getExternalStorageDirectory().getPath();
-            Log.e("app", "系统方法：" + ROOT);
+    private void initView() {
+        mTabHost.setup(this, getSupportFragmentManager(), R.id.fl_content);
+        for (int i = 0; i < fragmentArray.length; i++) {
+            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mTextViewArray[i]).setIndicator(getTabItemView(i));
+            mTabHost.addTab(tabSpec, fragmentArray[i], null);
+            mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
         }
-        dataPath = ROOT + dataPath;
-        File f = new File(dataPath);
-        if (!f.exists())
-            f.mkdirs();
 
-
-        start = (Button) findViewById(R.id.startRecord);
-        stop = (Button) findViewById(R.id.stopRecord);
-
-        start.setOnClickListener(this);
-        stop.setOnClickListener(this);
-
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tag) {
+                mTitle.setText(tag);
+            }
+        });
+        mTabHost.setCurrentTab(0);
+        mTitle.setText(mTextViewArray[0]);
     }
 
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.startRecord:
-                if (extAudioRecorder == null)
-                    extAudioRecorder = extAudioRecorder.getInstance(dataPath);
-                extAudioRecorder.prepare();
-                extAudioRecorder.start();
+    private View getTabItemView(int index) {
+        View view = LayoutInflater.from(this).inflate(R.layout.tab_item_view, null);
 
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
+        imageView.setImageResource(mImageViewArray[index]);
 
-//                if (miShi == null)
-//                    miShi = new MiShi();
-//                miShi.startRecording();
-                break;
-            case R.id.stopRecord:
-                extAudioRecorder.stop();
-                extAudioRecorder.release();
-                extAudioRecorder = null;
+        TextView textView = (TextView) view.findViewById(R.id.textview);
+        textView.setText(mTextViewArray[index]);
 
-//                miShi.stopRecording();
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (extAudioRecorder != null) {
-            extAudioRecorder.release();
-            extAudioRecorder = null;
-        }
+        return view;
     }
 }

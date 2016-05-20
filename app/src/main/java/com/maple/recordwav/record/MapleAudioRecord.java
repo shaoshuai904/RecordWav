@@ -1,4 +1,4 @@
-package com.maple.recordwav;
+package com.maple.recordwav.record;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -9,8 +9,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class ExtAudioRecorder {
-    private static final String TAG = ExtAudioRecorder.class.getName();
+
+/**
+ * AudioRecord录制wav
+ *
+ * @author maple
+ * @time 16/5/20 下午5:23
+ */
+public class MapleAudioRecord {
+    private static final String TAG = MapleAudioRecord.class.getName();
     // 采样率
     private final static int[] sampleRates = {44100, 22050, 11025, 8000};
     // 记录样本输出到文件的时间间隔
@@ -49,11 +56,11 @@ public class ExtAudioRecorder {
     }
 
 
-    private static ExtAudioRecorder eAudioRecorder = null;
+    private static MapleAudioRecord eAudioRecorder = null;
 
-    public static ExtAudioRecorder getInstance(String argPath) {
+    public static MapleAudioRecord getInstance(String argPath) {
         if (eAudioRecorder == null) {
-            eAudioRecorder = new ExtAudioRecorder(
+            eAudioRecorder = new MapleAudioRecord(
                     argPath,
                     MediaRecorder.AudioSource.MIC,
                     sampleRates[3],
@@ -73,7 +80,7 @@ public class ExtAudioRecorder {
      * @param channelConfig 声道数
      * @param audioFormat   编码长度
      */
-    private ExtAudioRecorder(String argPath, int audioSource, int sampleRate, int channelConfig, int audioFormat) {
+    private MapleAudioRecord(String argPath, int audioSource, int sampleRate, int channelConfig, int audioFormat) {
         try {
             aSource = audioSource;
             sRate = sampleRate;

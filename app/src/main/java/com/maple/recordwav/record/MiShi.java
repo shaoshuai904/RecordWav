@@ -1,4 +1,4 @@
-package com.maple.recordwav;
+package com.maple.recordwav.record;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;

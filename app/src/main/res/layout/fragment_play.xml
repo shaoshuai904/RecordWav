@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#abcdef"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_record"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_base_fillet_bg"
+            android:text="系统播放"
+            android:textColor="@color/selector_function_btn_text_color"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/bt_preview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_base_fillet_bg"
+            android:text="自定义播放"
+            android:textColor="@color/selector_function_btn_text_color"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

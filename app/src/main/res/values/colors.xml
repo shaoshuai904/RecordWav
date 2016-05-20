@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="top_bar_bg_color">#186C93</color>
+    <color name="mainBGColor">#ffffff</color>
 
-
-    <color name="red">#ff0000</color>
-    <color name="green">#00ff00</color>
-    <color name="blue">#0000ff</color>
+    <color name="tab_bar_bg">#F9F9F9</color>
+    <color name="tab_item_bg_def">@color/tab_bar_bg</color>
+    <color name="tab_item_bg_select">#E2E2E2</color>
+    <color name="tab_text_color_def">#A5A5A5</color>
+    <color name="tab_text_color_select">#007AFF</color>
 
 </resources>

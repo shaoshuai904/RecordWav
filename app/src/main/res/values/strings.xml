@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">RecordWav</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="tab_fun_array">
+        <item>录制</item>
+        <item>播放</item>
+        <item>信息</item>
+    </string-array>
+
+    <string name="record">Record</string>
+    <string name="stop">Stop</string>
+    <string name="rerecord">Rerecord</string>
+    <string name="preview">Preview</string>
+
 </resources>
