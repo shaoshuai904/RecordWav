@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">RecordWav</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">WAV工具</string>
 
     <string-array name="tab_fun_array">
         <item>录制</item>

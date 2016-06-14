@@ -5,35 +5,20 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_des"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:background="#abcdef"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:text="WAV 播放"
+        android:textColor="#007AFF"
+        android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/bt_record"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_bg"
-            android:text="系统播放"
-            android:textColor="@color/selector_function_btn_text_color"
-            android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/bt_preview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_bg"
-            android:text="自定义播放"
-            android:textColor="@color/selector_function_btn_text_color"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
+    <ListView
+        android:id="@+id/lv_wav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

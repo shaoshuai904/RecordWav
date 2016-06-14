@@ -1,4 +1,4 @@
-package com.maple.recordwav.ui.fragment;
+package com.maple.recordwav.record;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,10 +21,12 @@ import com.maple.recordwav.base.BaseFragment;
 import java.io.File;
 
 /**
+ * 录制界面
+ *
  * @author maple
  * @time 16/4/18 下午2:53
  */
-public class VoicePage extends BaseFragment implements View.OnClickListener {
+public class RecordPage extends BaseFragment implements View.OnClickListener {
     @ViewInject(R.id.com_voice_time)
     private Chronometer com_voice_time;
     @ViewInject(R.id.iv_voice_img)
@@ -40,7 +42,7 @@ public class VoicePage extends BaseFragment implements View.OnClickListener {
     MapleAudioRecord extAudioRecorder = null;
     long timeWhenPaused = 0; // 已经记录的时间
     boolean isRecording = false;// 是否正在记录
-    String voicePath = WavApp.rootPath + "/voice.wav";
+    String voicePath;
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -98,22 +100,10 @@ public class VoicePage extends BaseFragment implements View.OnClickListener {
         bt_record.setEnabled(true);
         bt_preview.setEnabled(false);
         // start
+        voicePath = WavApp.rootPath + "/voice.wav";
         extAudioRecorder = extAudioRecorder.getInstance(voicePath);
         extAudioRecorder.start();
     }
-
-
-//    private void pauseRecord() {
-//        isRecording = false;
-//        com_voice_time.stop();
-//        timeWhenPaused = com_voice_time.getBase() - SystemClock.elapsedRealtime();
-//
-//        iv_voice_img.setImageResource(R.drawable.mic_default);
-//        bt_record.setText("继续");
-//        bt_record.setEnabled(true);
-//        bt_preview.setEnabled(false);
-//    }
-
 
     private void stopRecord() {
         isRecording = false;

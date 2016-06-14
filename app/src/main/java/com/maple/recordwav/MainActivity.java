@@ -13,9 +13,9 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.ResType;
 import com.lidroid.xutils.view.annotation.ResInject;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.maple.recordwav.ui.fragment.GetInfoPage;
-import com.maple.recordwav.ui.fragment.PlayPage;
-import com.maple.recordwav.ui.fragment.VoicePage;
+import com.maple.recordwav.parse.ParsePage;
+import com.maple.recordwav.play.PlayPage;
+import com.maple.recordwav.record.RecordPage;
 
 public class MainActivity extends FragmentActivity {
     @ViewInject(R.id.tv_title)
@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
     private FragmentTabHost mTabHost;
 
     // Fragment界面
-    private Class[] fragmentArray = {VoicePage.class, PlayPage.class, GetInfoPage.class};
+    private Class[] fragmentArray = {RecordPage.class, PlayPage.class, ParsePage.class};
     // 选项卡图片
     private int[] mImageViewArray = {R.drawable.tab_home_btn, R.drawable.tab_message_btn, R.drawable.tab_square_btn};
     // 选项卡文字

@@ -5,6 +5,12 @@ import android.util.Log;
 
 import java.io.File;
 
+/**
+ * MediaRecorder录制wav［有损录制］
+ *
+ * @author maple
+ * @time 16/5/20 下午6:47
+ */
 public class ExtMediaRecorder {
 
     public enum State {

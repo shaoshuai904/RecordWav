@@ -10,6 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="#abcdef"
         android:padding="10dp"
         android:text="获取信息" />
+
+    <ListView
+        android:id="@+id/lv_parse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 </LinearLayout>
