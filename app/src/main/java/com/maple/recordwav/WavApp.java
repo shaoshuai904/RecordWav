@@ -10,7 +10,6 @@ public class WavApp extends Application {
     private static WavApp app;
 
     public static String rootPath = "/WAV/";
-    public static String errorPath = "/WAV/error.txt";
 
     @Override
     public void onCreate() {
@@ -18,7 +17,6 @@ public class WavApp extends Application {
         super.onCreate();
 
         initPath();
-
     }
 
     /**
@@ -29,10 +27,8 @@ public class WavApp extends Application {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             ROOT = Environment.getExternalStorageDirectory().getPath();
             Log.e("app", "系统方法：" + ROOT);
-
         }
         rootPath = ROOT + rootPath;
-        errorPath = ROOT + errorPath;
 
         File lrcFile = new File(rootPath);
         if (!lrcFile.exists()) {

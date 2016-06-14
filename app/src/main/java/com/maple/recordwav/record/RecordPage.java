@@ -17,6 +17,7 @@ import com.maple.recordwav.WavApp;
 import com.maple.recordwav.record.MapleAudioRecord;
 import com.maple.recordwav.R;
 import com.maple.recordwav.base.BaseFragment;
+import com.maple.recordwav.utils.DateUtils;
 
 import java.io.File;
 
@@ -89,7 +90,7 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         }
     }
 
-
+    // 开始录制
     private void startRecord() {
         isRecording = true;
         com_voice_time.setBase(SystemClock.elapsedRealtime() + timeWhenPaused);
@@ -100,11 +101,12 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         bt_record.setEnabled(true);
         bt_preview.setEnabled(false);
         // start
-        voicePath = WavApp.rootPath + "/voice.wav";
+        voicePath = WavApp.rootPath + "maple-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss") + ".wav";
         extAudioRecorder = extAudioRecorder.getInstance(voicePath);
         extAudioRecorder.start();
     }
 
+    // 停止录制
     private void stopRecord() {
         isRecording = false;
         com_voice_time.stop();
