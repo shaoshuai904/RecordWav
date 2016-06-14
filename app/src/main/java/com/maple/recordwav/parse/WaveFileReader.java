@@ -30,7 +30,6 @@ public class WaveFileReader {
 	private boolean issuccess = false;
 
 	public WaveFileReader(String filename) {
-
 		this.initReader(filename);
 	}
 
