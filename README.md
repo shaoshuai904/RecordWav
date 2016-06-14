@@ -8,5 +8,4 @@
 － 解析已有wav文件的信息。
 
 
-开发平台：android studio
-运行平台：android 手机
+开发平台：android studio。运行平台：android 手机
