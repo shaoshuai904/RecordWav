@@ -39,26 +39,27 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
     private Button bt_preview;
 
 
-    MainActivity mActivity;
     MapleAudioRecord extAudioRecorder = null;
     long timeWhenPaused = 0; // 已经记录的时间
     boolean isRecording = false;// 是否正在记录
-    String voicePath;
+    String voicePath = WavApp.rootPath + "/voice.wav";
 
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_record, null);
         ViewUtils.inject(this, view);
 
-        mActivity = (MainActivity) getActivity();
-
         bt_record.setText(getResources().getString(R.string.record));
         bt_preview.setText(getResources().getString(R.string.preview));
+
         return view;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        String name = "maple-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
+        voicePath = WavApp.rootPath + name + ".wav";
+
         timeWhenPaused = 0;
         isRecording = false;
 
@@ -68,8 +69,10 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initListener() {
+
         bt_record.setOnClickListener(this);
         bt_preview.setOnClickListener(this);
+
     }
 
     @Override
@@ -90,7 +93,7 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    // 开始录制
+
     private void startRecord() {
         isRecording = true;
         com_voice_time.setBase(SystemClock.elapsedRealtime() + timeWhenPaused);
@@ -101,12 +104,11 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         bt_record.setEnabled(true);
         bt_preview.setEnabled(false);
         // start
-        voicePath = WavApp.rootPath + "maple-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss") + ".wav";
-        extAudioRecorder = extAudioRecorder.getInstance(voicePath);
+        extAudioRecorder = new MapleAudioRecord(voicePath);
         extAudioRecorder.start();
     }
 
-    // 停止录制
+
     private void stopRecord() {
         isRecording = false;
         com_voice_time.stop();
@@ -118,6 +120,8 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         bt_preview.setEnabled(true);
         // stop
         extAudioRecorder.stop();
+        extAudioRecorder.release();
+        extAudioRecorder = null;
     }
 
     @Override

@@ -8,12 +8,11 @@
     <TextView
         android:id="@+id/tv_des"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:background="#abcdef"
         android:gravity="center"
-        android:text="WAV 播放"
-        android:textColor="#007AFF"
-        android:textSize="20sp" />
+        android:padding="10dp"
+        android:text="WAV 播放" />
 
 
     <ListView

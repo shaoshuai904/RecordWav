@@ -18,7 +18,6 @@ import java.io.RandomAccessFile;
  */
 public class MapleAudioRecord {
     private static final String TAG = MapleAudioRecord.class.getName();
-    private final static int[] sampleRates = {44100, 22050, 11025, 8000};
     // 记录样本输出到文件的时间间隔
     private static final int TIMER_INTERVAL = 120;
 
@@ -26,6 +25,7 @@ public class MapleAudioRecord {
     private int sRate; // 采样率
     private int aFormat; // 编码长度
     private short bSamples; // 编码长度对应数字
+    private int channelConfig;
     private short nChannels; // 声道数
 
 
@@ -53,37 +53,14 @@ public class MapleAudioRecord {
     }
 
 
-    private static MapleAudioRecord eAudioRecorder = null;
+    public MapleAudioRecord(String argPath) {
+        sRate = 8000;// 44100, 22050, 11025, 8000
+        aSource = MediaRecorder.AudioSource.MIC; // 声音源
+        aFormat = AudioFormat.ENCODING_PCM_16BIT; // 编码长度
+        channelConfig = AudioFormat.CHANNEL_CONFIGURATION_MONO;// 声道
 
-    public static MapleAudioRecord getInstance(String argPath) {
-        if (eAudioRecorder == null) {
-            eAudioRecorder = new MapleAudioRecord(
-                    argPath,
-                    MediaRecorder.AudioSource.MIC,
-                    sampleRates[3],
-                    AudioFormat.CHANNEL_CONFIGURATION_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT);
-        }
-        return eAudioRecorder;
-    }
-
-    /**
-     * Instantiates a new recorder, in case of compressed recording the parameters can be left as 0.
-     * In case of errors, no exception is thrown, but the state is set to ERROR
-     *
-     * @param argPath       文件路径
-     * @param audioSource   声音源
-     * @param sampleRate    采样率
-     * @param channelConfig 声道数
-     * @param audioFormat   编码长度
-     */
-    private MapleAudioRecord(String argPath, int audioSource, int sampleRate, int channelConfig, int audioFormat) {
         try {
-            aSource = audioSource;
-            sRate = sampleRate;
-            aFormat = audioFormat;
-
-            bSamples = (short) ((audioFormat == AudioFormat.ENCODING_PCM_16BIT) ? 16 : 8);
+            bSamples = (short) ((aFormat == AudioFormat.ENCODING_PCM_16BIT) ? 16 : 8);
             nChannels = (short) ((channelConfig == AudioFormat.CHANNEL_CONFIGURATION_MONO) ? 1 : 2);
 
             filePath = argPath;
