@@ -1,5 +1,6 @@
 package com.maple.recordwav.record;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,12 +13,13 @@ import android.widget.ImageView;
 
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.maple.recordwav.MainActivity;
-import com.maple.recordwav.WavApp;
-import com.maple.recordwav.record.MapleAudioRecord;
 import com.maple.recordwav.R;
+import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
 import com.maple.recordwav.utils.DateUtils;
+import com.maple.recordwav.utils.T;
+import com.maple.recordwav.utils.permission.PermissionFragment;
+import com.maple.recordwav.utils.permission.PermissionListener;
 
 import java.io.File;
 
@@ -79,16 +81,25 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_record:
-                if (isRecording) {
-                    stopRecord();
-                } else {
-                    startRecord();
-                }
+                String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                PermissionFragment.getPermissionFragment(getActivity()).setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        if (isRecording) {
+                            stopRecord();
+                        } else {
+                            startRecord();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionDenied(String[] deniedPermissions) {
+                        T.showShort(mContext, "请打开内存读写权限");
+                    }
+                }).checkPermissions(permissions);
                 break;
             case R.id.bt_preview:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(new File(voicePath)), "audio/MP3");
-                startActivity(intent);
+                systemPlay(new File(voicePath));
                 break;
         }
     }
@@ -131,5 +142,12 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
             extAudioRecorder.release();
             extAudioRecorder = null;
         }
+    }
+
+    // 系统播放
+    private void systemPlay(File file) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file), "audio/MP3");
+        startActivity(intent);
     }
 }

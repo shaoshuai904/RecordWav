@@ -32,22 +32,23 @@ import java.util.List;
  * @time 16/5/20 下午6:40
  */
 public class PlayPage extends BaseFragment {
+    public static final int SEARCH_MESSAGE_CODE = 200;
     @ViewInject(R.id.tv_des)
     private TextView tv_des;
     @ViewInject(R.id.lv_wav)
     private ListView lv_wav;
 
     ArrayAdapter<String> adapter;
-    private List<String> wavFilelist;
+    private List<String> wavFileList;
     private LoadingDialog loadingDialog;
 
     Handler updateProHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            if (msg.what == 200) {
+            if (msg.what == SEARCH_MESSAGE_CODE) {
                 if (loadingDialog != null && loadingDialog.isShowing()) {
                     loadingDialog.dismiss();
                 }
-                if (wavFilelist.size() > 0) {
+                if (wavFileList.size() > 0) {
                     tv_des.setText("点击条目，播放wav文件！");
                 } else {
                     tv_des.setText("没有找到文件，请去录制 ！");
@@ -69,8 +70,8 @@ public class PlayPage extends BaseFragment {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        wavFilelist = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, wavFilelist);
+        wavFileList = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, wavFileList);
         lv_wav.setAdapter(adapter);
 
         new Thread(searchSong).start();
@@ -82,7 +83,7 @@ public class PlayPage extends BaseFragment {
         lv_wav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String filePath = wavFilelist.get(position);
+                String filePath = wavFileList.get(position);
                 File file = new File(filePath);
                 if (file.exists()) {
                     systemPlay(file);
@@ -98,11 +99,11 @@ public class PlayPage extends BaseFragment {
         @Override
         public void run() {
             List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
-            wavFilelist.clear();
+            wavFileList.clear();
             for (int i = 0; i < fileArr.size(); i++) {
-                wavFilelist.add(fileArr.get(i).getAbsolutePath());
+                wavFileList.add(fileArr.get(i).getAbsolutePath());
             }
-            updateProHandler.sendEmptyMessage(200);
+            updateProHandler.sendEmptyMessage(SEARCH_MESSAGE_CODE);
         }
     };
 
