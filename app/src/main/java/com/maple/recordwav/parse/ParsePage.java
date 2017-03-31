@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
@@ -23,6 +21,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 获取wav文件的信息
  *
@@ -30,10 +31,8 @@ import java.util.List;
  * @time 16/5/20 下午6:40
  */
 public class ParsePage extends BaseFragment {
-    @ViewInject(R.id.tv_info)
-    private TextView tv_info;
-    @ViewInject(R.id.lv_parse)
-    private ListView lv_parse;
+    @BindView(R.id.tv_info) TextView tv_info;
+    @BindView(R.id.lv_parse) ListView lv_parse;
 
     ArrayAdapter<String> adapter;
     private List<String> wavFilelist;
@@ -60,7 +59,7 @@ public class ParsePage extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_parse, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
 
         loadingDialog = new LoadingDialog(getActivity());
         tv_info.setText("WAV 解析界面！");

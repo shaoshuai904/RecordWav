@@ -12,8 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
@@ -25,6 +23,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * wav 文件播放
  *
@@ -33,10 +34,8 @@ import java.util.List;
  */
 public class PlayPage extends BaseFragment {
     public static final int SEARCH_MESSAGE_CODE = 200;
-    @ViewInject(R.id.tv_des)
-    private TextView tv_des;
-    @ViewInject(R.id.lv_wav)
-    private ListView lv_wav;
+    @BindView(R.id.tv_des) TextView tv_des;
+    @BindView(R.id.lv_wav) ListView lv_wav;
 
     ArrayAdapter<String> adapter;
     private List<String> wavFileList;
@@ -61,7 +60,7 @@ public class PlayPage extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_play, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
 
         loadingDialog = new LoadingDialog(getActivity());
         tv_des.setText("WAV 播放界面！");

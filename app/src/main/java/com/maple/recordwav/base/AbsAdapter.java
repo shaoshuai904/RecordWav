@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
-import com.lidroid.xutils.BitmapUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +14,12 @@ import java.util.List;
 public abstract class AbsAdapter<T> extends BaseAdapter {
     public Context mContext;
     public LayoutInflater inflater;
-    public BitmapUtils bmpUtils;
 
     protected List<T> mDatas;
 
     public AbsAdapter(Context context, List<T> datas) {
         mContext = context;
         inflater = LayoutInflater.from(mContext);
-        bmpUtils = new BitmapUtils(mContext);
 
         if (datas == null)
             mDatas = new ArrayList<T>();

@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
@@ -23,6 +21,9 @@ import com.maple.recordwav.utils.permission.PermissionListener;
 
 import java.io.File;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 录制界面
  *
@@ -30,15 +31,11 @@ import java.io.File;
  * @time 16/4/18 下午2:53
  */
 public class RecordPage extends BaseFragment implements View.OnClickListener {
-    @ViewInject(R.id.com_voice_time)
-    private Chronometer com_voice_time;
-    @ViewInject(R.id.iv_voice_img)
-    private ImageView iv_voice_img;
+    @BindView(R.id.com_voice_time) Chronometer com_voice_time;
+    @BindView(R.id.iv_voice_img) ImageView iv_voice_img;
 
-    @ViewInject(R.id.bt_record)
-    private Button bt_record;
-    @ViewInject(R.id.bt_preview)
-    private Button bt_preview;
+    @BindView(R.id.bt_record) Button bt_record;
+    @BindView(R.id.bt_preview) Button bt_preview;
 
 
     MapleAudioRecord extAudioRecorder = null;
@@ -49,7 +46,7 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_record, null);
-        ViewUtils.inject(this, view);
+        ButterKnife.bind(this, view);
 
         bt_record.setText(getResources().getString(R.string.record));
         bt_preview.setText(getResources().getString(R.string.preview));

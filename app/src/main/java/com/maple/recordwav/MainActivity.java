@@ -9,33 +9,30 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.ResType;
-import com.lidroid.xutils.view.annotation.ResInject;
-import com.lidroid.xutils.view.annotation.ViewInject;
 import com.maple.recordwav.parse.ParsePage;
 import com.maple.recordwav.play.PlayPage;
 import com.maple.recordwav.record.RecordPage;
 
+import butterknife.BindArray;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends FragmentActivity {
-    @ViewInject(R.id.tv_title)
-    private TextView mTitle;
-    @ViewInject(R.id.tabhost)
-    private FragmentTabHost mTabHost;
+    @BindView(R.id.tv_title) TextView mTitle;
+    @BindView(R.id.tabhost) FragmentTabHost mTabHost;
 
     // Fragment界面
     private Class[] fragmentArray = {RecordPage.class, PlayPage.class, ParsePage.class};
     // 选项卡图片
     private int[] mImageViewArray = {R.drawable.tab_home_btn, R.drawable.tab_message_btn, R.drawable.tab_square_btn};
     // 选项卡文字
-    @ResInject(id = R.array.tab_fun_array, type = ResType.StringArray)
-    private String[] mTextViewArray;
+    @BindArray(R.array.tab_fun_array) String[] mTextViewArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewUtils.inject(this);
+        ButterKnife.bind(this);
 
         initView();
     }
