@@ -25,8 +25,8 @@ public class WavApp extends Application {
     private void initPath() {
         String ROOT = "";// /storage/emulated/0
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            ROOT = getBaseContext().getFilesDir().getPath();
-            // ROOT = Environment.getExternalStorageDirectory().getPath();
+//            ROOT = getBaseContext().getFilesDir().getPath();
+            ROOT = Environment.getExternalStorageDirectory().getPath();
             Log.e("app", "系统方法：" + ROOT);
         }
         rootPath = ROOT + rootPath;
