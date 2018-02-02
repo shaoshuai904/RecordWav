@@ -41,7 +41,6 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
 
     MapleAudioRecord extAudioRecorder = null;
     boolean isRecording = false;// 是否正在记录
-    boolean isPlaying = false;// 是否正在播放
     String voicePath = WavApp.rootPath + "/voice.wav";
 
     @Override
@@ -98,7 +97,7 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
             case R.id.bt_preview:
                 // systemPlay(new File(voicePath));
                 // custom play
-                if (isPlaying) {
+                if (isPlaying()) {
                     stopPlaying();
                 } else {
                     startPlaying(voicePath);
@@ -162,7 +161,6 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
             player.prepare();
             player.start();
             // startTimer
-            isPlaying = true;
             com_voice_time.setBase(SystemClock.elapsedRealtime());
             com_voice_time.start();
             bt_preview.setText(getResources().getString(R.string.stop));
@@ -187,11 +185,17 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
             } catch (Exception e) {
             }
         }
-        isPlaying = false;
         com_voice_time.stop();
         com_voice_time.setBase(SystemClock.elapsedRealtime());
         bt_preview.setText(getResources().getString(R.string.preview));
         iv_voice_img.setImageResource(R.drawable.mic_default);
     }
 
+    private boolean isPlaying() {
+        try {
+            return player != null && player.isPlaying() && !isRecording;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

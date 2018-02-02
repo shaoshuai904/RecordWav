@@ -112,4 +112,5 @@ public class PlayPage extends BaseFragment {
         intent.setDataAndType(Uri.fromFile(file), "audio/MP3");
         startActivity(intent);
     }
+
 }
