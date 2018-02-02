@@ -2,6 +2,7 @@ package com.maple.recordwav.record;
 
 import android.Manifest;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -39,7 +40,6 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
 
 
     MapleAudioRecord extAudioRecorder = null;
-    long timeWhenPaused = 0; // 已经记录的时间
     boolean isRecording = false;// 是否正在记录
     String voicePath = WavApp.rootPath + "/voice.wav";
 
@@ -59,7 +59,6 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         String name = "maple-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
         voicePath = WavApp.rootPath + name + ".wav";
 
-        timeWhenPaused = 0;
         isRecording = false;
 
         bt_record.setEnabled(true);
@@ -96,7 +95,13 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
                 }).checkPermissions(permissions);
                 break;
             case R.id.bt_preview:
-                systemPlay(new File(voicePath));
+                // systemPlay(new File(voicePath));
+                // custom play
+                if (isPlaying()) {
+                    stopPlaying();
+                } else {
+                    startPlaying(voicePath);
+                }
                 break;
         }
     }
@@ -104,7 +109,7 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
 
     private void startRecord() {
         isRecording = true;
-        com_voice_time.setBase(SystemClock.elapsedRealtime() + timeWhenPaused);
+        com_voice_time.setBase(SystemClock.elapsedRealtime());
         com_voice_time.start();
 
         iv_voice_img.setImageResource(R.drawable.mic_selected);
@@ -120,7 +125,6 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
     private void stopRecord() {
         isRecording = false;
         com_voice_time.stop();
-        timeWhenPaused = 0;
 
         iv_voice_img.setImageResource(R.drawable.mic_default);
         bt_record.setText(getResources().getString(R.string.rerecord));
@@ -146,5 +150,52 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(file), "audio/MP3");
         startActivity(intent);
+    }
+
+    MediaPlayer player;
+
+    private void startPlaying(String filePath) {
+        try {
+            player = new MediaPlayer();
+            player.setDataSource(filePath);
+            player.prepare();
+            player.start();
+            // startTimer
+            com_voice_time.setBase(SystemClock.elapsedRealtime());
+            com_voice_time.start();
+            bt_preview.setText(getResources().getString(R.string.stop));
+            iv_voice_img.setImageResource(R.drawable.mic_selected);
+
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopPlaying();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void stopPlaying() {
+        if (player != null) {
+            try {
+                player.stop();
+                player.reset();
+            } catch (Exception e) {
+            }
+        }
+        com_voice_time.stop();
+        com_voice_time.setBase(SystemClock.elapsedRealtime());
+        bt_preview.setText(getResources().getString(R.string.preview));
+        iv_voice_img.setImageResource(R.drawable.mic_default);
+    }
+
+    private boolean isPlaying() {
+        try {
+            return player != null && player.isPlaying() && !isRecording;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
