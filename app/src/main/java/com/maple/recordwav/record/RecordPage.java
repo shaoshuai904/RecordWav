@@ -2,7 +2,6 @@ package com.maple.recordwav.record;
 
 import android.Manifest;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
+import com.maple.recordwav.play.PlayUtils;
 import com.maple.recordwav.utils.DateUtils;
 import com.maple.recordwav.utils.T;
 import com.maple.recordwav.utils.permission.PermissionFragment;
@@ -42,6 +42,7 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
     MapleAudioRecord extAudioRecorder = null;
     boolean isRecording = false;// 是否正在记录
     String voicePath = WavApp.rootPath + "/voice.wav";
+    PlayUtils playUtils;
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -60,6 +61,25 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         voicePath = WavApp.rootPath + name + ".wav";
 
         isRecording = false;
+        playUtils = new PlayUtils();
+        playUtils.setPlayStateChangeListener(new PlayUtils.PlayStateChangeListener() {
+
+            @Override
+            public void onPlayStateChange(boolean isPlay) {
+                if (isPlay) {
+                    // startTimer
+                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+                    com_voice_time.start();
+                    bt_preview.setText(getResources().getString(R.string.stop));
+                    iv_voice_img.setImageResource(R.drawable.mic_selected);
+                } else {
+                    com_voice_time.stop();
+                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+                    bt_preview.setText(getResources().getString(R.string.preview));
+                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                }
+            }
+        });
 
         bt_record.setEnabled(true);
         bt_preview.setEnabled(false);
@@ -77,30 +97,35 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_record:
-                String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                PermissionFragment.getPermissionFragment(getActivity()).setPermissionListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-                        if (isRecording) {
-                            stopRecord();
-                        } else {
-                            startRecord();
-                        }
-                    }
+                String[] permissions = new String[]{
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                };
+                PermissionFragment.getPermissionFragment(getActivity())
+                        .setPermissionListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted() {
+                                if (isRecording) {
+                                    stopRecord();
+                                } else {
+                                    startRecord();
+                                }
+                            }
 
-                    @Override
-                    public void onPermissionDenied(String[] deniedPermissions) {
-                        T.showShort(mContext, "请打开内存读写权限");
-                    }
-                }).checkPermissions(permissions);
+                            @Override
+                            public void onPermissionDenied(String[] deniedPermissions) {
+                                T.showShort(mContext, "请打开内存读写权限");
+                            }
+                        })
+                        .checkPermissions(permissions);
                 break;
             case R.id.bt_preview:
                 // systemPlay(new File(voicePath));
                 // custom play
-                if (isPlaying()) {
-                    stopPlaying();
+                if (playUtils.isPlaying() && !isRecording) {
+                    playUtils.stopPlaying();
                 } else {
-                    startPlaying(voicePath);
+                    playUtils.startPlaying(voicePath);
                 }
                 break;
         }
@@ -152,50 +177,4 @@ public class RecordPage extends BaseFragment implements View.OnClickListener {
         startActivity(intent);
     }
 
-    MediaPlayer player;
-
-    private void startPlaying(String filePath) {
-        try {
-            player = new MediaPlayer();
-            player.setDataSource(filePath);
-            player.prepare();
-            player.start();
-            // startTimer
-            com_voice_time.setBase(SystemClock.elapsedRealtime());
-            com_voice_time.start();
-            bt_preview.setText(getResources().getString(R.string.stop));
-            iv_voice_img.setImageResource(R.drawable.mic_selected);
-
-            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopPlaying();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void stopPlaying() {
-        if (player != null) {
-            try {
-                player.stop();
-                player.reset();
-            } catch (Exception e) {
-            }
-        }
-        com_voice_time.stop();
-        com_voice_time.setBase(SystemClock.elapsedRealtime());
-        bt_preview.setText(getResources().getString(R.string.preview));
-        iv_voice_img.setImageResource(R.drawable.mic_default);
-    }
-
-    private boolean isPlaying() {
-        try {
-            return player != null && player.isPlaying() && !isRecording;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
