@@ -1,4 +1,4 @@
-package com.maple.recordwav;
+package com.maple.recordwav.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.maple.recordwav.parse.ParsePage;
-import com.maple.recordwav.play.PlayPage;
-import com.maple.recordwav.record.RecordPage;
+import com.maple.recordwav.R;
+import com.maple.recordwav.ui.parse.ParsePage;
+import com.maple.recordwav.ui.play.PlayPage;
+import com.maple.recordwav.ui.record.RecordPage;
 
 import butterknife.BindArray;
 import butterknife.BindView;

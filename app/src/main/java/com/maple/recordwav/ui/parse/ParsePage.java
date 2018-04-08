@@ -1,4 +1,4 @@
-package com.maple.recordwav.parse;
+package com.maple.recordwav.ui.parse;
 
 
 import android.os.Bundle;

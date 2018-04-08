@@ -1,4 +1,4 @@
-package com.maple.recordwav.play;
+package com.maple.recordwav.ui.play;
 
 import android.media.MediaPlayer;
 
