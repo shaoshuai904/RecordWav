@@ -1,4 +1,4 @@
-package com.maple.recordwav.ui.record;
+package com.maple.recordwav.ui;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
 import com.maple.recordwav.ui.play.PlayUtils;
+import com.maple.recordwav.ui.record.MapleAudioRecord;
 import com.maple.recordwav.utils.DateUtils;
 import com.maple.recordwav.utils.T;
 import com.maple.recordwav.utils.permission.PermissionFragment;

@@ -12,4 +12,8 @@
     <string name="rerecord">Rerecord</string>
     <string name="preview">Preview</string>
 
+
+    <string name="pause_recording">Pause Recording</string>
+    <string name="resume_recording">Resume Recording</string>
+
 </resources>
