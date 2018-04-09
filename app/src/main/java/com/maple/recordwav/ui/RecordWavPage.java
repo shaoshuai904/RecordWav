@@ -3,11 +3,13 @@ package com.maple.recordwav.ui;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Chronometer;
 import android.widget.CompoundButton;
 
 import com.maple.recorder.AudioChunk;
@@ -36,13 +38,14 @@ import butterknife.ButterKnife;
  * @time 16/4/18 下午2:53
  */
 public class RecordWavPage extends BaseFragment {
+    @BindView(R.id.com_voice_time) Chronometer com_voice_time;
     @BindView(R.id.recordButton) Button bt_start;
     @BindView(R.id.pauseResumeButton) Button pauseResumeButton;
-
     @BindView(R.id.skipSilence) CheckBox skipSilence;
 
     Recorder recorder;
     boolean isRecording = false;
+    long curBase;
     String voicePath = WavApp.rootPath + "/voice.wav";
 
     @Override
@@ -77,16 +80,20 @@ public class RecordWavPage extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (!isRecording) {
-                    recorder.startRecording();
                     isRecording = true;
+                    recorder.startRecording();
                     skipSilence.setEnabled(false);
                     bt_start.setText(getString(R.string.stop));
+                    Log.e("time", "  --  " + SystemClock.elapsedRealtime());
+                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+                    com_voice_time.start();
                 } else {
                     try {
-                        recorder.stopRecording();
                         isRecording = false;
+                        recorder.stopRecording();
                         skipSilence.setEnabled(true);
                         bt_start.setText(getString(R.string.record));
+                        com_voice_time.stop();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -107,8 +114,11 @@ public class RecordWavPage extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (isRecording) {
-                    recorder.pauseRecording();
                     isRecording = false;
+                    recorder.pauseRecording();
+                    curBase = SystemClock.elapsedRealtime() - com_voice_time.getBase();
+                    Log.e("time", "  -curBase-  " + curBase);
+                    com_voice_time.stop();
                     pauseResumeButton.setText(getString(R.string.resume_recording));
                     pauseResumeButton.postDelayed(new Runnable() {
                         @Override
@@ -117,8 +127,10 @@ public class RecordWavPage extends BaseFragment {
                         }
                     }, 100);
                 } else {
-                    recorder.resumeRecording();
                     isRecording = true;
+                    recorder.resumeRecording();
+                    com_voice_time.setBase(SystemClock.elapsedRealtime() - curBase);
+                    com_voice_time.start();
                     pauseResumeButton.setText(getString(R.string.pause_recording));
                 }
             }
