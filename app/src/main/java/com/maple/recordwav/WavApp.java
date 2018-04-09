@@ -9,7 +9,7 @@ import java.io.File;
 public class WavApp extends Application {
     private static WavApp app;
 
-    public static String rootPath = "/";
+    public static String rootPath = "/wav_file/";
 
     @Override
     public void onCreate() {

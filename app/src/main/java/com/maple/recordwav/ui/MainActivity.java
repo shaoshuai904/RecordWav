@@ -1,4 +1,4 @@
-package com.maple.recordwav;
+package com.maple.recordwav.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,20 +9,22 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.maple.recordwav.parse.ParsePage;
-import com.maple.recordwav.play.PlayPage;
-import com.maple.recordwav.record.RecordPage;
+import com.maple.recordwav.R;
 
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author maple
+ * @time 2018/4/8.
+ */
 public class MainActivity extends FragmentActivity {
     @BindView(R.id.tv_title) TextView mTitle;
     @BindView(R.id.tabhost) FragmentTabHost mTabHost;
 
     // Fragment界面
-    private Class[] fragmentArray = {RecordPage.class, PlayPage.class, ParsePage.class};
+    private Class[] fragmentArray = {RecordWavPage.class, PlayPage.class, ParsePage.class};
     // 选项卡图片
     private int[] mImageViewArray = {R.drawable.tab_home_btn, R.drawable.tab_message_btn, R.drawable.tab_square_btn};
     // 选项卡文字

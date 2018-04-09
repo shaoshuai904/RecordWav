@@ -1,4 +1,4 @@
-package com.maple.recordwav.parse;
+package com.maple.recordwav.ui.parse;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

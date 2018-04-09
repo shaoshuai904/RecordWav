@@ -1,4 +1,4 @@
-package com.maple.recordwav.play;
+package com.maple.recordwav.ui;
 
 
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
+import com.maple.recordwav.ui.play.PlayUtils;
 import com.maple.recordwav.utils.LoadingDialog;
 import com.maple.recordwav.utils.SearchFileUtils;
 import com.maple.recordwav.utils.T;
@@ -40,6 +41,7 @@ public class PlayPage extends BaseFragment {
     ArrayAdapter<String> adapter;
     private List<String> wavFileList;
     private LoadingDialog loadingDialog;
+    PlayUtils playUtils;
 
     Handler updateProHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -69,8 +71,8 @@ public class PlayPage extends BaseFragment {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        wavFileList = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, wavFileList);
+        wavFileList = new ArrayList<>();
+        adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, wavFileList);
         lv_wav.setAdapter(adapter);
 
         new Thread(searchSong).start();
@@ -79,13 +81,37 @@ public class PlayPage extends BaseFragment {
 
     @Override
     public void initListener() {
+        playUtils = new PlayUtils();
+        playUtils.setPlayStateChangeListener(new PlayUtils.PlayStateChangeListener() {
+
+            @Override
+            public void onPlayStateChange(boolean isPlay) {
+                if (isPlay) {
+                    // startTimer
+//                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+//                    com_voice_time.start();
+//                    bt_preview.setText(getResources().getString(R.string.stop));
+//                    iv_voice_img.setImageResource(R.drawable.mic_selected);
+                } else {
+//                    com_voice_time.stop();
+//                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+//                    bt_preview.setText(getResources().getString(R.string.preview));
+//                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                }
+            }
+        });
         lv_wav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String filePath = wavFileList.get(position);
                 File file = new File(filePath);
                 if (file.exists()) {
-                    systemPlay(file);
+//                    systemPlay(file);
+                    if (playUtils.isPlaying()) {
+                        playUtils.stopPlaying();
+                    } else {
+                        playUtils.startPlaying(filePath);
+                    }
                 } else {
                     T.showShort(mContext, "选择的文件不存在");
                 }
