@@ -32,17 +32,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:paddingBottom="8dp"
             android:text="click microphone to record"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/black" />
 
-        <Button
-            android:id="@+id/pauseResumeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/pause_recording" />
 
         <LinearLayout
             android:id="@+id/containerView"
@@ -52,19 +45,20 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
+            <Button
                 android:id="@+id/recordButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_wav_file" />
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_margin="20dp"
+                android:text="@string/record" />
 
-            <ImageView
-                android:id="@+id/stopButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:paddingBottom="5dp"
-                android:src="@drawable/icon_home_sel" />
+            <Button
+                android:id="@+id/pauseResumeButton"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_margin="20dp"
+                android:text="@string/pause_recording" />
+
         </LinearLayout>
 
 

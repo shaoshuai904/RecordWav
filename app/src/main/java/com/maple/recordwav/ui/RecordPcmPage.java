@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import com.maple.recorder.AudioChunk;
 import com.maple.recorder.AudioRecordConfig;
@@ -37,12 +36,12 @@ import butterknife.ButterKnife;
  * @time 16/4/18 下午2:53
  */
 public class RecordPcmPage extends BaseFragment {
-    @BindView(R.id.recordButton) ImageView recordButton;
-    @BindView(R.id.stopButton) ImageView stopButton;
-    @BindView(R.id.skipSilence) CheckBox skipSilence;
+    @BindView(R.id.recordButton) Button recordButton;
     @BindView(R.id.pauseResumeButton) Button pauseResumeButton;
+    @BindView(R.id.skipSilence) CheckBox skipSilence;
 
     Recorder recorder;
+    boolean isRecording = false;
     String voicePath = WavApp.rootPath + "/voice.wav";
 
     @Override
@@ -81,34 +80,31 @@ public class RecordPcmPage extends BaseFragment {
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recorder.startRecording();
-                skipSilence.setEnabled(false);
-            }
-        });
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    recorder.stopRecording();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!isRecording) {
+                    recorder.startRecording();
+                    isRecording = true;
+                    skipSilence.setEnabled(false);
+                    recordButton.setText(getString(R.string.stop));
+                } else {
+                    try {
+                        recorder.stopRecording();
+                        isRecording = false;
+                        animateVoice(0);
+                        skipSilence.setEnabled(true);
+                        recordButton.setText(getString(R.string.record));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                animateVoice(0);
-                skipSilence.setEnabled(true);
             }
         });
         pauseResumeButton.setOnClickListener(new View.OnClickListener() {
-            boolean isPaused = false;
-
             @Override
             public void onClick(View view) {
-                if (recorder == null) {
-                    T.showShort(mContext, "Please start recording first!");
-                    return;
-                }
-                if (!isPaused) {
+                if (isRecording) {
                     pauseResumeButton.setText(getString(R.string.resume_recording));
                     recorder.pauseRecording();
+                    isRecording = false;
                     pauseResumeButton.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -118,8 +114,8 @@ public class RecordPcmPage extends BaseFragment {
                 } else {
                     pauseResumeButton.setText(getString(R.string.pause_recording));
                     recorder.resumeRecording();
+                    isRecording = true;
                 }
-                isPaused = !isPaused;
             }
         });
 
