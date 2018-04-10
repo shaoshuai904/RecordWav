@@ -12,14 +12,26 @@ import java.io.OutputStream;
  * Basically it just pulls the data from { PullableSource} and transport it to
  * {@link OutputStream}
  *
- * @author Kailash Dabhi
- * @date 06-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
 public interface PullTransport {
 
     void isEnableToBePulled(boolean enabledToBePulled);
 
     void startPoolingAndWriting(AudioRecord audioRecord, int pullSizeInBytes, OutputStream outputStream) throws IOException;
+
+    /**
+     * Interface definition for a callback to be invoked when a silence is measured.
+     */
+    interface OnSilenceListener {
+        /**
+         * Called when a silence measured
+         *
+         * @param silenceTime The silence measured
+         */
+        void onSilence(long silenceTime);
+    }
 
     /**
      * Interface definition for a callback to be invoked when a chunk of audio is pulled from
@@ -51,7 +63,7 @@ public interface PullTransport {
             this.pull = enabledToBePulled;
         }
 
-        void postSilenceEvent(final Recorder.OnSilenceListener onSilenceListener, final long silenceTime) {
+        void postSilenceEvent(final OnSilenceListener onSilenceListener, final long silenceTime) {
             handler.post((new Runnable() {
                 @Override
                 public void run() {
@@ -98,7 +110,7 @@ public interface PullTransport {
 
     final class Noise extends AbstractPullTransport {
         private final long silenceTimeThreshold;
-        private final Recorder.OnSilenceListener silenceListener;
+        private final OnSilenceListener silenceListener;
         private long firstSilenceMoment = 0;
         private int noiseRecordedAfterFirstSilenceThreshold = 0;
 
@@ -110,11 +122,11 @@ public interface PullTransport {
             this(onAudioChunkPulledListener, null, 200);
         }
 
-        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener, Recorder.OnSilenceListener silenceListener) {
+        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener, OnSilenceListener silenceListener) {
             this(onAudioChunkPulledListener, silenceListener, 200);
         }
 
-        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener, Recorder.OnSilenceListener silenceListener, long silenceTimeThreshold) {
+        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener, OnSilenceListener silenceListener, long silenceTimeThreshold) {
             super(onAudioChunkPulledListener);
             this.silenceListener = silenceListener;
             this.silenceTimeThreshold = silenceTimeThreshold;

@@ -3,31 +3,32 @@ package com.maple.recorder;
 import java.io.IOException;
 
 /**
- * A Recorder who can start and stop recording with startRecording() and stopRecording() method
- * respectively.
+ * 一种可以用startRecording()和stopRecording()方法开始和停止记录的记录器。
  *
- * @author Kailash Dabhi
- * @date 06-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
 public interface Recorder {
 
+    /**
+     * 开始
+     */
     void startRecording();
 
-    void stopRecording() throws IOException;
-
+    /**
+     * 暂停
+     */
     void pauseRecording();
 
+    /**
+     * 继续
+     */
     void resumeRecording();
 
     /**
-     * Interface definition for a callback to be invoked when a silence is measured.
+     * 停止
      */
-    interface OnSilenceListener {
-        /**
-         * Called when a silence measured
-         *
-         * @param silenceTime The silence measured
-         */
-        void onSilence(long silenceTime);
-    }
+    void stopRecording() throws IOException;
+
+
 }

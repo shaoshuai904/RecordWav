@@ -12,7 +12,7 @@ import android.widget.CompoundButton;
 
 import com.maple.recorder.AudioChunk;
 import com.maple.recorder.AudioRecordConfig;
-import com.maple.recorder.OmRecorder;
+import com.maple.recorder.MsRecorder;
 import com.maple.recorder.PullTransport;
 import com.maple.recorder.Recorder;
 import com.maple.recordwav.R;
@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 录制 Wav 界面
+ * 录制 WavRecorder 界面
  *
  * @author maple
  * @time 16/4/18 下午2:53
@@ -135,7 +135,7 @@ public class RecordWavPage extends BaseFragment {
     }
 
     private void setupRecorder() {
-        recorder = OmRecorder.wav(
+        recorder = MsRecorder.wav(
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
                 new PullTransport.Default(
@@ -151,7 +151,7 @@ public class RecordWavPage extends BaseFragment {
     }
 
     private void setupNoiseRecorder() {
-        recorder = OmRecorder.wav(
+        recorder = MsRecorder.wav(
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
                 new PullTransport.Noise(
@@ -161,7 +161,7 @@ public class RecordWavPage extends BaseFragment {
                                 animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                             }
                         },
-                        new Recorder.OnSilenceListener() {
+                        new PullTransport.OnSilenceListener() {
                             @Override
                             public void onSilence(long silenceTime) {
                                 Log.e("silenceTime", String.valueOf(silenceTime));

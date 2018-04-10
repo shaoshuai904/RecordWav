@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 
 import com.maple.recorder.AudioChunk;
 import com.maple.recorder.AudioRecordConfig;
-import com.maple.recorder.OmRecorder;
+import com.maple.recorder.MsRecorder;
 import com.maple.recorder.PullTransport;
 import com.maple.recorder.Recorder;
 import com.maple.recordwav.R;
@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 录制 Pcm 界面
+ * 录制 PcmRecorder 界面
  *
  * @author maple
  * @time 16/4/18 下午2:53
@@ -118,7 +118,7 @@ public class RecordPcmPage extends BaseFragment {
     }
 
     private void setupRecorder() {
-        recorder = OmRecorder.pcm(
+        recorder = MsRecorder.pcm(
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
                 new PullTransport.Default(
@@ -133,7 +133,7 @@ public class RecordPcmPage extends BaseFragment {
     }
 
     private void setupNoiseRecorder() {
-        recorder = OmRecorder.pcm(
+        recorder = MsRecorder.pcm(
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
                 new PullTransport.Noise(
@@ -143,7 +143,7 @@ public class RecordPcmPage extends BaseFragment {
                                 animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                             }
                         },
-                        new Recorder.OnSilenceListener() {
+                        new PullTransport.OnSilenceListener() {
                             @Override
                             public void onSilence(long silenceTime) {
                                 Log.e("silenceTime", String.valueOf(silenceTime));

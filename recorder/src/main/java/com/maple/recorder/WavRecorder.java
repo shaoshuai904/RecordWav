@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- * {@code Wav} is recorder for recording audio in wav format.
+ * Wav格式的音频记录器
  *
- * @author Kailash Dabhi
- * @date 31-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
-final class Wav extends AbstractRecorder {
+final class WavRecorder extends BaseDataRecorder {
 
-    public Wav(File file, AudioRecordConfig config, PullTransport pullTransport) {
+    public WavRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         super(file, config, pullTransport);
     }
 

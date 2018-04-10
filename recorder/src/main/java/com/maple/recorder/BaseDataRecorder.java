@@ -11,11 +11,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @author Kailash Dabhi
- * @date 22-08-2016.
- * Copyright (c) 2017 Kingbull Technology. All rights reserved.
+ * Base Recorder (Only record the original audio data.)
+ *
+ * @author maple
+ * @time 2018/4/10.
  */
-public abstract class AbstractRecorder implements Recorder {
+public class BaseDataRecorder implements Recorder {
     protected final PullTransport pullTransport;
     protected final File file;
     protected AudioRecordConfig config;
@@ -39,7 +40,7 @@ public abstract class AbstractRecorder implements Recorder {
         }
     };
 
-    protected AbstractRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
+    protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         this.file = file;
         this.config = config;
         this.pullTransport = pullTransport;

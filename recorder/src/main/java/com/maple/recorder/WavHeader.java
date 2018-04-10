@@ -3,10 +3,10 @@ package com.maple.recorder;
 import android.media.AudioFormat;
 
 /**
- * A  Header to be appended to the end of Wav audio file
+ * A Header to be appended to the end of WavRecorder audio file
  *
- * @author Kailash Dabhi
- * @date 26-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
 final class WavHeader {
     private final AudioRecordConfig config;

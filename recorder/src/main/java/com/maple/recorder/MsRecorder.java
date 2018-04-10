@@ -3,21 +3,21 @@ package com.maple.recorder;
 import java.io.File;
 
 /**
- * Essential APIs for working with OmRecorder.
+ * Essential APIs for working with MsRecorder.
  *
- * @author Kailash Dabhi
- * @date 31-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
-public final class OmRecorder {
+public final class MsRecorder {
 
-    private OmRecorder() {
+    private MsRecorder() {
     }
 
     public static Recorder pcm(File file, AudioRecordConfig config, PullTransport pullTransport) {
-        return new Pcm(file, config, pullTransport);
+        return new PcmRecorder(file, config, pullTransport);
     }
 
     public static Recorder wav(File file, AudioRecordConfig config, PullTransport pullTransport) {
-        return new Wav(file, config, pullTransport);
+        return new WavRecorder(file, config, pullTransport);
     }
 }

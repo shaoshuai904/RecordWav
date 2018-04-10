@@ -4,10 +4,8 @@ import android.media.AudioFormat;
 import android.media.MediaRecorder;
 
 /**
- * This is an interface to configure the { Source}
- *
- * @author Kailash Dabhi
- * @date 06-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
 public interface AudioRecordConfig {
     int channelPositionMask();

@@ -6,8 +6,8 @@ import java.nio.ByteOrder;
 /**
  * An AudioChunk is a audio data wrapper.
  *
- * @author Kailash Dabhi
- * @date 20-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
 public interface AudioChunk {
     double maxAmplitude();
