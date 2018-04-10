@@ -98,7 +98,7 @@ public class RecordPcmPage extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (isRecording) {
-                    pauseResumeButton.setText(getString(R.string.resume_recording));
+                    pauseResumeButton.setText(getString(R.string.resume));
                     recorder.pauseRecording();
                     isRecording = false;
                     pauseResumeButton.postDelayed(new Runnable() {
@@ -108,7 +108,7 @@ public class RecordPcmPage extends BaseFragment {
                         }
                     }, 100);
                 } else {
-                    pauseResumeButton.setText(getString(R.string.pause_recording));
+                    pauseResumeButton.setText(getString(R.string.pause));
                     recorder.resumeRecording();
                     isRecording = true;
                 }

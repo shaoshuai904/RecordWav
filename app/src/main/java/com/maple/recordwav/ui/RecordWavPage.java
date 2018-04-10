@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import com.maple.recorder.AudioChunk;
 import com.maple.recorder.AudioRecordConfig;
@@ -34,19 +35,21 @@ import butterknife.ButterKnife;
  * @time 16/4/18 下午2:53
  */
 public class RecordWavPage extends BaseFragment {
+    @BindView(R.id.iv_voice_img) ImageView iv_voice_img;
     @BindView(R.id.com_voice_time) Chronometer com_voice_time;
-    @BindView(R.id.recordButton) Button bt_start;
-    @BindView(R.id.pauseResumeButton) Button pauseResumeButton;
+    @BindView(R.id.bt_start) Button bt_start;
+    @BindView(R.id.bt_stop) Button bt_stop;
+    @BindView(R.id.bt_pause_resume) Button bt_pause_resume;
     @BindView(R.id.skipSilence) CheckBox skipSilence;
 
     Recorder recorder;
     boolean isRecording = false;
-    long curBase;
+    long curBase = 0;
     String voicePath = WavApp.rootPath + "/voice.wav";
 
     @Override
     public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_record_wav, null);
+        view = inflater.inflate(R.layout.fragment_record, null);
         ButterKnife.bind(this, view);
 
         return view;
@@ -58,7 +61,11 @@ public class RecordWavPage extends BaseFragment {
         voicePath = WavApp.rootPath + name + ".wav";
 
         setupRecorder();
-        pauseResumeButton.setEnabled(false);
+        bt_start.setText(getString(R.string.record));
+        bt_pause_resume.setText(getString(R.string.pause));
+        bt_stop.setText(getString(R.string.stop));
+        bt_pause_resume.setEnabled(false);
+        bt_stop.setEnabled(false);
     }
 
     @Override
@@ -76,61 +83,70 @@ public class RecordWavPage extends BaseFragment {
         bt_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isRecording) {
-                    isRecording = true;
-                    recorder.startRecording();
-                    skipSilence.setEnabled(false);
-                    bt_start.setText(getString(R.string.stop));
-                    pauseResumeButton.setEnabled(true);
-                    Log.e("time", "  --  " + SystemClock.elapsedRealtime());
-                    com_voice_time.setBase(SystemClock.elapsedRealtime());
-                    com_voice_time.start();
-                } else {
-                    try {
-                        isRecording = false;
-                        recorder.stopRecording();
-                        skipSilence.setEnabled(true);
-                        bt_start.setText(getString(R.string.record));
-                        pauseResumeButton.setEnabled(false);
-                        com_voice_time.stop();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                recorder.startRecording();
 
-                    bt_start.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            animateVoice(0);
-                        }
-                    });
-                }
-
+                isRecording = true;
+                skipSilence.setEnabled(false);
+                bt_start.setEnabled(false);
+                bt_pause_resume.setEnabled(true);
+                bt_stop.setEnabled(true);
+                iv_voice_img.setImageResource(R.drawable.mic_selected);
+                com_voice_time.setBase(SystemClock.elapsedRealtime());
+                com_voice_time.start();
             }
         });
+        bt_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    recorder.stopRecording();
 
-        pauseResumeButton.setOnClickListener(new View.OnClickListener() {
+                    isRecording = false;
+                    skipSilence.setEnabled(true);
+                    bt_start.setEnabled(true);
+                    bt_pause_resume.setEnabled(false);
+                    bt_stop.setEnabled(false);
+                    bt_pause_resume.setText(getString(R.string.pause));
+                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                    com_voice_time.stop();
+                    curBase = 0;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bt_stop.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        animateVoice(0);
+                    }
+                });
+            }
+        });
+        bt_pause_resume.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (isRecording) {
-                    isRecording = false;
                     recorder.pauseRecording();
+
+                    isRecording = false;
+                    bt_pause_resume.setText(getString(R.string.resume));
                     curBase = SystemClock.elapsedRealtime() - com_voice_time.getBase();
-                    Log.e("time", "  -curBase-  " + curBase);
                     com_voice_time.stop();
-                    pauseResumeButton.setText(getString(R.string.resume_recording));
-                    pauseResumeButton.postDelayed(new Runnable() {
+                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                    bt_pause_resume.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             animateVoice(0);
                         }
                     }, 100);
                 } else {
-                    isRecording = true;
                     recorder.resumeRecording();
+
+                    isRecording = true;
+                    bt_pause_resume.setText(getString(R.string.pause));
                     com_voice_time.setBase(SystemClock.elapsedRealtime() - curBase);
                     com_voice_time.start();
-                    pauseResumeButton.setText(getString(R.string.pause_recording));
+                    iv_voice_img.setImageResource(R.drawable.mic_selected);
                 }
             }
         });
@@ -177,7 +193,9 @@ public class RecordWavPage extends BaseFragment {
 
 
     private void animateVoice(float maxPeak) {
-        bt_start.animate()
+        if (maxPeak > 0.5f)
+            return;
+        iv_voice_img.animate()
                 .scaleX(1 + maxPeak)
                 .scaleY(1 + maxPeak)
                 .setDuration(10)
