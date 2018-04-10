@@ -58,6 +58,7 @@ public class RecordWavPage extends BaseFragment {
         voicePath = WavApp.rootPath + name + ".wav";
 
         setupRecorder();
+        pauseResumeButton.setEnabled(false);
     }
 
     @Override
@@ -80,6 +81,7 @@ public class RecordWavPage extends BaseFragment {
                     recorder.startRecording();
                     skipSilence.setEnabled(false);
                     bt_start.setText(getString(R.string.stop));
+                    pauseResumeButton.setEnabled(true);
                     Log.e("time", "  --  " + SystemClock.elapsedRealtime());
                     com_voice_time.setBase(SystemClock.elapsedRealtime());
                     com_voice_time.start();
@@ -89,6 +91,7 @@ public class RecordWavPage extends BaseFragment {
                         recorder.stopRecording();
                         skipSilence.setEnabled(true);
                         bt_start.setText(getString(R.string.record));
+                        pauseResumeButton.setEnabled(false);
                         com_voice_time.stop();
                     } catch (IOException e) {
                         e.printStackTrace();
