@@ -28,17 +28,10 @@ public class BaseDataRecorder implements Recorder {
     private final Runnable recordingTask = new Runnable() {
         @Override
         public void run() {
-            try {
-                audioRecord.startRecording();
-                pullTransport.isEnableToBePulled(true);
-                pullTransport.startPoolingAndWriting(audioRecord, pullSizeInBytes, outputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalStateException e) {
-                throw new RuntimeException("AudioRecord state has uninitialized state", e);
-            }
+            startRecord();
         }
     };
+
 
     protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         this.file = file;
@@ -50,19 +43,6 @@ public class BaseDataRecorder implements Recorder {
                 config.channelPositionMask(),
                 config.audioEncoding()
         );
-        this.audioRecord = new AudioRecord(
-                config.audioSource(),
-                config.frequency(),
-                config.channelPositionMask(),
-                config.audioEncoding(),
-                pullSizeInBytes
-        );
-    }
-
-    @Override
-    public void startRecording() {
-        outputStream = outputStream(file);
-        executorService.submit(recordingTask);
     }
 
     private OutputStream outputStream(File file) {
@@ -80,15 +60,25 @@ public class BaseDataRecorder implements Recorder {
     }
 
     @Override
-    public void stopRecording() throws IOException {
-        pullTransport.isEnableToBePulled(false);
+    public void startRecording() {
+        outputStream = outputStream(file);
+        executorService.submit(recordingTask);
+    }
 
-        audioRecord.stop();
-        audioRecord.release();
-        audioRecord = null;
-
-        outputStream.flush();
-        outputStream.close();
+    private void startRecord() {
+        if (audioRecord == null) {
+            audioRecord = new AudioRecord(config.audioSource(), config.frequency(),
+                    config.channelPositionMask(), config.audioEncoding(), pullSizeInBytes);
+        }
+        try {
+            audioRecord.startRecording();
+            pullTransport.isEnableToBePulled(true);
+            pullTransport.startPoolingAndWriting(audioRecord, pullSizeInBytes, outputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalStateException e) {
+            throw new RuntimeException("AudioRecord state has uninitialized state", e);
+        }
     }
 
     @Override
@@ -98,7 +88,23 @@ public class BaseDataRecorder implements Recorder {
 
     @Override
     public void resumeRecording() {
-        pullTransport.isEnableToBePulled(true);
         executorService.submit(recordingTask);
     }
+
+    @Override
+    public void stopRecording() throws IOException {
+        pauseRecording();
+
+        if (audioRecord != null) {
+            audioRecord.stop();
+            audioRecord.release();
+            audioRecord = null;
+        }
+        if (outputStream != null) {
+            outputStream.flush();
+            outputStream.close();
+        }
+    }
+
+
 }
