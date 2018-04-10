@@ -12,8 +12,9 @@ import java.io.RandomAccessFile;
  * @date 31-07-2016
  */
 final class Wav extends AbstractRecorder {
-    public Wav(PullTransport pullTransport, File file) {
-        super(pullTransport, file);
+
+    public Wav(File file, AudioRecordConfig config, PullTransport pullTransport) {
+        super(file, config, pullTransport);
     }
 
     @Override
@@ -29,7 +30,7 @@ final class Wav extends AbstractRecorder {
     private void writeWavHeader() throws IOException {
         final RandomAccessFile wavFile = randomAccessFile(file);
         wavFile.seek(0); // to the beginning
-        wavFile.write(new WavHeader(pullTransport.pullableSource(), file.length()).toBytes());
+        wavFile.write(new WavHeader(config, file.length()).toBytes());
         wavFile.close();
     }
 

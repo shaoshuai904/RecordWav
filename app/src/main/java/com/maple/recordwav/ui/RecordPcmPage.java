@@ -1,7 +1,5 @@
 package com.maple.recordwav.ui;
 
-import android.media.AudioFormat;
-import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +12,7 @@ import com.maple.recorder.AudioChunk;
 import com.maple.recorder.AudioRecordConfig;
 import com.maple.recorder.OmRecorder;
 import com.maple.recorder.PullTransport;
-import com.maple.recorder.PullableSource;
 import com.maple.recorder.Recorder;
-import com.maple.recorder.WriteAction;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
@@ -121,28 +117,32 @@ public class RecordPcmPage extends BaseFragment {
 
     }
 
-
     private void setupRecorder() {
         recorder = OmRecorder.pcm(
-                new PullTransport.Default(mic(), new PullTransport.OnAudioChunkPulledListener() {
-                    @Override
-                    public void onAudioChunkPulled(AudioChunk audioChunk) {
-                        animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
-                    }
-                }), new File(voicePath));
+                new File(voicePath),
+                new AudioRecordConfig.Default(),
+                new PullTransport.Default(
+                        new PullTransport.OnAudioChunkPulledListener() {
+                            @Override
+                            public void onAudioChunkPulled(AudioChunk audioChunk) {
+                                animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
+                            }
+                        }
+                )
+        );
     }
 
     private void setupNoiseRecorder() {
         recorder = OmRecorder.pcm(
+                new File(voicePath),
+                new AudioRecordConfig.Default(),
                 new PullTransport.Noise(
-                        mic(),
                         new PullTransport.OnAudioChunkPulledListener() {
                             @Override
                             public void onAudioChunkPulled(AudioChunk audioChunk) {
                                 animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                             }
                         },
-                        new WriteAction.Default(),
                         new Recorder.OnSilenceListener() {
                             @Override
                             public void onSilence(long silenceTime) {
@@ -151,21 +151,12 @@ public class RecordPcmPage extends BaseFragment {
                             }
                         },
                         200
-                ), new File(voicePath)
+                )
         );
     }
 
     private void animateVoice(final float maxPeak) {
         recordButton.animate().scaleX(1 + maxPeak).scaleY(1 + maxPeak).setDuration(10).start();
-    }
-
-    private PullableSource mic() {
-        return new PullableSource.Default(
-                new AudioRecordConfig.Default(
-                        MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT,
-                        AudioFormat.CHANNEL_IN_MONO, 44100
-                )
-        );
     }
 
 

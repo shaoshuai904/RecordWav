@@ -9,11 +9,11 @@ import android.media.AudioFormat;
  * @date 26-07-2016
  */
 final class WavHeader {
-    private final PullableSource pullableSource;
+    private final AudioRecordConfig config;
     private final long totalAudioLength;
 
-    WavHeader(PullableSource pullableSource, long totalAudioLength) {
-        this.pullableSource = pullableSource;
+    WavHeader(AudioRecordConfig config, long totalAudioLength) {
+        this.config = config;
         this.totalAudioLength = totalAudioLength;
     }
 
@@ -21,9 +21,9 @@ final class WavHeader {
      * Returns the {@code WavHeader} in bytes.
      */
     public byte[] toBytes() {
-        long sampleRateInHz = pullableSource.config().frequency();
-        int channels = (pullableSource.config().channelPositionMask() == AudioFormat.CHANNEL_IN_MONO ? 1 : 2);
-        byte bitsPerSample = pullableSource.config().bitsPerSample();
+        long sampleRateInHz = config.frequency();
+        int channels = (config.channelPositionMask() == AudioFormat.CHANNEL_IN_MONO ? 1 : 2);
+        byte bitsPerSample = config.bitsPerSample();
         return wavFileHeader(totalAudioLength - 44, totalAudioLength - 44 + 36, sampleRateInHz,
                 channels, bitsPerSample * sampleRateInHz * channels / 8, bitsPerSample);
     }

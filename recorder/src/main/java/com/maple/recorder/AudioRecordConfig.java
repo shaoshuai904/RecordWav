@@ -1,9 +1,10 @@
 package com.maple.recorder;
 
 import android.media.AudioFormat;
+import android.media.MediaRecorder;
 
 /**
- * This is an interface to configure the {@link Source}
+ * This is an interface to configure the { Source}
  *
  * @author Kailash Dabhi
  * @date 06-07-2016
@@ -31,6 +32,13 @@ public interface AudioRecordConfig {
         private final int channelPositionMask;
         private final int frequency;
         private final int audioEncoding;
+
+        public Default() {
+            this.audioSource = MediaRecorder.AudioSource.MIC;
+            this.audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
+            this.channelPositionMask = AudioFormat.CHANNEL_IN_MONO;
+            this.frequency = 44100;
+        }
 
         public Default(int audioSource, int audioEncoding, int channelPositionMask, int frequency) {
             this.audioSource = audioSource;

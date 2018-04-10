@@ -10,6 +10,7 @@ import java.io.IOException;
  * @date 06-07-2016
  */
 public interface Recorder {
+
     void startRecording();
 
     void stopRecording() throws IOException;

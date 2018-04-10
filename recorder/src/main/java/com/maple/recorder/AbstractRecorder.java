@@ -1,5 +1,7 @@
 package com.maple.recorder;
 
+import android.media.AudioRecord;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,13 +18,19 @@ import java.util.concurrent.Executors;
 public abstract class AbstractRecorder implements Recorder {
     protected final PullTransport pullTransport;
     protected final File file;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    protected AudioRecordConfig config;
+    protected int pullSizeInBytes;
+
+    private AudioRecord audioRecord;
     private OutputStream outputStream;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Runnable recordingTask = new Runnable() {
         @Override
         public void run() {
             try {
-                pullTransport.start(outputStream);
+                audioRecord.startRecording();
+                pullTransport.isEnableToBePulled(true);
+                pullTransport.startPoolingAndWriting(audioRecord, pullSizeInBytes, outputStream);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (IllegalStateException e) {
@@ -31,9 +39,23 @@ public abstract class AbstractRecorder implements Recorder {
         }
     };
 
-    protected AbstractRecorder(PullTransport pullTransport, File file) {
-        this.pullTransport = pullTransport;
+    protected AbstractRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         this.file = file;
+        this.config = config;
+        this.pullTransport = pullTransport;
+
+        this.pullSizeInBytes = AudioRecord.getMinBufferSize(
+                config.frequency(),
+                config.channelPositionMask(),
+                config.audioEncoding()
+        );
+        this.audioRecord = new AudioRecord(
+                config.audioSource(),
+                config.frequency(),
+                config.channelPositionMask(),
+                config.audioEncoding(),
+                pullSizeInBytes
+        );
     }
 
     @Override
@@ -58,19 +80,24 @@ public abstract class AbstractRecorder implements Recorder {
 
     @Override
     public void stopRecording() throws IOException {
-        pullTransport.stop();
+        pullTransport.isEnableToBePulled(false);
+
+        audioRecord.stop();
+        audioRecord.release();
+        audioRecord = null;
+
         outputStream.flush();
         outputStream.close();
     }
 
     @Override
     public void pauseRecording() {
-        pullTransport.pullableSource().isEnableToBePulled(false);
+        pullTransport.isEnableToBePulled(false);
     }
 
     @Override
     public void resumeRecording() {
-        pullTransport.pullableSource().isEnableToBePulled(true);
+        pullTransport.isEnableToBePulled(true);
         executorService.submit(recordingTask);
     }
 }
