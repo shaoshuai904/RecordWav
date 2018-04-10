@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
     @BindView(R.id.tabhost) FragmentTabHost mTabHost;
 
     // Fragment界面
-    private Class[] fragmentArray = {RecordWavPage.class, PlayPage.class, ParsePage.class};
+    private Class[] fragmentArray = {RecordPage.class, PlayPage.class, ParsePage.class};
     // 选项卡图片
     private int[] mImageViewArray = {R.drawable.tab_home_btn, R.drawable.tab_message_btn, R.drawable.tab_square_btn};
     // 选项卡文字
