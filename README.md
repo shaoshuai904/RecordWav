@@ -1,5 +1,9 @@
 # RecordWav
 
+
+![show_recorder](https://github.com/shaoshuai904/RecordWav/blob/master/screens/show_recorder.png)
+
+
 集 【录制】、【播放】、【解析】于一体的wav文件的工具类。
 
 功能包括：
