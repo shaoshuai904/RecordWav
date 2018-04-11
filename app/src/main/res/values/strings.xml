@@ -7,13 +7,11 @@
         <item>信息</item>
     </string-array>
 
-    <string name="record">Record</string>
-    <string name="stop">Stop</string>
-    <string name="rerecord">Rerecord</string>
-    <string name="preview">Preview</string>
+    <string name="record">开始</string>
+    <string name="pause">暂停</string>
+    <string name="resume">继续</string>
+    <string name="stop">停止</string>
+    <string name="preview">播放</string>
 
-
-    <string name="pause_recording">Pause</string>
-    <string name="resume_recording">Resume</string>
 
 </resources>

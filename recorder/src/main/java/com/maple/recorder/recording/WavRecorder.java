@@ -1,4 +1,4 @@
-package com.maple.recorder;
+package com.maple.recorder.recording;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- * {@code Wav} is recorder for recording audio in wav format.
+ * Wav格式的音频记录器
  *
- * @author Kailash Dabhi
- * @date 31-07-2016
+ * @author maple
+ * @time 2018/4/10.
  */
-final class Wav extends AbstractRecorder {
-    public Wav(PullTransport pullTransport, File file) {
-        super(pullTransport, file);
+final class WavRecorder extends BaseDataRecorder {
+
+    public WavRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
+        super(file, config, pullTransport);
     }
 
     @Override
@@ -29,7 +30,7 @@ final class Wav extends AbstractRecorder {
     private void writeWavHeader() throws IOException {
         final RandomAccessFile wavFile = randomAccessFile(file);
         wavFile.seek(0); // to the beginning
-        wavFile.write(new WavHeader(pullTransport.pullableSource(), file.length()).toBytes());
+        wavFile.write(new WavHeader(config, file.length()).toBytes());
         wavFile.close();
     }
 

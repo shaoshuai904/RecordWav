@@ -1,181 +1,206 @@
 package com.maple.recordwav.ui;
 
-import android.Manifest;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Chronometer;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
+import com.maple.recorder.recording.AudioChunk;
+import com.maple.recorder.recording.AudioRecordConfig;
+import com.maple.recorder.recording.MsRecorder;
+import com.maple.recorder.recording.PullTransport;
+import com.maple.recorder.recording.Recorder;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
-import com.maple.recordwav.ui.play.PlayUtils;
-import com.maple.recordwav.ui.record.MapleAudioRecord;
 import com.maple.recordwav.utils.DateUtils;
 import com.maple.recordwav.utils.T;
-import com.maple.recordwav.utils.permission.PermissionFragment;
-import com.maple.recordwav.utils.permission.PermissionListener;
 
 import java.io.File;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * 录制界面
+ * 录制 WavRecorder 界面
  *
  * @author maple
  * @time 16/4/18 下午2:53
  */
-public class RecordPage extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.com_voice_time) Chronometer com_voice_time;
+public class RecordPage extends BaseFragment {
     @BindView(R.id.iv_voice_img) ImageView iv_voice_img;
+    @BindView(R.id.com_voice_time) Chronometer com_voice_time;
+    @BindView(R.id.bt_start) Button bt_start;
+    @BindView(R.id.bt_stop) Button bt_stop;
+    @BindView(R.id.bt_pause_resume) Button bt_pause_resume;
+    @BindView(R.id.skipSilence) CheckBox skipSilence;
 
-    @BindView(R.id.bt_record) Button bt_record;
-    @BindView(R.id.bt_preview) Button bt_preview;
-
-
-    MapleAudioRecord extAudioRecorder = null;
-    boolean isRecording = false;// 是否正在记录
+    Recorder recorder;
+    boolean isRecording = false;
+    long curBase = 0;
     String voicePath = WavApp.rootPath + "/voice.wav";
-    PlayUtils playUtils;
 
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_record, null);
         ButterKnife.bind(this, view);
 
-        bt_record.setText(getResources().getString(R.string.record));
-        bt_preview.setText(getResources().getString(R.string.preview));
-
         return view;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        String name = "maple-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
+        String name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
         voicePath = WavApp.rootPath + name + ".wav";
 
-        isRecording = false;
-        playUtils = new PlayUtils();
-        playUtils.setPlayStateChangeListener(new PlayUtils.PlayStateChangeListener() {
-
-            @Override
-            public void onPlayStateChange(boolean isPlay) {
-                if (isPlay) {
-                    // startTimer
-                    com_voice_time.setBase(SystemClock.elapsedRealtime());
-                    com_voice_time.start();
-                    bt_preview.setText(getResources().getString(R.string.stop));
-                    iv_voice_img.setImageResource(R.drawable.mic_selected);
-                } else {
-                    com_voice_time.stop();
-                    com_voice_time.setBase(SystemClock.elapsedRealtime());
-                    bt_preview.setText(getResources().getString(R.string.preview));
-                    iv_voice_img.setImageResource(R.drawable.mic_default);
-                }
-            }
-        });
-
-        bt_record.setEnabled(true);
-        bt_preview.setEnabled(false);
+        setupRecorder();
+        bt_start.setText(getString(R.string.record));
+        bt_pause_resume.setText(getString(R.string.pause));
+        bt_stop.setText(getString(R.string.stop));
+        bt_pause_resume.setEnabled(false);
+        bt_stop.setEnabled(false);
     }
 
     @Override
     public void initListener() {
-
-        bt_record.setOnClickListener(this);
-        bt_preview.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_record:
-                String[] permissions = new String[]{
-                        Manifest.permission.RECORD_AUDIO,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                };
-                PermissionFragment.getPermissionFragment(getActivity())
-                        .setPermissionListener(new PermissionListener() {
-                            @Override
-                            public void onPermissionGranted() {
-                                if (isRecording) {
-                                    stopRecord();
-                                } else {
-                                    startRecord();
-                                }
-                            }
-
-                            @Override
-                            public void onPermissionDenied(String[] deniedPermissions) {
-                                T.showShort(mContext, "请打开内存读写权限");
-                            }
-                        })
-                        .checkPermissions(permissions);
-                break;
-            case R.id.bt_preview:
-                // systemPlay(new File(voicePath));
-                // custom play
-                if (playUtils.isPlaying() && !isRecording) {
-                    playUtils.stopPlaying();
+        skipSilence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    setupNoiseRecorder();
                 } else {
-                    playUtils.startPlaying(voicePath);
+                    setupRecorder();
                 }
-                break;
-        }
+            }
+        });
+        bt_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recorder.startRecording();
+
+                isRecording = true;
+                skipSilence.setEnabled(false);
+                bt_start.setEnabled(false);
+                bt_pause_resume.setEnabled(true);
+                bt_stop.setEnabled(true);
+                iv_voice_img.setImageResource(R.drawable.mic_selected);
+                com_voice_time.setBase(SystemClock.elapsedRealtime());
+                com_voice_time.start();
+            }
+        });
+        bt_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    recorder.stopRecording();
+
+                    isRecording = false;
+                    skipSilence.setEnabled(true);
+                    bt_start.setEnabled(true);
+                    bt_pause_resume.setEnabled(false);
+                    bt_stop.setEnabled(false);
+                    bt_pause_resume.setText(getString(R.string.pause));
+                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                    com_voice_time.stop();
+                    curBase = 0;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bt_stop.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        animateVoice(0);
+                    }
+                });
+            }
+        });
+        bt_pause_resume.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (isRecording) {
+                    recorder.pauseRecording();
+
+                    isRecording = false;
+                    bt_pause_resume.setText(getString(R.string.resume));
+                    curBase = SystemClock.elapsedRealtime() - com_voice_time.getBase();
+                    com_voice_time.stop();
+                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                    bt_pause_resume.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            animateVoice(0);
+                        }
+                    }, 100);
+                } else {
+                    recorder.resumeRecording();
+
+                    isRecording = true;
+                    bt_pause_resume.setText(getString(R.string.pause));
+                    com_voice_time.setBase(SystemClock.elapsedRealtime() - curBase);
+                    com_voice_time.start();
+                    iv_voice_img.setImageResource(R.drawable.mic_selected);
+                }
+            }
+        });
+
+    }
+
+    private void setupRecorder() {
+        recorder = MsRecorder.wav(
+                new File(voicePath),
+                new AudioRecordConfig.Default(),
+                new PullTransport.Default(
+                        new PullTransport.OnAudioChunkPulledListener() {
+                            @Override
+                            public void onAudioChunkPulled(AudioChunk audioChunk) {
+                                Log.e("max  ", "amplitude: " + audioChunk.maxAmplitude());
+                                animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
+                            }
+                        }
+                )
+        );
+    }
+
+    private void setupNoiseRecorder() {
+        recorder = MsRecorder.wav(
+                new File(voicePath),
+                new AudioRecordConfig.Default(),
+                new PullTransport.Noise(
+                        new PullTransport.OnAudioChunkPulledListener() {
+                            @Override
+                            public void onAudioChunkPulled(AudioChunk audioChunk) {
+                                animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
+                            }
+                        },
+                        new PullTransport.OnSilenceListener() {
+                            @Override
+                            public void onSilence(long silenceTime) {
+                                Log.e("silenceTime", String.valueOf(silenceTime));
+                                T.showShort(mContext, "silence of " + silenceTime + " detected");
+                            }
+                        }
+                )
+        );
     }
 
 
-    private void startRecord() {
-        isRecording = true;
-        com_voice_time.setBase(SystemClock.elapsedRealtime());
-        com_voice_time.start();
-
-        iv_voice_img.setImageResource(R.drawable.mic_selected);
-        bt_record.setText(getResources().getString(R.string.stop));
-        bt_record.setEnabled(true);
-        bt_preview.setEnabled(false);
-        // start
-        extAudioRecorder = new MapleAudioRecord(voicePath);
-        extAudioRecorder.start();
+    private void animateVoice(float maxPeak) {
+        if (maxPeak > 0.5f)
+            return;
+        iv_voice_img.animate()
+                .scaleX(1 + maxPeak)
+                .scaleY(1 + maxPeak)
+                .setDuration(10)
+                .start();
     }
 
-
-    private void stopRecord() {
-        isRecording = false;
-        com_voice_time.stop();
-
-        iv_voice_img.setImageResource(R.drawable.mic_default);
-        bt_record.setText(getResources().getString(R.string.rerecord));
-        bt_record.setEnabled(true);
-        bt_preview.setEnabled(true);
-        // stop
-        extAudioRecorder.stop();
-        extAudioRecorder.release();
-        extAudioRecorder = null;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (extAudioRecorder != null) {
-            extAudioRecorder.release();
-            extAudioRecorder = null;
-        }
-    }
-
-    // 系统播放
-    private void systemPlay(File file) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "audio/MP3");
-        startActivity(intent);
-    }
 
 }

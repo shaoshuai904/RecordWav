@@ -4,56 +4,82 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-
-    <Chronometer
-        android:id="@+id/com_voice_time"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textSize="40sp" />
-
-
     <ImageView
         android:id="@+id/iv_voice_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
         android:layout_weight="1"
-        android:padding="20dp"
         android:src="@drawable/mic_default" />
+
+    <Chronometer
+        android:id="@+id/com_voice_time"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textSize="40sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <Button
-            android:id="@+id/bt_record"
+            android:id="@+id/bt_start"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_bg"
+            android:background="@drawable/selector_base_fillet_border_bg"
             android:text="@string/record"
             android:textColor="@color/selector_function_btn_text_color"
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/bt_preview"
+            android:id="@+id/bt_pause_resume"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_bg"
-            android:text="@string/preview"
+            android:background="@drawable/selector_base_fillet_border_bg"
+            android:text="@string/pause"
+            android:textColor="@color/selector_function_btn_text_color"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/bt_stop"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_base_fillet_border_bg"
+            android:text="@string/stop"
             android:textColor="@color/selector_function_btn_text_color"
             android:textSize="20sp" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/skipSilence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="skip silence" />
+
+    </LinearLayout>
 
 </LinearLayout>

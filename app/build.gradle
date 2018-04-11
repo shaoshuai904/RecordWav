@@ -8,7 +8,7 @@ android {
         applicationId "com.maple.recordwav"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 4
+        versionCode 5
         versionName "1.0"
     }
     buildTypes {
@@ -25,7 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
 
     compile project(':recorder')
-//    compile 'com.kailashdabhi:om-recorder:1.1.5'
 
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

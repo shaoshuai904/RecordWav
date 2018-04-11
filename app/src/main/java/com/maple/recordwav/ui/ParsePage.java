@@ -10,10 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.maple.recorder.parse.WaveFileReader;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;
-import com.maple.recordwav.ui.parse.WaveFileReader;
 import com.maple.recordwav.utils.LoadingDialog;
 import com.maple.recordwav.utils.SearchFileUtils;
 import com.maple.recordwav.utils.T;
