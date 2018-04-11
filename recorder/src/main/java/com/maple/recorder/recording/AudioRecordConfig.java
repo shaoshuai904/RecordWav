@@ -1,4 +1,4 @@
-package com.maple.recorder;
+package com.maple.recorder.recording;
 
 import android.media.AudioFormat;
 import android.media.MediaRecorder;

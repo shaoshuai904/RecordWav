@@ -11,11 +11,11 @@ import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
-import com.maple.recorder.AudioChunk;
-import com.maple.recorder.AudioRecordConfig;
-import com.maple.recorder.MsRecorder;
-import com.maple.recorder.PullTransport;
-import com.maple.recorder.Recorder;
+import com.maple.recorder.recording.AudioChunk;
+import com.maple.recorder.recording.AudioRecordConfig;
+import com.maple.recorder.recording.MsRecorder;
+import com.maple.recorder.recording.PullTransport;
+import com.maple.recorder.recording.Recorder;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
 import com.maple.recordwav.base.BaseFragment;

@@ -1,4 +1,4 @@
-package com.maple.recorder;
+package com.maple.recorder.recording;
 
 import java.io.File;
 
