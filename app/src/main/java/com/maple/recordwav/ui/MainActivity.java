@@ -1,5 +1,6 @@
 package com.maple.recordwav.ui;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -10,6 +11,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.maple.recordwav.R;
+import com.maple.recordwav.utils.T;
+import com.maple.recordwav.utils.permission.PermissionFragment;
+import com.maple.recordwav.utils.permission.PermissionListener;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -37,6 +41,24 @@ public class MainActivity extends FragmentActivity {
         ButterKnife.bind(this);
 
         initView();
+
+        PermissionFragment.getPermissionFragment(this)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(String[] deniedPermissions) {
+                        T.showShort(MainActivity.this, "不同意将无法使用");
+                    }
+                })
+                .checkPermissions(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO
+                });
     }
 
     private void initView() {
