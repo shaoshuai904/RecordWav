@@ -30,7 +30,7 @@ public class MainActivity extends FragmentActivity {
     // Fragment界面
     private Class[] fragmentArray = {RecordPage.class, PlayPage.class, ParsePage.class};
     // 选项卡图片
-    private int[] mImageViewArray = {R.drawable.tab_home_btn, R.drawable.tab_message_btn, R.drawable.tab_square_btn};
+    private int[] mImageViewArray = {R.drawable.tab_record_icon, R.drawable.tab_play_icon, R.drawable.tab_parse_icon};
     // 选项卡文字
     @BindArray(R.array.tab_fun_array) String[] mTextViewArray;
 
@@ -83,10 +83,10 @@ public class MainActivity extends FragmentActivity {
     private View getTabItemView(int index) {
         View view = LayoutInflater.from(this).inflate(R.layout.tab_item_view, null);
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
+        ImageView imageView = view.findViewById(R.id.imageview);
         imageView.setImageResource(mImageViewArray[index]);
 
-        TextView textView = (TextView) view.findViewById(R.id.textview);
+        TextView textView = view.findViewById(R.id.textview);
         textView.setText(mTextViewArray[index]);
 
         return view;
