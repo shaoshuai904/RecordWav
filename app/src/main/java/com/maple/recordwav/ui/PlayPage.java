@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.maple.recorder.player.PlayUtils;
@@ -35,6 +37,12 @@ import butterknife.ButterKnife;
  */
 public class PlayPage extends BaseFragment {
     public static final int SEARCH_MESSAGE_CODE = 200;
+
+    @BindView(R.id.tv_left) TextView tv_left;
+    @BindView(R.id.tv_right) TextView tv_right;
+    @BindView(R.id.iv_play) ImageButton iv_play;
+    @BindView(R.id.sb_bar) SeekBar sb_bar;
+
     @BindView(R.id.tv_des) TextView tv_des;
     @BindView(R.id.lv_wav) ListView lv_wav;
 
