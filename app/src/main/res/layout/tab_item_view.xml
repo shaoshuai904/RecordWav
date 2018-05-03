@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="#ddd"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:focusable="false"
-        android:padding="2dp"
-        android:src="@drawable/tab_home_btn" />
+        android:src="@drawable/tab_record_icon" />
 
     <TextView
         android:id="@+id/textview"

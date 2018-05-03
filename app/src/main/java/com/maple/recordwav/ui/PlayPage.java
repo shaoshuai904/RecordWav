@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.maple.recorder.player.PlayDialog;
 import com.maple.recorder.player.PlayUtils;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
@@ -35,6 +36,7 @@ import butterknife.ButterKnife;
  */
 public class PlayPage extends BaseFragment {
     public static final int SEARCH_MESSAGE_CODE = 200;
+
     @BindView(R.id.tv_des) TextView tv_des;
     @BindView(R.id.lv_wav) ListView lv_wav;
 
@@ -81,37 +83,13 @@ public class PlayPage extends BaseFragment {
 
     @Override
     public void initListener() {
-        playUtils = new PlayUtils();
-        playUtils.setPlayStateChangeListener(new PlayUtils.PlayStateChangeListener() {
-
-            @Override
-            public void onPlayStateChange(boolean isPlay) {
-                if (isPlay) {
-                    // startTimer
-//                    com_voice_time.setBase(SystemClock.elapsedRealtime());
-//                    com_voice_time.start();
-//                    bt_preview.setText(getResources().getString(R.string.stop));
-//                    iv_voice_img.setImageResource(R.drawable.mic_selected);
-                } else {
-//                    com_voice_time.stop();
-//                    com_voice_time.setBase(SystemClock.elapsedRealtime());
-//                    bt_preview.setText(getResources().getString(R.string.preview));
-//                    iv_voice_img.setImageResource(R.drawable.mic_default);
-                }
-            }
-        });
         lv_wav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String filePath = wavFileList.get(position);
                 File file = new File(filePath);
                 if (file.exists()) {
-//                    systemPlay(file);
-                    if (playUtils.isPlaying()) {
-                        playUtils.stopPlaying();
-                    } else {
-                        playUtils.startPlaying(filePath);
-                    }
+                    dialogPlay(file);
                 } else {
                     T.showShort(mContext, "选择的文件不存在");
                 }
@@ -138,5 +116,41 @@ public class PlayPage extends BaseFragment {
         intent.setDataAndType(Uri.fromFile(file), "audio/MP3");
         startActivity(intent);
     }
+
+    private void dialogPlay(File file) {
+        new PlayDialog(mContext, true)
+                .addWavFile(file)
+                .showDialog();
+    }
+
+    private void uitlsPlay(File file) {
+        if (playUtils == null){
+            playUtils = new PlayUtils();
+            playUtils.setPlayStateChangeListener(new PlayUtils.PlayStateChangeListener() {
+
+                @Override
+                public void onPlayStateChange(boolean isPlay) {
+                    if (isPlay) {
+                        // startTimer
+//                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+//                    com_voice_time.start();
+//                    bt_preview.setText(getResources().getString(R.string.stop));
+//                    iv_voice_img.setImageResource(R.drawable.mic_selected);
+                    } else {
+//                    com_voice_time.stop();
+//                    com_voice_time.setBase(SystemClock.elapsedRealtime());
+//                    bt_preview.setText(getResources().getString(R.string.preview));
+//                    iv_voice_img.setImageResource(R.drawable.mic_default);
+                    }
+                }
+            });
+        }
+        if (playUtils.isPlaying()) {
+            playUtils.stopPlaying();
+        } else {
+            playUtils.startPlaying(file.getPath());
+        }
+    }
+
 
 }

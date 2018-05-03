@@ -8,7 +8,7 @@ android {
         applicationId "com.maple.recordwav"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 5
+        versionCode 6
         versionName "1.0"
     }
     buildTypes {
@@ -23,6 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:support-v4:26.1.0'
     compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'ch.acra:acra:4.9.2'
 
     compile project(':recorder')
 

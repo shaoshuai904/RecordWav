@@ -11,7 +11,6 @@ public class PlayUtils {
     MediaPlayer player;
 
     public PlayUtils() {
-
     }
 
     public interface PlayStateChangeListener {
@@ -45,6 +44,19 @@ public class PlayUtils {
         }
     }
 
+    public void pausePlay() {
+        try {
+            if (player != null) {
+                player.pause();
+
+                if (playStateChangeListener != null)
+                    playStateChangeListener.onPlayStateChange(false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void stopPlaying() {
         try {
             if (player != null) {
@@ -57,7 +69,6 @@ public class PlayUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public boolean isPlaying() {
