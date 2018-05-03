@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:maxLines="1"
             android:text="wav-2018-04-18-03-45.wav"
+            android:textColor="@color/play_dialog_text"
             android:textSize="16sp" />
 
         <ImageView
@@ -43,8 +44,10 @@
 
     <SeekBar
         android:id="@+id/sb_bar"
+        style="@android:style/Widget.DeviceDefault.SeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:max="10"
         android:progress="3" />
 
@@ -61,7 +64,8 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
-            android:text="0:00" />
+            android:text="0:00"
+            android:textColor="@color/play_dialog_text" />
 
         <TextView
             android:id="@+id/tv_right_time"
@@ -70,7 +74,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:text="0:14" />
+            android:text="0:14"
+            android:textColor="@color/play_dialog_text" />
     </RelativeLayout>
 
 
