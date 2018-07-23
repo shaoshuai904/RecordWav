@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.maple.recordwav"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.maple.recordwav">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 外部存储读权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
 
     <application
         android:name=".WavApp"
@@ -14,13 +20,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="24981822-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="9b469f546aaf9f86fbfd61b54fd5d308" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDXDY6q3K6fVNkDmHIcClk+fMSG4T5QGu9B9pAwxnxJg44BccUXAuIpYKRfhUHO+3+12XChreOdT9+wTPcxZ4avtC2pX1EiRTzd2OIzK/Cvxb5g1tvKFLjvR/kV5FosP92pGRKrydeRqSzXrKR++r6jg9eHiGh4yhXkC/Wiwjt5KRlXOYIAAt50HUkHhOxgViCX4Qu/M2dxtBXf4S3lUNWagsSwM3656xEzp1LHkn7yl8OPWFx2iy8yIA16nkMjL2zrqObQnN6hVRNFBXODuJMIAh5yc81CldWvnzYTrerDiNCE/IsMgndLzsuX9mSU78AOsVk57knEy+yzsmcKu6VLAgMBAAECggEAfaa6OTMABLB6rBMieSfCxTP5UCXDVuKl8RCzZwxSClIHYuiqk6tnoW2KHRWrQdjI4ePOX2lOmNfWhxgxRniKxZatJ00+BpwV2Dmk0OlXlBwiBEsF2KkK9SREcXofBcO7K9YuhplEjyMdxFZnNpojUT7za4lUIV9SMxCZ0SNTxJIf0zTWhJ60ROfSAakMIKLzRHW8t5TqTIOBYSBzYNuAP/wNyZdGJe8di8kP7r3onUC9H5ObRK+bGx6dOn6EMePRvDW9hGgQ3ChQdWMZcFFmnhUzdN12/89DNZJnO9Uh4hHbl1nViXJNw2nCoTkp+uvkhxG58UPzqDk2ulx8APFIAQKBgQD+tMB+vpG43Uod2xwUA7RYyFqTwBdGOdqyBh9yXMJhYY8BJw68tpx91Bi6smPdvpHxYUes8HNBorNh/2EISGCyClL4FEc5RCuuxc44IAtYNWwNZdIsCyB0SZilnEG90B7tvCjmAwq59bI3Ph6829odcETCT+yc5chuTxyg/6kxAQKBgQDYJTxuSyr4XwpstToyBB9ca1EVhiwVA6npGeX25EMI1J1ZVS1RJ3QZFwrWtqn+ibiuejiedeU6DPB6bexl4TLhfsucrWARGv6TH5b5y6FPXSMXzRz9rniz+M0QW6KjJ7/L4qZdX6GRtXnyz1/Ug9sMJjRRXX33IdX1lZTZPABKSwKBgGNvSyrv2NHTyiiHrpl9rL1wUjQWLL/kvCT90O8DmXsM7BgmGFHB9KwGzjSsieI6kJ0sPiAcqtI341Hhsg7auq0m7Kceu4N2wprzbANrNyKTkIBWfMtm+J+NT8Nvkha5Fin3Z/wLufdJHO8GGFfgeHE/sAgvzY6fAjVWOzX7OSEBAoGAQ6xM4l9ogcEH+4c2REikJQR4q5uJm7686P2x0X4gOtiOt1SCzsDiiaR8QUOJr+cgyof7yCkzbtx0QnC+Lhu3GYDgcRqbVF+2Swv98hG+XKHVhfMzW33PztFcKv31ys18MHKzEdMKPBuspcglwdzSrVgc00jJUqHmYnDF3Mn7cUcCgYAXRra9yrO9+2yDc457YHP0iNRPIY31MgY6SfkmCMdieW34kSyBHlC15x7XUC97VXfHapQr6wi6E3P5pjNSzxxjbqZi1euiYiOwc9o7yHpIuMQpLdeBJOOHI+SK//4hL0/DD9kzjYv1fPBViHX6KWgSDLBxT/ZLjn9E/yrldzRS+w==" />
+
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
