@@ -55,8 +55,8 @@ public class MainActivity extends FragmentActivity {
                     }
                 })
                 .checkPermissions(new String[]{
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.SYSTEM_ALERT_WINDOW,
                         Manifest.permission.RECORD_AUDIO
                 });
     }
