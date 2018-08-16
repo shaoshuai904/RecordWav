@@ -42,23 +42,7 @@ public class MainActivity extends FragmentActivity {
 
         initView();
 
-        PermissionFragment.getPermissionFragment(this)
-                .setPermissionListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-
-                    }
-
-                    @Override
-                    public void onPermissionDenied(String[] deniedPermissions) {
-                        T.showShort(MainActivity.this, "不同意将无法使用");
-                    }
-                })
-                .checkPermissions(new String[]{
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.SYSTEM_ALERT_WINDOW,
-                        Manifest.permission.RECORD_AUDIO
-                });
+        checkPermission();
     }
 
     private void initView() {
@@ -79,7 +63,6 @@ public class MainActivity extends FragmentActivity {
         mTitle.setText(mTextViewArray[0]);
     }
 
-
     private View getTabItemView(int index) {
         View view = LayoutInflater.from(this).inflate(R.layout.tab_item_view, null);
 
@@ -90,5 +73,25 @@ public class MainActivity extends FragmentActivity {
         textView.setText(mTextViewArray[index]);
 
         return view;
+    }
+
+    private void checkPermission() {
+        PermissionFragment.getPermissionFragment(this)
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+
+                    }
+
+                    @Override
+                    public void onPermissionDenied(String[] deniedPermissions) {
+                        T.showShort(MainActivity.this, "不同意将无法使用");
+                    }
+                })
+                .checkPermissions(new String[]{
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.SYSTEM_ALERT_WINDOW,
+                        Manifest.permission.RECORD_AUDIO
+                });
     }
 }

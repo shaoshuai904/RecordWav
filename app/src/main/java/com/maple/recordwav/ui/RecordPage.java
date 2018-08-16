@@ -1,5 +1,6 @@
 package com.maple.recordwav.ui;
 
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.maple.recorder.recording.AudioChunk;
 import com.maple.recorder.recording.AudioRecordConfig;
@@ -35,6 +37,7 @@ import butterknife.ButterKnife;
  * @time 16/4/18 下午2:53
  */
 public class RecordPage extends BaseFragment {
+    @BindView(R.id.tv_version) TextView tv_version;
     @BindView(R.id.iv_voice_img) ImageView iv_voice_img;
     @BindView(R.id.com_voice_time) Chronometer com_voice_time;
     @BindView(R.id.bt_start) Button bt_start;
@@ -60,12 +63,23 @@ public class RecordPage extends BaseFragment {
         String name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
         voicePath = WavApp.rootPath + name + ".wav";
 
+        updatePackageInfo();
         setupRecorder();
         bt_start.setText(getString(R.string.record));
         bt_pause_resume.setText(getString(R.string.pause));
         bt_stop.setText(getString(R.string.stop));
         bt_pause_resume.setEnabled(false);
         bt_stop.setEnabled(false);
+    }
+
+    private void updatePackageInfo() {
+        try {
+            PackageInfo packageInfo = mContext.getPackageManager()
+                    .getPackageInfo(mContext.getPackageName(), 0);
+            tv_version.setText("Version:" + packageInfo.versionName + " - " + packageInfo.versionCode);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

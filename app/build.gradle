@@ -8,8 +8,8 @@ android {
         applicationId "com.maple.recordwav"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 11
-        versionName "1.0.2"
+        versionCode 15
+        versionName "1.0.4"
     }
     buildTypes {
         release {
@@ -20,14 +20,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'ch.acra:acra:4.9.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'ch.acra:acra:4.9.2'
 
-    compile project(':recorder')
+    implementation project(':recorder')
 
-    compile 'com.aliyun.ams:alicloud-android-hotfix:3.2.4'
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.4'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

@@ -32,7 +32,8 @@ public class PermissionFragment extends Fragment {
     private PermissionListener mPermissionListener;
 
     public static PermissionFragment getPermissionFragment(Activity activity) {
-        PermissionFragment permissionFragment = (PermissionFragment) activity.getFragmentManager().findFragmentByTag(PermissionFragment.TAG);
+        PermissionFragment permissionFragment = (PermissionFragment) activity.getFragmentManager()
+                .findFragmentByTag(PermissionFragment.TAG);
         if (permissionFragment == null) {
             permissionFragment = new PermissionFragment();
             FragmentManager fragmentManager = activity.getFragmentManager();

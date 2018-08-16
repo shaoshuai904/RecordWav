@@ -4,12 +4,20 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Version:" />
+
     <ImageView
         android:id="@+id/iv_voice_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:layout_weight="1"
         android:src="@drawable/mic_default" />
 

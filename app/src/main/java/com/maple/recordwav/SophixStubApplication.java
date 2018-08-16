@@ -37,13 +37,14 @@ public class SophixStubApplication extends SophixApplication {
     }
 
     private void initSophix() {
-        String appVersion = "0.0.0";
+        String appVersion = "1.0.0";
         try {
             appVersion = this.getPackageManager()
                     .getPackageInfo(this.getPackageName(), 0)
                     .versionName;
         } catch (Exception e) {
         }
+
         final SophixManager instance = SophixManager.getInstance();
         instance.setContext(this)
                 .setAppVersion(appVersion)
