@@ -29,8 +29,9 @@ public class PlayUtils {
             player.prepare();
             player.start();
 
-            if (playStateChangeListener != null)
+            if (playStateChangeListener != null) {
                 playStateChangeListener.onPlayStateChange(true);
+            }
 
             // play over call back
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -49,8 +50,9 @@ public class PlayUtils {
             if (player != null) {
                 player.pause();
 
-                if (playStateChangeListener != null)
+                if (playStateChangeListener != null) {
                     playStateChangeListener.onPlayStateChange(false);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,8 +65,9 @@ public class PlayUtils {
                 player.stop();
                 player.reset();
 
-                if (playStateChangeListener != null)
+                if (playStateChangeListener != null) {
                     playStateChangeListener.onPlayStateChange(false);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

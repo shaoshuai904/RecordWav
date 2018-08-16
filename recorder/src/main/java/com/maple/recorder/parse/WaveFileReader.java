@@ -77,17 +77,20 @@ public class WaveFileReader {
             bis = new BufferedInputStream(fis);
 
             this.chunkdescriptor = readString(4);
-            if (!chunkdescriptor.endsWith("RIFF"))
+            if (!chunkdescriptor.endsWith("RIFF")) {
                 throw new IllegalArgumentException("RIFF miss, " + filename + " is not a wave file.");
+            }
 
             this.chunksize = readLong();
             this.waveflag = readString(4);
-            if (!waveflag.endsWith("WAVE"))
+            if (!waveflag.endsWith("WAVE")) {
                 throw new IllegalArgumentException("WAVE miss, " + filename + " is not a wave file.");
+            }
 
             this.fmtsubchunk = readString(4);
-            if (!fmtsubchunk.endsWith("fmt "))
+            if (!fmtsubchunk.endsWith("fmt ")) {
                 throw new IllegalArgumentException("fmt miss, " + filename + " is not a wave file.");
+            }
 
             this.subchunk1size = readLong();
             this.audioformat = readInt();
@@ -98,9 +101,10 @@ public class WaveFileReader {
             this.bitspersample = readInt();
 
             this.datasubchunk = readString(4);
-            if (!datasubchunk.endsWith("data"))
+            if (!datasubchunk.endsWith("data")) {
                 throw new IllegalArgumentException("data miss, " + filename
                         + " is not a wave file.");
+            }
             this.subchunk2size = readLong();
 
             this.len = (int) (this.subchunk2size / (this.bitspersample / 8) / this.numchannels);
@@ -123,10 +127,12 @@ public class WaveFileReader {
             e.printStackTrace();
         } finally {
             try {
-                if (bis != null)
+                if (bis != null) {
                     bis.close();
-                if (fis != null)
+                }
+                if (fis != null) {
                     fis.close();
+                }
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -136,8 +142,9 @@ public class WaveFileReader {
     private String readString(int len) {
         byte[] buf = new byte[len];
         try {
-            if (bis.read(buf) != len)
+            if (bis.read(buf) != len) {
                 throw new IOException("no more data!!!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -148,8 +155,9 @@ public class WaveFileReader {
         byte[] buf = new byte[2];
         int res = 0;
         try {
-            if (bis.read(buf) != 2)
+            if (bis.read(buf) != 2) {
                 throw new IOException("no more data!!!");
+            }
             res = (buf[0] & 0x000000FF) | (((int) buf[1]) << 8);
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,8 +185,9 @@ public class WaveFileReader {
     private byte[] readBytes(int len) {
         byte[] buf = new byte[len];
         try {
-            if (bis.read(buf) != len)
+            if (bis.read(buf) != len) {
                 throw new IOException("no more data!!!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

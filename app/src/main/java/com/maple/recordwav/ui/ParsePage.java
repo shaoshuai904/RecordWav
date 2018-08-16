@@ -41,6 +41,7 @@ public class ParsePage extends BaseFragment {
 
 
     Handler updateProHandler = new Handler() {
+        @Override
         public void handleMessage(android.os.Message msg) {
             if (msg.what == 200) {
                 if (loadingDialog != null && loadingDialog.isShowing()) {

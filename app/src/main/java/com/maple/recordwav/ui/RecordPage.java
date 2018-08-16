@@ -193,8 +193,9 @@ public class RecordPage extends BaseFragment {
 
 
     private void animateVoice(float maxPeak) {
-        if (maxPeak > 0.5f)
+        if (maxPeak > 0.5f) {
             return;
+        }
         iv_voice_img.animate()
                 .scaleX(1 + maxPeak)
                 .scaleY(1 + maxPeak)

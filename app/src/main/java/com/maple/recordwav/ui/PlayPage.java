@@ -46,6 +46,7 @@ public class PlayPage extends BaseFragment {
     PlayUtils playUtils;
 
     Handler updateProHandler = new Handler() {
+        @Override
         public void handleMessage(android.os.Message msg) {
             if (msg.what == SEARCH_MESSAGE_CODE) {
                 if (loadingDialog != null && loadingDialog.isShowing()) {

@@ -21,10 +21,11 @@ public abstract class AbsAdapter<T> extends BaseAdapter {
         mContext = context;
         inflater = LayoutInflater.from(mContext);
 
-        if (datas == null)
+        if (datas == null) {
             mDatas = new ArrayList<T>();
-        else
+        } else {
             mDatas = datas;
+        }
     }
 
     @Override
@@ -69,10 +70,11 @@ public abstract class AbsAdapter<T> extends BaseAdapter {
     }
 
     public void refresh(List<T> datas) {
-        if (datas == null)
+        if (datas == null) {
             mDatas = new ArrayList<T>();
-        else
+        } else {
             mDatas = datas;
+        }
 
         this.notifyDataSetChanged();
     }

@@ -59,6 +59,7 @@ public class PermissionFragment extends Fragment {
     }
 
     // @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -89,6 +90,8 @@ public class PermissionFragment extends Fragment {
                 break;
             case REQUEST_APP_SETTINGS:
 
+                break;
+            default:
                 break;
         }
     }

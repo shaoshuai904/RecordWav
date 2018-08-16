@@ -34,7 +34,7 @@ public class LoadingDialog extends Dialog {
         if (!isShowAsFloatWindow) {
             Assert.assertTrue("context must be Activity in Dialog.", context instanceof Activity);
         } else {
-            getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         }
 
         this.getWindow().getAttributes().gravity = Gravity.CENTER;
