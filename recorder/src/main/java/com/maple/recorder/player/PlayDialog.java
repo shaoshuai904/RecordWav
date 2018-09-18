@@ -1,21 +1,17 @@
 package com.maple.recorder.player;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.maple.recorder.R;
-
-import junit.framework.Assert;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,16 +34,7 @@ public class PlayDialog extends Dialog {
     MediaPlayer player;
 
     public PlayDialog(Context context) {
-        this(context, false);
-    }
-
-    public PlayDialog(Context context, boolean isShowAsFloatWindow) {
         super(context, R.style.CustomDialog);
-        if (!isShowAsFloatWindow) {
-            Assert.assertTrue("context must be Activity in Dialog.", context instanceof Activity);
-        } else {
-            getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-        }
 
         this.getWindow().getAttributes().gravity = Gravity.CENTER;
         this.setCancelable(true);
@@ -150,7 +137,7 @@ public class PlayDialog extends Dialog {
     public void startPlaying() {
         if (player != null) {
             player.start();
-            ib_play.setBackground(getContext().getDrawable(R.drawable.ic_pause));
+            ib_play.setBackgroundResource(R.drawable.ic_pause);
             //----------定时器记录播放进度---------//
             TimerTask mTimerTask = new TimerTask() {
                 @Override
@@ -165,7 +152,7 @@ public class PlayDialog extends Dialog {
     public void pausePlay() {
         if (player != null) {
             player.pause();
-            ib_play.setBackground(getContext().getDrawable(R.drawable.ic_play));
+            ib_play.setBackgroundResource(R.drawable.ic_play);
         }
     }
 
@@ -173,7 +160,7 @@ public class PlayDialog extends Dialog {
         if (player != null) {
             player.stop();
             player.reset();
-            ib_play.setBackground(getContext().getDrawable(R.drawable.ic_play));
+            ib_play.setBackgroundResource(R.drawable.ic_play);
         }
     }
 
