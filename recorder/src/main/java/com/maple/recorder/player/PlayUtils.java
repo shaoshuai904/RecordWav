@@ -26,8 +26,14 @@ public class PlayUtils {
         try {
             player = new MediaPlayer();
             player.setDataSource(filePath);
-            player.prepare();
-            player.start();
+            player.prepareAsync();
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    // 装载完毕回调
+                    player.start();
+                }
+            });
 
             if (playStateChangeListener != null) {
                 playStateChangeListener.onPlayStateChange(true);

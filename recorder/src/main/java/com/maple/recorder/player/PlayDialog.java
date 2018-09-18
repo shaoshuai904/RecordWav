@@ -1,8 +1,8 @@
 package com.maple.recorder.player;
 
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +15,9 @@ import com.maple.recorder.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,10 +35,12 @@ public class PlayDialog extends Dialog {
 
     File file;
     MediaPlayer player;
+    Activity activity;
 
-    public PlayDialog(Context context) {
-        super(context, R.style.CustomDialog);
+    public PlayDialog(Activity activity) {
+        super(activity, R.style.CustomDialog);
 
+        this.activity = activity;
         this.getWindow().getAttributes().gravity = Gravity.CENTER;
         this.setCancelable(true);
 
@@ -61,7 +66,7 @@ public class PlayDialog extends Dialog {
         iv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismissDialog();
+                dismiss();
             }
         });
         ib_play.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +107,7 @@ public class PlayDialog extends Dialog {
             player = new MediaPlayer();
             player.setDataSource(file.getAbsolutePath());
             player.prepare();
+            player.setLooping(true);
             // play over call back
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -110,8 +116,10 @@ public class PlayDialog extends Dialog {
                 }
             });
 
+            int duration = player.getDuration();
             sb_bar.setProgress(0);
-            sb_bar.setMax(player.getDuration());
+            sb_bar.setMax(duration);
+            tv_right_time.setText(formatTime(duration));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,9 +135,17 @@ public class PlayDialog extends Dialog {
         this.show();
     }
 
-    public void dismissDialog() {
+    @Override
+    public void dismiss() {
         stopPlaying();
-        dismiss();
+        if (player != null)
+            player = null;
+        super.dismiss();
+    }
+
+    public String formatTime(int ms) {
+        DateFormat dateFormat = new SimpleDateFormat("m:ss");
+        return dateFormat.format(new Date(ms));
     }
 
     //--------------------------------------------------------------------------
@@ -142,7 +158,16 @@ public class PlayDialog extends Dialog {
             TimerTask mTimerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    sb_bar.setProgress(player.getCurrentPosition());
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isPlaying()) {
+                                int curPosition = player.getCurrentPosition();
+                                sb_bar.setProgress(curPosition);
+                                tv_left_time.setText(formatTime(curPosition));
+                            }
+                        }
+                    });
                 }
             };
             new Timer().schedule(mTimerTask, 0, 10);

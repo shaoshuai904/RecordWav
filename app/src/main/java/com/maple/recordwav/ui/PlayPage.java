@@ -119,7 +119,7 @@ public class PlayPage extends BaseFragment {
     }
 
     private void dialogPlay(File file) {
-        new PlayDialog(mContext)
+        new PlayDialog(getActivity())
                 .addWavFile(file)
                 .showDialog();
     }
