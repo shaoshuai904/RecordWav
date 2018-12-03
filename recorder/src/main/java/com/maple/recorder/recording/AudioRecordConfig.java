@@ -4,6 +4,8 @@ import android.media.AudioFormat;
 import android.media.MediaRecorder;
 
 /**
+ * 录音参数配置
+ *
  * @author maple
  * @time 2018/4/10.
  */

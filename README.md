@@ -28,7 +28,7 @@ allprojects {
 
 ```groovy
 dependencies {
-	compile 'com.github.shaoshuai904:RecordWav:1.0'
+	implementation 'com.github.shaoshuai904:RecordWav:1.0.1'
 }
 ```
 

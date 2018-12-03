@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.maple.recordwav"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 9
+        versionCode 10
         versionName "1.0.1"
     }
     buildTypes {

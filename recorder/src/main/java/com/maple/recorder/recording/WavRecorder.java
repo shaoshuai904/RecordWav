@@ -28,7 +28,7 @@ final class WavRecorder extends BaseDataRecorder {
     }
 
     private void writeWavHeader() throws IOException {
-        final RandomAccessFile wavFile = randomAccessFile(file);
+        RandomAccessFile wavFile = randomAccessFile(file);
         wavFile.seek(0); // to the beginning
         wavFile.write(new WavHeader(config, file.length()).toBytes());
         wavFile.close();

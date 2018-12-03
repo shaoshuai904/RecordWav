@@ -22,6 +22,11 @@ public class PlayUtils {
         this.playStateChangeListener.onPlayStateChange(false);
     }
 
+    /**
+     * 开始播放
+     *
+     * @param filePath
+     */
     public void startPlaying(String filePath) {
         try {
             player = new MediaPlayer();
@@ -51,6 +56,9 @@ public class PlayUtils {
         }
     }
 
+    /**
+     * 暂停播放
+     */
     public void pausePlay() {
         try {
             if (player != null) {
@@ -65,6 +73,9 @@ public class PlayUtils {
         }
     }
 
+    /**
+     * 停止播放
+     */
     public void stopPlaying() {
         try {
             if (player != null) {
@@ -80,6 +91,11 @@ public class PlayUtils {
         }
     }
 
+    /**
+     * 是否正在播放
+     *
+     * @return
+     */
     public boolean isPlaying() {
         try {
             return player != null && player.isPlaying();

@@ -24,10 +24,27 @@ final class WavHeader {
         long sampleRateInHz = config.frequency();
         int channels = (config.channelPositionMask() == AudioFormat.CHANNEL_IN_MONO ? 1 : 2);
         byte bitsPerSample = config.bitsPerSample();
-        return wavFileHeader(totalAudioLength - 44, totalAudioLength - 44 + 36, sampleRateInHz,
-                channels, bitsPerSample * sampleRateInHz * channels / 8, bitsPerSample);
+        return wavFileHeader(
+                totalAudioLength - 44,
+                totalAudioLength - 44 + 36,
+                sampleRateInHz,
+                channels,
+                bitsPerSample * sampleRateInHz * channels / 8,
+                bitsPerSample
+        );
     }
 
+    /**
+     * 获取wav文件头
+     *
+     * @param totalAudioLen  -
+     * @param totalDataLen   -
+     * @param longSampleRate - 采样率
+     * @param channels       - 通道数
+     * @param byteRate       -
+     * @param bitsPerSample  - 16/8 bit
+     * @return
+     */
     private byte[] wavFileHeader(long totalAudioLen, long totalDataLen, long longSampleRate,
                                  int channels, long byteRate, byte bitsPerSample) {
         byte[] header = new byte[44];
