@@ -17,27 +17,26 @@ import java.util.concurrent.Executors;
  * @time 2018/4/10.
  */
 public class BaseDataRecorder implements Recorder {
-    protected final PullTransport pullTransport;
-    protected final File file;
+    protected PullTransport pullTransport;
     protected AudioRecordConfig config;
-    protected int pullSizeInBytes;
+    protected int pullSizeInBytes;// 缓冲区大小
+    protected File file;
 
     private AudioRecord audioRecord;
     private OutputStream outputStream;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private final Runnable recordingTask = new Runnable() {
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Runnable recordingTask = new Runnable() {
         @Override
         public void run() {
             startRecord();
         }
     };
 
-
     protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         this.file = file;
         this.config = config;
         this.pullTransport = pullTransport;
-
+        // 计算缓冲区大小
         this.pullSizeInBytes = AudioRecord.getMinBufferSize(
                 config.frequency(),
                 config.channelPositionMask(),
@@ -45,40 +44,26 @@ public class BaseDataRecorder implements Recorder {
         );
     }
 
-    private OutputStream outputStream(File file) {
-        if (file == null) {
-            throw new RuntimeException("file is null !");
-        }
-        OutputStream outputStream;
-        try {
-            outputStream = new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(
-                    "could not build OutputStream from" + " this file " + file.getName(), e);
-        }
-        return outputStream;
-    }
-
-    @Override
-    public void startRecording() {
-        outputStream = outputStream(file);
-        executorService.submit(recordingTask);
-    }
-
     private void startRecord() {
-        if (audioRecord == null) {
-            audioRecord = new AudioRecord(config.audioSource(), config.frequency(),
-                    config.channelPositionMask(), config.audioEncoding(), pullSizeInBytes);
-        }
         try {
+            if (audioRecord == null) {
+                audioRecord = new AudioRecord(config.audioSource(), config.frequency(),
+                        config.channelPositionMask(), config.audioEncoding(), pullSizeInBytes);
+            }
+            if (outputStream == null) {
+                outputStream = new FileOutputStream(file);
+            }
             audioRecord.startRecording();
             pullTransport.isEnableToBePulled(true);
             pullTransport.startPoolingAndWriting(audioRecord, pullSizeInBytes, outputStream);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalStateException e) {
-            throw new RuntimeException("AudioRecord state has uninitialized state", e);
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void startRecording() {
+        executorService.submit(recordingTask);
     }
 
     @Override
@@ -88,7 +73,7 @@ public class BaseDataRecorder implements Recorder {
 
     @Override
     public void resumeRecording() {
-        executorService.submit(recordingTask);
+        startRecording();
     }
 
     @Override
@@ -105,6 +90,5 @@ public class BaseDataRecorder implements Recorder {
             outputStream.close();
         }
     }
-
 
 }

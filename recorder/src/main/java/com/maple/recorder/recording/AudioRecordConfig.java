@@ -10,13 +10,11 @@ import android.media.MediaRecorder;
  * @time 2018/4/10.
  */
 public interface AudioRecordConfig {
+
     int channelPositionMask();
 
     int audioSource();
 
-    /**
-     * @return sampleRateInHz
-     */
     int frequency();
 
     int audioEncoding();

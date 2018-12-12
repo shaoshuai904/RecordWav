@@ -5,42 +5,45 @@ import java.nio.ByteOrder;
 
 /**
  * An AudioChunk is a audio data wrapper.
+ * 音频数据包装器
  *
  * @author maple
  * @time 2018/4/10.
  */
 public interface AudioChunk {
+    // 获取最大峰值(振幅)
     double maxAmplitude();
 
+    // 获取byte类型数据
     byte[] toBytes();
 
+    // 获取short类型数据
     short[] toShorts();
 
-    int readCount();
 
-    void readCount(int numberOfUnitThatWereRead);
-
-    final class Bytes implements AudioChunk {
+    abstract class AbstractAudioChunk implements AudioChunk {
         private static final double REFERENCE = 0.6;
-        private final byte[] bytes;
-        private int numberOfBytesRead;
-
-        Bytes(byte[] bytes) {
-            this.bytes = bytes;
-        }
 
         @Override
         public double maxAmplitude() {
-            short[] shorts = toShorts();
             int nMaxAmp = 0;
-            int arrLen = shorts.length;
-            int peakIndex;
-            for (peakIndex = 0; peakIndex < arrLen; peakIndex++) {
-                if (shorts[peakIndex] >= nMaxAmp) {
-                    nMaxAmp = shorts[peakIndex];
+            for (short sh : toShorts()) {
+                if (sh > nMaxAmp) {
+                    nMaxAmp = sh;
                 }
             }
             return (int) (20 * Math.log10(nMaxAmp / REFERENCE));
+        }
+    }
+
+    /**
+     * byte类型数据包装器
+     */
+    class Bytes extends AbstractAudioChunk {
+        private byte[] bytes;
+
+        Bytes(byte[] bytes) {
+            this.bytes = bytes;
         }
 
         @Override
@@ -54,63 +57,35 @@ public interface AudioChunk {
             ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(shorts);
             return shorts;
         }
-
-        @Override
-        public int readCount() {
-            return numberOfBytesRead;
-        }
-
-        @Override
-        public void readCount(int numberOfUnitThatWereRead) {
-            this.numberOfBytesRead = numberOfUnitThatWereRead;
-        }
     }
 
-    final class Shorts implements AudioChunk {
-        //number denotes the bytes read in @code buffer
-        private static final short SILENCE_THRESHOLD = 2700;
-        private static final double REFERENCE = 0.6;
-        private final short[] shorts;
-        private int numberOfShortsRead;
+    /**
+     * short类型数据包装器
+     */
+    class Shorts extends AbstractAudioChunk {
+        private static final short SILENCE_THRESHOLD = 2700;// 沉默阀值（低于该值的不记录）
+        private short[] shorts;
 
         Shorts(short[] bytes) {
             this.shorts = bytes;
         }
 
-        int peakIndex() {
-            int peakIndex;
-            int arrLen = shorts.length;
-            for (peakIndex = 0; peakIndex < arrLen; peakIndex++) {
-                if ((shorts[peakIndex] >= SILENCE_THRESHOLD) || (shorts[peakIndex] <= -SILENCE_THRESHOLD)) {
-                    return peakIndex;
+        // 是否超过沉默值
+        boolean isOverSilence() {
+            for (short sh : shorts) {
+                if (sh > SILENCE_THRESHOLD || sh < -SILENCE_THRESHOLD) {
+                    return true;
                 }
             }
-            return -1;
-        }
-
-        @Override
-        public double maxAmplitude() {
-            int nMaxAmp = 0;
-            int arrLen = shorts.length;
-            int peakIndex;
-            for (peakIndex = 0; peakIndex < arrLen; peakIndex++) {
-                if (shorts[peakIndex] >= nMaxAmp) {
-                    nMaxAmp = shorts[peakIndex];
-                }
-            }
-            return (int) (20 * Math.log10(nMaxAmp / REFERENCE));
+            return false;
         }
 
         @Override
         public byte[] toBytes() {
-            int shortIndex, byteIndex;
-            byte[] buffer = new byte[numberOfShortsRead * 2];
-            shortIndex = byteIndex = 0;
-            for (; shortIndex != numberOfShortsRead; ) {
-                buffer[byteIndex] = (byte) (shorts[shortIndex] & 0x00FF);
-                buffer[byteIndex + 1] = (byte) ((shorts[shortIndex] & 0xFF00) >> 8);
-                ++shortIndex;
-                byteIndex += 2;
+            byte[] buffer = new byte[shorts.length * 2];
+            for (int i = 0; i < shorts.length; i++) {
+                buffer[2 * i] = (byte) (shorts[i] & 0x00FF);
+                buffer[2 * i + 1] = (byte) ((shorts[i] & 0xFF00) >> 8);
             }
             return buffer;
         }
@@ -120,14 +95,5 @@ public interface AudioChunk {
             return shorts;
         }
 
-        @Override
-        public int readCount() {
-            return numberOfShortsRead;
-        }
-
-        @Override
-        public void readCount(int numberOfUnitThatWereRead) {
-            this.numberOfShortsRead = numberOfUnitThatWereRead;
-        }
     }
 }
