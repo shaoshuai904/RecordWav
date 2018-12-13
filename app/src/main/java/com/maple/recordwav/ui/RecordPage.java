@@ -157,15 +157,15 @@ public class RecordPage extends BaseFragment {
         recorder = MsRecorder.wav(
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
-                new PullTransport.Default(
-                        new PullTransport.OnAudioChunkPulledListener() {
+                new PullTransport.Default()
+                        .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
                             @Override
                             public void onAudioChunkPulled(AudioChunk audioChunk) {
                                 Log.e("max  ", "amplitude: " + audioChunk.maxAmplitude());
                                 animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                             }
-                        }
-                )
+                        })
+
         );
     }
 
@@ -173,21 +173,24 @@ public class RecordPage extends BaseFragment {
         recorder = MsRecorder.wav(
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
-                new PullTransport.Noise(
-                        new PullTransport.OnAudioChunkPulledListener() {
+                new PullTransport.Noise()
+                        .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
                             @Override
                             public void onAudioChunkPulled(AudioChunk audioChunk) {
                                 animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                             }
-                        },
-                        new PullTransport.OnSilenceListener() {
+                        })
+                        .setOnSilenceListener(new PullTransport.OnSilenceListener() {
                             @Override
-                            public void onSilence(long silenceTime) {
-                                Log.e("silenceTime", String.valueOf(silenceTime));
-                                T.showShort(mContext, "silence of " + silenceTime + " detected");
+                            public void onSilence(long silenceTime, long discardTime) {
+                                String message = "沉默时间：" + String.valueOf(silenceTime) +
+                                        " ,丢弃时间：" + String.valueOf(discardTime);
+                                Log.e("silenceTime", message);
+                                T.showShort(mContext, message);
                             }
-                        }
-                )
+                        })
+
+
         );
     }
 

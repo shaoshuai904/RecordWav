@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * This class represents a bus between { PullableSource} and  {@link OutputStream}.
- * Basically it just pulls the data from { PullableSource} and transport it to
- * {@link OutputStream}
+ * 录音数据 拉取 运输机
+ * <p>
+ * 此类表示「录音机」和「输出文件」之间的总线。
+ * 基本上它只是从{@link AudioRecord}中提取数据，并将其传输到{@link OutputStream}，以写入输出文件。
+ * 可以对每次音频数据拉取过程进行监听{@link OnAudioChunkPulledListener}和处理{@link OnSilenceListener}，
  *
  * @author maple
  * @time 2018/4/10.
@@ -28,8 +30,9 @@ public interface PullTransport {
     interface OnSilenceListener {
         /**
          * @param silenceTime 沉默时间
+         * @param discardTime 丢弃时间
          */
-        void onSilence(long silenceTime);
+        void onSilence(long silenceTime, long discardTime);
     }
 
     /**
@@ -49,25 +52,12 @@ public interface PullTransport {
         OnAudioChunkPulledListener onAudioChunkPulledListener;
         Handler handler = new Handler(Looper.getMainLooper());
 
-        AbstractPullTransport(OnAudioChunkPulledListener onAudioChunkPulledListener) {
-            this.onAudioChunkPulledListener = onAudioChunkPulledListener;
+        AbstractPullTransport() {
         }
 
         @Override
         public void isEnableToBePulled(boolean enabledToBePulled) {
             this.pull = enabledToBePulled;
-        }
-
-        // 推送 沉默时间
-        void postSilenceEvent(final OnSilenceListener onSilenceListener, final long silenceTime) {
-            if (onSilenceListener != null) {
-                handler.post((new Runnable() {
-                    @Override
-                    public void run() {
-                        onSilenceListener.onSilence(silenceTime);
-                    }
-                }));
-            }
         }
 
         // 推送 音频原始数据块
@@ -86,11 +76,15 @@ public interface PullTransport {
     class Default extends AbstractPullTransport {
 
         public Default() {
-            this(null);
+            super();
         }
 
-        public Default(OnAudioChunkPulledListener onAudioChunkPulledListener) {
-            super(onAudioChunkPulledListener);
+        /**
+         * 音频数据推送监听，不间断的回调录音数据。
+         */
+        public Default setOnAudioChunkPulledListener(OnAudioChunkPulledListener onAudioChunkPulledListener) {
+            this.onAudioChunkPulledListener = onAudioChunkPulledListener;
+            return this;
         }
 
         @Override
@@ -110,35 +104,48 @@ public interface PullTransport {
      * 降噪模式（只记录有声音的部分）
      */
     class Noise extends AbstractPullTransport {
-        private OnSilenceListener silenceListener;
-        private long silenceTimeThreshold = 200;// 沉默时间临界值
-        private long startSilenceMoment = 0;// 首次沉默时间
+        private OnSilenceListener onSilenceListener;
+        private long pushTimeThreshold = 500;// 忽略沉默时间的阀值。小于该值的沉默时间将不推送
+        private long silenceTimeThreshold = 200;// 可容忍的沉默时间，该时间内正常记录
+        private long startSilenceMoment = 0;// 首次沉默时间点
         private long silenceTime = 0;// 已沉默的时间
-        private int noiseRecordedAfterFirstSilenceThreshold = 0;
+        private int writeCountAfterSilence = 0;// 噪音后，正常记录次数
 
         public Noise() {
-            this(null, null, 200);
-        }
-
-        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener) {
-            this(onAudioChunkPulledListener, null, 200);
-        }
-
-        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener, OnSilenceListener silenceListener) {
-            this(onAudioChunkPulledListener, silenceListener, 200);
+            super();
         }
 
         /**
-         * @param onAudioChunkPulledListener 音频数据推送监听
-         * @param silenceListener            沉默监听
-         * @param silenceTimeThreshold       可容忍的沉默时间
+         * 音频数据推送监听，不间断的回调录音数据。
          */
-        public Noise(OnAudioChunkPulledListener onAudioChunkPulledListener, OnSilenceListener silenceListener, long silenceTimeThreshold) {
-            super(onAudioChunkPulledListener);
-            this.silenceListener = silenceListener;
-            this.silenceTimeThreshold = silenceTimeThreshold;
+        public Noise setOnAudioChunkPulledListener(OnAudioChunkPulledListener onAudioChunkPulledListener) {
+            this.onAudioChunkPulledListener = onAudioChunkPulledListener;
+            return this;
         }
 
+        /**
+         * 沉默监听，当沉默 >1s 时，回调已沉默的最大时间。
+         */
+        public Noise setOnSilenceListener(OnSilenceListener onSilenceListener) {
+            this.onSilenceListener = onSilenceListener;
+            return this;
+        }
+
+        /**
+         * 设置可容忍的沉默时间。在可容忍时间内，仍然写入录音数据。
+         */
+        public Noise setSilenceTimeThreshold(long silenceTimeThreshold) {
+            this.silenceTimeThreshold = silenceTimeThreshold;
+            return this;
+        }
+
+        /**
+         * 设置忽略沉默时间的阀值。已沉默时间小于该值时，不向UI推送
+         */
+        public Noise setPushTimeThreshold(long pushTimeThreshold) {
+            this.pushTimeThreshold = pushTimeThreshold;
+            return this;
+        }
 
         @Override
         public void startPoolingAndWriting(AudioRecord audioRecord, int pullSizeInBytes, OutputStream outputStream) throws IOException {
@@ -147,15 +154,14 @@ public interface PullTransport {
                 int count = audioRecord.read(audioChunk.toShorts(), 0, pullSizeInBytes);
                 if (AudioRecord.ERROR_INVALID_OPERATION != count && AudioRecord.ERROR_BAD_VALUE != count) {
                     postPullEvent(audioChunk);// 推送原始音频数据块
-
                     if (audioChunk.isOverSilence()) {// 是否超过沉默阀值
                         outputStream.write(audioChunk.toBytes());
-                        noiseRecordedAfterFirstSilenceThreshold++;
-                        if (silenceTime > 1000) {
-                            if (noiseRecordedAfterFirstSilenceThreshold >= 3) {
+                        writeCountAfterSilence++;
+                        if (silenceTime > pushTimeThreshold) {
+                            if (writeCountAfterSilence >= 3) {
                                 // 超过1s的无声，且，之前正常记录3次。向UI推送静默时间
-                                noiseRecordedAfterFirstSilenceThreshold = 0;
-                                postSilenceEvent(silenceListener, silenceTime);
+                                writeCountAfterSilence = 0;
+                                postSilenceEvent(silenceTime, (silenceTime - silenceTimeThreshold));
                             }
                         }
                         startSilenceMoment = 0;
@@ -172,6 +178,18 @@ public interface PullTransport {
                     }
 
                 }
+            }
+        }
+
+        // 推送 沉默时间
+        private void postSilenceEvent(final long silenceTime, final long discardTime) {
+            if (onSilenceListener != null) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onSilenceListener.onSilence(silenceTime, discardTime);
+                    }
+                });
             }
         }
 

@@ -84,7 +84,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="只记录'有'声音部分，低于【阀值】的录音部分将不记录，结果录音文件会非常紧凑。"
+            android:text="只记录'有'声音部分，低于【阀值】的录音部分视为静默噪音，将不写入录音文件，结果录音文件会非常紧凑。"
             android:textSize="12sp" />
 
     </LinearLayout>
