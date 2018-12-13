@@ -11,7 +11,7 @@ import java.io.RandomAccessFile;
  * @author maple
  * @time 2018/4/10.
  */
-final class WavRecorder extends BaseDataRecorder {
+public class WavRecorder extends BaseDataRecorder {
 
     public WavRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         super(file, config, pullTransport);
@@ -27,6 +27,9 @@ final class WavRecorder extends BaseDataRecorder {
         }
     }
 
+    /**
+     * 写入wav文件头
+     */
     private void writeWavHeader() throws IOException {
         RandomAccessFile wavFile = randomAccessFile(file);
         wavFile.seek(0); // to the beginning

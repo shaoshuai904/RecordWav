@@ -77,7 +77,7 @@ public class BaseDataRecorder implements Recorder {
     }
 
     @Override
-    public void stopRecording() throws IOException {
+    public void stopRecording() {
         pauseRecording();
 
         if (audioRecord != null) {
@@ -86,8 +86,13 @@ public class BaseDataRecorder implements Recorder {
             audioRecord = null;
         }
         if (outputStream != null) {
-            outputStream.flush();
-            outputStream.close();
+            try {
+                outputStream.flush();
+                outputStream.close();
+                outputStream = null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

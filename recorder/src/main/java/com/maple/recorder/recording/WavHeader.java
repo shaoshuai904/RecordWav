@@ -3,14 +3,14 @@ package com.maple.recorder.recording;
 import android.media.AudioFormat;
 
 /**
- * A Header to be appended to the end of WavRecorder audio file
+ * WAV文件头工具类
  *
  * @author maple
  * @time 2018/4/10.
  */
-final class WavHeader {
-    private final AudioRecordConfig config;
-    private final long totalAudioLength;
+public class WavHeader {
+    private AudioRecordConfig config;// wav录音配置参数
+    private long totalAudioLength;// 音频数据总长度
 
     WavHeader(AudioRecordConfig config, long totalAudioLength) {
         this.config = config;
@@ -18,7 +18,7 @@ final class WavHeader {
     }
 
     /**
-     * Returns the {@code WavHeader} in bytes.
+     * 返回WAV文件头的byte数组
      */
     public byte[] toBytes() {
         long sampleRateInHz = config.frequency();

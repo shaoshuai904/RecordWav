@@ -8,7 +8,7 @@ import java.io.File;
  * @author maple
  * @time 2018/4/10.
  */
-public final class MsRecorder {
+public class MsRecorder {
 
     private MsRecorder() {
     }

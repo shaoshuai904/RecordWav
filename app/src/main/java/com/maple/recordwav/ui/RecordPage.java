@@ -23,7 +23,6 @@ import com.maple.recordwav.utils.DateUtils;
 import com.maple.recordwav.utils.T;
 
 import java.io.File;
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,21 +97,17 @@ public class RecordPage extends BaseFragment {
         bt_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    recorder.stopRecording();
+                recorder.stopRecording();
 
-                    isRecording = false;
-                    skipSilence.setEnabled(true);
-                    bt_start.setEnabled(true);
-                    bt_pause_resume.setEnabled(false);
-                    bt_stop.setEnabled(false);
-                    bt_pause_resume.setText(getString(R.string.pause));
-                    iv_voice_img.setImageResource(R.drawable.mic_default);
-                    com_voice_time.stop();
-                    curBase = 0;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                isRecording = false;
+                skipSilence.setEnabled(true);
+                bt_start.setEnabled(true);
+                bt_pause_resume.setEnabled(false);
+                bt_stop.setEnabled(false);
+                bt_pause_resume.setText(getString(R.string.pause));
+                iv_voice_img.setImageResource(R.drawable.mic_default);
+                com_voice_time.stop();
+                curBase = 0;
                 bt_stop.post(new Runnable() {
                     @Override
                     public void run() {
