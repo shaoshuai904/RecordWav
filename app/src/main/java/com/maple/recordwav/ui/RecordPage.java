@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  * 录制 WavRecorder 界面
  *
  * @author maple
- * @time 16/4/18 下午2:53
+ * @time 2016/4/18
  */
 public class RecordPage extends BaseFragment {
     @BindView(R.id.iv_voice_img) ImageView iv_voice_img;

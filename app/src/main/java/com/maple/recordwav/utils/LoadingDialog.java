@@ -18,7 +18,7 @@ import junit.framework.Assert;
  * loading dialog
  *
  * @author maple
- * @time 16/4/18 上午10:35
+ * @time 2016/4/18
  */
 public class LoadingDialog extends Dialog {
 

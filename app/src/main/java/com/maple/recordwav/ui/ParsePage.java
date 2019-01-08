@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  * 获取wav文件的信息
  *
  * @author maple
- * @time 16/5/20 下午6:40
+ * @time 2016/5/20
  */
 public class ParsePage extends BaseFragment {
     @BindView(R.id.tv_info) TextView tv_info;

@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @author maple
- * @time 16/5/30 下午3:04
+ * @time 2016/5/30
  */
 public class DateUtils {
 

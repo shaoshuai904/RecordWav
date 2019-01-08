@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 /**
  * @author maple
- * @time 16/4/13 下午4:40
+ * @time 2016/4/13
  */
 public abstract class BaseFragment extends Fragment {
     public View view;

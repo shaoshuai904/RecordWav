@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author maple
- * @time 16/4/13 下午5:55
+ * @time 2016/4/13
  */
 public abstract class AbsAdapter<T> extends BaseAdapter {
     public Context mContext;

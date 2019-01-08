@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * 权限开启
  *
  * @author maple
- * @time 17/1/5 上午11:00
+ * @time 2017/1/5
  */
 public class PermissionFragment extends Fragment {
     public static final String TAG = "PermissionFragment";

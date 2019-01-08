@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
  * wav 文件播放
  *
  * @author maple
- * @time 16/5/20 下午6:40
+ * @time 2016/5/20
  */
 public class PlayPage extends BaseFragment {
     public static final int SEARCH_MESSAGE_CODE = 200;
