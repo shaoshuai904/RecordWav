@@ -80,15 +80,12 @@ public class ParsePage extends BaseFragment {
 
     @Override
     public void initListener() {
-        lv_parse.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String filePath = wavFilelist.get(position);
-                if (new File(filePath).exists()) {
-                    getWavInfo(filePath);
-                } else {
-                    T.showShort(mContext, "选择的文件不存在");
-                }
+        lv_parse.setOnItemClickListener((parent, view, position, id) -> {
+            String filePath = wavFilelist.get(position);
+            if (new File(filePath).exists()) {
+                getWavInfo(filePath);
+            } else {
+                T.showShort(mContext, "选择的文件不存在");
             }
         });
     }

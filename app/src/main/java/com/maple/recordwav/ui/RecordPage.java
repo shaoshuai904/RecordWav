@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 
-import com.maple.recorder.recording.AudioChunk;
 import com.maple.recorder.recording.AudioRecordConfig;
 import com.maple.recorder.recording.MsRecorder;
 import com.maple.recorder.recording.PullTransport;
@@ -69,80 +67,57 @@ public class RecordPage extends BaseFragment {
 
     @Override
     public void initListener() {
-        skipSilence.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    setupNoiseRecorder();
-                } else {
-                    setupRecorder();
-                }
+        skipSilence.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (isChecked) {
+                setupNoiseRecorder();
+            } else {
+                setupRecorder();
             }
         });
-        bt_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recorder.startRecording();
+        bt_start.setOnClickListener(view -> {
+            recorder.startRecording();
 
-                isRecording = true;
-                skipSilence.setEnabled(false);
-                bt_start.setEnabled(false);
-                bt_pause_resume.setEnabled(true);
-                bt_stop.setEnabled(true);
-                iv_voice_img.setImageResource(R.drawable.mic_selected);
-                com_voice_time.setBase(SystemClock.elapsedRealtime());
-                com_voice_time.start();
-            }
+            isRecording = true;
+            skipSilence.setEnabled(false);
+            bt_start.setEnabled(false);
+            bt_pause_resume.setEnabled(true);
+            bt_stop.setEnabled(true);
+            iv_voice_img.setImageResource(R.drawable.mic_selected);
+            com_voice_time.setBase(SystemClock.elapsedRealtime());
+            com_voice_time.start();
         });
-        bt_stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recorder.stopRecording();
+        bt_stop.setOnClickListener(view -> {
+            recorder.stopRecording();
+
+            isRecording = false;
+            skipSilence.setEnabled(true);
+            bt_start.setEnabled(true);
+            bt_pause_resume.setEnabled(false);
+            bt_stop.setEnabled(false);
+            bt_pause_resume.setText(getString(R.string.pause));
+            iv_voice_img.setImageResource(R.drawable.mic_default);
+            com_voice_time.stop();
+            curBase = 0;
+            bt_stop.post(() -> animateVoice(0));
+        });
+        bt_pause_resume.setOnClickListener(view -> {
+            if (isRecording) {
+                recorder.pauseRecording();
 
                 isRecording = false;
-                skipSilence.setEnabled(true);
-                bt_start.setEnabled(true);
-                bt_pause_resume.setEnabled(false);
-                bt_stop.setEnabled(false);
-                bt_pause_resume.setText(getString(R.string.pause));
-                iv_voice_img.setImageResource(R.drawable.mic_default);
+                bt_pause_resume.setText(getString(R.string.resume));
+                curBase = SystemClock.elapsedRealtime() - com_voice_time.getBase();
                 com_voice_time.stop();
-                curBase = 0;
-                bt_stop.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        animateVoice(0);
-                    }
-                });
-            }
-        });
-        bt_pause_resume.setOnClickListener(new View.OnClickListener() {
+                iv_voice_img.setImageResource(R.drawable.mic_default);
+                bt_pause_resume.postDelayed(() -> animateVoice(0), 100);
+            } else {
+                recorder.resumeRecording();
 
-            @Override
-            public void onClick(View view) {
-                if (isRecording) {
-                    recorder.pauseRecording();
-
-                    isRecording = false;
-                    bt_pause_resume.setText(getString(R.string.resume));
-                    curBase = SystemClock.elapsedRealtime() - com_voice_time.getBase();
-                    com_voice_time.stop();
-                    iv_voice_img.setImageResource(R.drawable.mic_default);
-                    bt_pause_resume.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            animateVoice(0);
-                        }
-                    }, 100);
-                } else {
-                    recorder.resumeRecording();
-
-                    isRecording = true;
-                    bt_pause_resume.setText(getString(R.string.pause));
-                    com_voice_time.setBase(SystemClock.elapsedRealtime() - curBase);
-                    com_voice_time.start();
-                    iv_voice_img.setImageResource(R.drawable.mic_selected);
-                }
+                isRecording = true;
+                bt_pause_resume.setText(getString(R.string.pause));
+                com_voice_time.setBase(SystemClock.elapsedRealtime() - curBase);
+                com_voice_time.start();
+                iv_voice_img.setImageResource(R.drawable.mic_selected);
             }
         });
 
@@ -153,12 +128,9 @@ public class RecordPage extends BaseFragment {
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
                 new PullTransport.Default()
-                        .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
-                            @Override
-                            public void onAudioChunkPulled(AudioChunk audioChunk) {
-                                Log.e("max  ", "amplitude: " + audioChunk.maxAmplitude());
-                                animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
-                            }
+                        .setOnAudioChunkPulledListener(audioChunk -> {
+                            Log.e("max  ", "amplitude: " + audioChunk.maxAmplitude());
+                            animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                         })
 
         );
@@ -169,20 +141,15 @@ public class RecordPage extends BaseFragment {
                 new File(voicePath),
                 new AudioRecordConfig.Default(),
                 new PullTransport.Noise()
-                        .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
-                            @Override
-                            public void onAudioChunkPulled(AudioChunk audioChunk) {
-                                animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
-                            }
+                        .setOnAudioChunkPulledListener(audioChunk -> {
+                            //
+                            animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                         })
-                        .setOnSilenceListener(new PullTransport.OnSilenceListener() {
-                            @Override
-                            public void onSilence(long silenceTime, long discardTime) {
-                                String message = "沉默时间：" + String.valueOf(silenceTime) +
-                                        " ,丢弃时间：" + String.valueOf(discardTime);
-                                Log.e("silenceTime", message);
-                                T.showShort(mContext, message);
-                            }
+                        .setOnSilenceListener((silenceTime, discardTime) -> {
+                            String message = "沉默时间：" + String.valueOf(silenceTime) +
+                                    " ,丢弃时间：" + String.valueOf(discardTime);
+                            Log.e("silenceTime", message);
+                            T.showShort(mContext, message);
                         })
 
 

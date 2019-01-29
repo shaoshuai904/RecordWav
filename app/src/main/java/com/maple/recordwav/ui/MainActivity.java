@@ -69,12 +69,7 @@ public class MainActivity extends FragmentActivity {
             mTabHost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
         }
 
-        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tag) {
-                mTitle.setText(tag);
-            }
-        });
+        mTabHost.setOnTabChangedListener(tag -> mTitle.setText(tag));
         mTabHost.setCurrentTab(0);
         mTitle.setText(mTextViewArray[0]);
     }
