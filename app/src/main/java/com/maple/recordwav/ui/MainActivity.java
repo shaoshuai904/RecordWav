@@ -12,12 +12,13 @@ import android.widget.TextView;
 
 import com.maple.recordwav.R;
 import com.maple.recordwav.utils.T;
-import com.maple.recordwav.utils.permission.PermissionFragment;
-import com.maple.recordwav.utils.permission.PermissionListener;
+import com.maple.recordwav.utils.permission.RxPermissions;
 
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author maple
@@ -42,22 +43,31 @@ public class MainActivity extends FragmentActivity {
 
         initView();
 
-        PermissionFragment.getPermissionFragment(this)
-                .setPermissionListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted() {
-
-                    }
-
-                    @Override
-                    public void onPermissionDenied(String[] deniedPermissions) {
-                        T.showShort(MainActivity.this, "不同意将无法使用");
-                    }
-                })
-                .checkPermissions(new String[]{
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
+        new RxPermissions(this)
+                .request(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.RECORD_AUDIO
+                )
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        T.showShort(MainActivity.this, "不同意将无法使用");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
                 });
     }
 
