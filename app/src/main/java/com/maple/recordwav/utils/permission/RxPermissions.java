@@ -68,6 +68,32 @@ public class RxPermissions {
     }
 
     /**
+     * Request permissions immediately, <b>must be invoked during initialization phase
+     * of your application</b>.
+     */
+    @SuppressWarnings({"WeakerAccess", "unused"})
+    public Observable<Boolean> request(final String... permissions) {
+        return Observable.just(TRIGGER).compose(ensure(permissions));
+    }
+
+    /**
+     * Request permissions immediately, <b>must be invoked during initialization phase
+     * of your application</b>.
+     */
+    @SuppressWarnings({"WeakerAccess", "unused"})
+    public Observable<Permission> requestEach(final String... permissions) {
+        return Observable.just(TRIGGER).compose(ensureEach(permissions));
+    }
+
+    /**
+     * Request permissions immediately, <b>must be invoked during initialization phase
+     * of your application</b>.
+     */
+    public Observable<Permission> requestEachCombined(final String... permissions) {
+        return Observable.just(TRIGGER).compose(ensureEachCombined(permissions));
+    }
+
+    /**
      * Map emitted items from the source observable into {@code true} if permissions in parameters
      * are granted, or {@code false} if not.
      * <p>
@@ -145,32 +171,6 @@ public class RxPermissions {
                         });
             }
         };
-    }
-
-    /**
-     * Request permissions immediately, <b>must be invoked during initialization phase
-     * of your application</b>.
-     */
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public Observable<Boolean> request(final String... permissions) {
-        return Observable.just(TRIGGER).compose(ensure(permissions));
-    }
-
-    /**
-     * Request permissions immediately, <b>must be invoked during initialization phase
-     * of your application</b>.
-     */
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public Observable<Permission> requestEach(final String... permissions) {
-        return Observable.just(TRIGGER).compose(ensureEach(permissions));
-    }
-
-    /**
-     * Request permissions immediately, <b>must be invoked during initialization phase
-     * of your application</b>.
-     */
-    public Observable<Permission> requestEachCombined(final String... permissions) {
-        return Observable.just(TRIGGER).compose(ensureEachCombined(permissions));
     }
 
     private Observable<Permission> request(final Observable<?> trigger, final String... permissions) {

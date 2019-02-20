@@ -132,7 +132,6 @@ public class RecordPage extends BaseFragment {
                             Log.e("max  ", "amplitude: " + audioChunk.maxAmplitude());
                             animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                         })
-
         );
     }
 
@@ -151,8 +150,6 @@ public class RecordPage extends BaseFragment {
                             Log.e("silenceTime", message);
                             T.showShort(mContext, message);
                         })
-
-
         );
     }
 
