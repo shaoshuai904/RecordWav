@@ -3,9 +3,7 @@ package com.maple.recordwav.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,30 +55,22 @@ public class ParsePage extends BaseFragment {
         }
     };
 
-
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_parse, null);
-        ButterKnife.bind(this, view);
-
-        loadingDialog = new LoadingDialog(getActivity());
-        tv_info.setText("WAV 解析界面！");
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_parse;
     }
 
     @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initView(View view, Bundle savedInstanceState) {
+        ButterKnife.bind(this, view);
+
+        tv_info.setText("WAV 解析界面！");
+
+        loadingDialog = new LoadingDialog(getActivity());
         wavFilelist = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, wavFilelist);
         lv_parse.setAdapter(adapter);
-
-        new Thread(searchSong).start();
-        loadingDialog.show("搜索中...");
-    }
-
-    @Override
-    public void initListener() {
-        lv_parse.setOnItemClickListener((parent, view, position, id) -> {
+        lv_parse.setOnItemClickListener((parent, v, position, id) -> {
             String filePath = wavFilelist.get(position);
             if (new File(filePath).exists()) {
                 getWavInfo(filePath);
@@ -88,20 +78,24 @@ public class ParsePage extends BaseFragment {
                 T.showShort(mContext, "选择的文件不存在");
             }
         });
+
+        searchFile();
     }
 
-    Runnable searchSong = new Runnable() {
-        @Override
-        public void run() {
-            List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
-            wavFilelist.clear();
-            for (int i = 0; i < fileArr.size(); i++) {
-                wavFilelist.add(fileArr.get(i).getAbsolutePath());
+    private void searchFile() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
+                wavFilelist.clear();
+                for (int i = 0; i < fileArr.size(); i++) {
+                    wavFilelist.add(fileArr.get(i).getAbsolutePath());
+                }
+                updateProHandler.sendEmptyMessage(200);
             }
-            updateProHandler.sendEmptyMessage(200);
-        }
-    };
-
+        }).start();
+        loadingDialog.show("搜索中...");
+    }
 
     public void getWavInfo(String filename) {
         WaveFileReader reader = new WaveFileReader(filename);

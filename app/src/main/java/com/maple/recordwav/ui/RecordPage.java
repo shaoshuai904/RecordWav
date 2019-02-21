@@ -3,7 +3,6 @@ package com.maple.recordwav.ui;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -45,15 +44,19 @@ public class RecordPage extends BaseFragment {
     String voicePath = WavApp.rootPath + "/voice.wav";
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_record, null);
-        ButterKnife.bind(this, view);
-
-        return view;
+    public int getLayoutRes() {
+        return R.layout.fragment_record;
     }
 
     @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initView(View contactView, Bundle savedInstanceState) {
+        ButterKnife.bind(this, contactView);
+
+        initData();
+        initListener();
+    }
+
+    public void initData() {
         String name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
         voicePath = WavApp.rootPath + name + ".wav";
 
@@ -65,7 +68,6 @@ public class RecordPage extends BaseFragment {
         bt_stop.setEnabled(false);
     }
 
-    @Override
     public void initListener() {
         skipSilence.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,27 +62,20 @@ public class PlayPage extends BaseFragment {
     };
 
     @Override
-    public View initView(LayoutInflater inflater) {
-        view = inflater.inflate(R.layout.fragment_play, null);
+    public int getLayoutRes() {
+        return R.layout.fragment_play;
+    }
+
+    @Override
+    public void initView(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
 
         loadingDialog = new LoadingDialog(getActivity());
         tv_des.setText("WAV 播放界面！");
-        return view;
-    }
 
-    @Override
-    public void initData(Bundle savedInstanceState) {
         wavFileList = new ArrayList<>();
         adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, wavFileList);
         lv_wav.setAdapter(adapter);
-
-        new Thread(searchSong).start();
-        loadingDialog.show("搜索中...");
-    }
-
-    @Override
-    public void initListener() {
         lv_wav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -96,20 +88,24 @@ public class PlayPage extends BaseFragment {
                 }
             }
         });
+
+        searchFile();
     }
 
-
-    Runnable searchSong = new Runnable() {
-        @Override
-        public void run() {
-            List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
-            wavFileList.clear();
-            for (int i = 0; i < fileArr.size(); i++) {
-                wavFileList.add(fileArr.get(i).getAbsolutePath());
+    private void searchFile() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
+                wavFileList.clear();
+                for (int i = 0; i < fileArr.size(); i++) {
+                    wavFileList.add(fileArr.get(i).getAbsolutePath());
+                }
+                updateProHandler.sendEmptyMessage(SEARCH_MESSAGE_CODE);
             }
-            updateProHandler.sendEmptyMessage(SEARCH_MESSAGE_CODE);
-        }
-    };
+        }).start();
+        loadingDialog.show("搜索中...");
+    }
 
     // 系统播放
     private void systemPlay(File file) {
