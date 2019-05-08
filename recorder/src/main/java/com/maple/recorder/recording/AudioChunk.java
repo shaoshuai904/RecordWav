@@ -32,7 +32,11 @@ public interface AudioChunk {
                     nMaxAmp = sh;
                 }
             }
-            return (int) (20 * Math.log10(nMaxAmp / REFERENCE));
+            if (nMaxAmp > 0) {
+                return Math.abs(20 * Math.log10(nMaxAmp / REFERENCE));
+            } else {
+                return 0;
+            }
         }
     }
 
