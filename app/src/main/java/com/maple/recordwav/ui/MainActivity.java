@@ -84,7 +84,6 @@ public class MainActivity extends FragmentActivity {
         mTitle.setText(mTextViewArray[0]);
     }
 
-
     private View getTabItemView(int index) {
         View view = LayoutInflater.from(this).inflate(R.layout.tab_item_view, null);
 

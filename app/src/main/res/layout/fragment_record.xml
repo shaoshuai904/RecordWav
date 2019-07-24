@@ -1,92 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/iv_voice_img"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:layout_weight="1"
-        android:src="@drawable/mic_default" />
-
-    <Chronometer
-        android:id="@+id/com_voice_time"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textSize="40sp" />
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <Button
-            android:id="@+id/bt_start"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_border_bg"
-            android:text="@string/record"
-            android:textColor="@color/selector_function_btn_text_color"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/bt_pause_resume"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_border_bg"
-            android:text="@string/pause"
-            android:textColor="@color/selector_function_btn_text_color"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/bt_stop"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/selector_base_fillet_border_bg"
-            android:text="@string/stop"
-            android:textColor="@color/selector_function_btn_text_color"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/skipSilence"
+        <ImageView
+            android:id="@+id/iv_voice_img"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="跳过沉默区" />
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:layout_weight="1"
+            android:src="@drawable/mic_default" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <Chronometer
+            android:id="@+id/com_voice_time"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="40sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/bt_start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_base_fillet_border_bg"
+                android:text="@string/record"
+                android:textColor="@color/selector_function_btn_text_color"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/bt_pause_resume"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_base_fillet_border_bg"
+                android:text="@string/pause"
+                android:textColor="@color/selector_function_btn_text_color"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/bt_stop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_base_fillet_border_bg"
+                android:text="@string/stop"
+                android:textColor="@color/selector_function_btn_text_color"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="只记录'有'声音部分，低于【阀值】的录音部分视为静默噪音，将不写入录音文件，结果录音文件会非常紧凑。"
-            android:textSize="12sp" />
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/skipSilence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="跳过沉默区" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="只记录'有'声音部分，低于【阀值】的录音部分视为静默噪音，将不写入录音文件，结果录音文件会非常紧凑。"
+                android:textSize="12sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>

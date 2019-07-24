@@ -22,17 +22,24 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':recorder')
 
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
-    implementation 'ch.acra:acra:4.9.2'
+//    implementation 'com.google.android.material:material:1.1.0-alpha08'
+//    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
+//    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'ch.acra:acra:4.11'
+
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 }

@@ -3,15 +3,19 @@ package com.maple.recordwav.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.maple.recorder.parse.WaveFileReader;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
-import com.maple.recordwav.base.BaseFragment;
 import com.maple.recordwav.utils.LoadingDialog;
 import com.maple.recordwav.utils.SearchFileUtils;
 import com.maple.recordwav.utils.T;
@@ -55,15 +59,21 @@ public class ParsePage extends BaseFragment {
         }
     };
 
+    @Nullable
     @Override
-    public int getLayoutRes() {
-        return R.layout.fragment_parse;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_parse, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
-    public void initView(View view, Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initView();
+    }
 
+    public void initView() {
         tv_info.setText("WAV 解析界面！");
 
         loadingDialog = new LoadingDialog(getActivity());
@@ -83,16 +93,13 @@ public class ParsePage extends BaseFragment {
     }
 
     private void searchFile() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
-                wavFilelist.clear();
-                for (int i = 0; i < fileArr.size(); i++) {
-                    wavFilelist.add(fileArr.get(i).getAbsolutePath());
-                }
-                updateProHandler.sendEmptyMessage(200);
+        new Thread(() -> {
+            List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
+            wavFilelist.clear();
+            for (int i = 0; i < fileArr.size(); i++) {
+                wavFilelist.add(fileArr.get(i).getAbsolutePath());
             }
+            updateProHandler.sendEmptyMessage(200);
         }).start();
         loadingDialog.show("搜索中...");
     }

@@ -5,17 +5,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.maple.recorder.player.PlayDialog;
 import com.maple.recorder.player.PlayUtils;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
-import com.maple.recordwav.base.BaseFragment;
 import com.maple.recordwav.utils.LoadingDialog;
 import com.maple.recordwav.utils.SearchFileUtils;
 import com.maple.recordwav.utils.T;
@@ -61,31 +65,34 @@ public class PlayPage extends BaseFragment {
         }
     };
 
+    @Nullable
     @Override
-    public int getLayoutRes() {
-        return R.layout.fragment_play;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_play, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
-    public void initView(View view, Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initView();
+    }
 
+    public void initView() {
         loadingDialog = new LoadingDialog(getActivity());
         tv_des.setText("WAV 播放界面！");
 
         wavFileList = new ArrayList<>();
         adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, wavFileList);
         lv_wav.setAdapter(adapter);
-        lv_wav.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String filePath = wavFileList.get(position);
-                File file = new File(filePath);
-                if (file.exists()) {
-                    dialogPlay(file);
-                } else {
-                    T.showShort(mContext, "选择的文件不存在");
-                }
+        lv_wav.setOnItemClickListener((parent, view, position, id) -> {
+            String filePath = wavFileList.get(position);
+            File file = new File(filePath);
+            if (file.exists()) {
+                dialogPlay(file);
+            } else {
+                T.showShort(mContext, "选择的文件不存在");
             }
         });
 
@@ -123,22 +130,18 @@ public class PlayPage extends BaseFragment {
     private void uitlsPlay(File file) {
         if (playUtils == null) {
             playUtils = new PlayUtils();
-            playUtils.setPlayStateChangeListener(new PlayUtils.PlayStateChangeListener() {
-
-                @Override
-                public void onPlayStateChange(boolean isPlay) {
-                    if (isPlay) {
-                        // startTimer
+            playUtils.setPlayStateChangeListener(isPlay -> {
+                if (isPlay) {
+                    // startTimer
 //                    com_voice_time.setBase(SystemClock.elapsedRealtime());
 //                    com_voice_time.start();
 //                    bt_preview.setText(getResources().getString(R.string.stop));
 //                    iv_voice_img.setImageResource(R.drawable.mic_selected);
-                    } else {
+                } else {
 //                    com_voice_time.stop();
 //                    com_voice_time.setBase(SystemClock.elapsedRealtime());
 //                    bt_preview.setText(getResources().getString(R.string.preview));
 //                    iv_voice_img.setImageResource(R.drawable.mic_default);
-                    }
                 }
             });
         }
