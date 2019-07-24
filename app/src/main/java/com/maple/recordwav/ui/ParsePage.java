@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.maple.recorder.parse.WaveFileReader;
 import com.maple.recordwav.R;
 import com.maple.recordwav.WavApp;
+import com.maple.recordwav.databinding.FragmentParseBinding;
 import com.maple.recordwav.utils.LoadingDialog;
 import com.maple.recordwav.utils.SearchFileUtils;
 import com.maple.recordwav.utils.T;
@@ -24,9 +24,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 获取wav文件的信息
  *
@@ -34,11 +31,8 @@ import butterknife.ButterKnife;
  * @time 2016/5/20
  */
 public class ParsePage extends BaseFragment {
-    @BindView(R.id.tv_info) TextView tv_info;
-    @BindView(R.id.lv_parse) ListView lv_parse;
-
-    ArrayAdapter<String> adapter;
-    private List<String> wavFilelist;
+    FragmentParseBinding binding;
+    private List<String> wavFilelist = new ArrayList<String>();
     private LoadingDialog loadingDialog;
 
 
@@ -50,11 +44,11 @@ public class ParsePage extends BaseFragment {
                     loadingDialog.dismiss();
                 }
                 if (wavFilelist.size() > 0) {
-                    tv_info.setText("点击条目，获取wav文件的信息 ！");
+                    binding.tvInfo.setText("点击条目，获取wav文件的信息 ！");
                 } else {
-                    tv_info.setText("没有找到文件，请去录制 ！");
+                    binding.tvInfo.setText("没有找到文件，请去录制 ！");
                 }
-                adapter.notifyDataSetChanged();
+                ((ArrayAdapter) binding.lvParse.getAdapter()).notifyDataSetChanged();
             }
         }
     };
@@ -62,9 +56,9 @@ public class ParsePage extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_parse, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_parse, container, false);
+        binding.setLifecycleOwner(this);
+        return binding.getRoot();
     }
 
     @Override
@@ -74,13 +68,13 @@ public class ParsePage extends BaseFragment {
     }
 
     public void initView() {
-        tv_info.setText("WAV 解析界面！");
+        binding.tvInfo.setText("WAV 解析界面！");
 
         loadingDialog = new LoadingDialog(getActivity());
-        wavFilelist = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, wavFilelist);
-        lv_parse.setAdapter(adapter);
-        lv_parse.setOnItemClickListener((parent, v, position, id) -> {
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, wavFilelist);
+        binding.lvParse.setAdapter(adapter);
+        binding.lvParse.setOnItemClickListener((parent, v, position, id) -> {
             String filePath = wavFilelist.get(position);
             if (new File(filePath).exists()) {
                 getWavInfo(filePath);
@@ -93,6 +87,7 @@ public class ParsePage extends BaseFragment {
     }
 
     private void searchFile() {
+        loadingDialog.show("搜索中...");
         new Thread(() -> {
             List<File> fileArr = SearchFileUtils.search(new File(WavApp.rootPath), new String[]{".wav"});
             wavFilelist.clear();
@@ -101,13 +96,12 @@ public class ParsePage extends BaseFragment {
             }
             updateProHandler.sendEmptyMessage(200);
         }).start();
-        loadingDialog.show("搜索中...");
     }
 
     public void getWavInfo(String filename) {
         WaveFileReader reader = new WaveFileReader(filename);
         if (reader.isSuccess()) {
-            tv_info.setText("读取wav文件信息：" + filename
+            binding.tvInfo.setText("读取wav文件信息：" + filename
                     + "\n采样率：" + reader.getSampleRate()
                     + "\n声道数：" + reader.getNumChannels()
                     + "\n编码长度：" + reader.getBitPerSample()

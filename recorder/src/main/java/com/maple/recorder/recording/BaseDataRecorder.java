@@ -25,12 +25,7 @@ public class BaseDataRecorder implements Recorder {
     private AudioRecord audioRecord;
     private OutputStream outputStream;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private Runnable recordingTask = new Runnable() {
-        @Override
-        public void run() {
-            startRecord();
-        }
-    };
+
 
     protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         this.file = file;
@@ -42,6 +37,16 @@ public class BaseDataRecorder implements Recorder {
                 config.channelPositionMask(),
                 config.audioEncoding()
         );
+    }
+
+    @Override
+    public void startRecording() {
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                startRecord();
+            }
+        });
     }
 
     private void startRecord() {
@@ -59,11 +64,6 @@ public class BaseDataRecorder implements Recorder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void startRecording() {
-        executorService.submit(recordingTask);
     }
 
     @Override

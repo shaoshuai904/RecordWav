@@ -7,10 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.maple.recorder.recording.AudioRecordConfig
-import com.maple.recorder.recording.MsRecorder
-import com.maple.recorder.recording.PullTransport
-import com.maple.recorder.recording.Recorder
+import com.maple.recorder.recording.*
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
 import com.maple.recordwav.databinding.FragmentRecordBinding
