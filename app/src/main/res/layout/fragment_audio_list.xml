@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:background="#abcdef"
             android:padding="10dp"
-            android:text="获取信息" />
+            tools:text="获取信息" />
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/srl_refreshLayout"

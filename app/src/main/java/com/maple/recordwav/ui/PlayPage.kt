@@ -1,17 +1,19 @@
 package com.maple.recordwav.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.maple.recorder.parse.WaveFileReader
+import com.maple.recorder.player.PlayDialog
+import com.maple.recorder.player.PlayUtils
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
 import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
-import com.maple.recordwav.utils.T
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -19,15 +21,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.io.File
-import java.util.*
 
 /**
- * 获取wav文件的信息
+ * wav 文件播放
  *
  * @author maple
  * @time 2016/5/20
  */
-class ParsePage : BaseFragment() {
+class PlayPage : BaseFragment() {
     lateinit var binding: FragmentAudioListBinding
     lateinit var adapter: AudioAdapter
 
@@ -47,11 +48,11 @@ class ParsePage : BaseFragment() {
         adapter = AudioAdapter(mContext)
 
         binding.apply {
-            tvInfo.text = "WAV 解析界面！"
+            tvInfo.text = "WAV 播放界面！"
             lvParse.adapter = adapter
             lvParse.setOnItemClickListener { _, _, position, _ ->
                 val file = adapter.getItem(position)
-                getWavInfo(file.absolutePath)
+                dialogPlay(file)
             }
 
             srlRefreshLayout
@@ -93,16 +94,43 @@ class ParsePage : BaseFragment() {
                 })
     }
 
-    private fun getWavInfo(filename: String) {
-        val reader = WaveFileReader(filename)
-        if (reader.isSuccess) {
-            binding.tvInfo.text = ("读取wav文件信息：" + filename
-                    + "\n采样率：" + reader.sampleRate
-                    + "\n声道数：" + reader.numChannels
-                    + "\n编码长度：" + reader.bitPerSample
-                    + "\n数据长度：" + reader.dataLen)
-        } else {
-            T.showShort(mContext, filename + "不是一个正常的wav文件")
+
+    // 系统播放
+    private fun systemPlay(file: File) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(Uri.fromFile(file), "audio/MP3")
+        startActivity(intent)
+    }
+
+    private fun dialogPlay(file: File) {
+        PlayDialog(activity)
+                .addWavFile(file)
+                .showDialog()
+    }
+
+    private val playUtils by lazy {
+        PlayUtils().setPlayStateChangeListener {
+            if (it) {
+//                // startTimer
+//                com_voice_time.setBase(SystemClock.elapsedRealtime())
+//                com_voice_time.start()
+//                bt_preview.setText(getResources().getString(R.string.stop))
+//                iv_voice_img.setImageResource(R.drawable.mic_selected)
+            } else {
+//                com_voice_time.stop();
+//                com_voice_time.setBase(SystemClock.elapsedRealtime())
+//                bt_preview.setText(getResources().getString(R.string.preview))
+//                iv_voice_img.setImageResource(R.drawable.mic_default)
+            }
         }
     }
+
+    private fun uitlsPlay(file: File) {
+        if (playUtils.isPlaying) {
+            playUtils.stopPlaying()
+        } else {
+            playUtils.startPlaying(file.path)
+        }
+    }
+
 }

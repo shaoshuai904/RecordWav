@@ -23,8 +23,8 @@ import java.io.File
  */
 class RecordPage : BaseFragment() {
     private lateinit var binding: FragmentRecordBinding
-    var isRecording = false
-    var curBase: Long = 0
+    private var isRecording = false
+    private var curBase: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record, container, false)
