@@ -1,5 +1,10 @@
 ﻿# RecordWav
 
+
+[![demo](https://img.shields.io/badge/download-demo-blue.svg)](https://github.com/shaoshuai904/RecordWav/blob/master/screens/app_v1.0.2_11.apk)
+[![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
+
+
 集 `录制`、`播放`、`解析` 于一体的wav文件的工具类。
 
 功能包括：
