@@ -1,9 +1,9 @@
 package com.maple.recordwav.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +16,7 @@ import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
@@ -30,7 +28,7 @@ import java.io.File
  */
 class PlayPage : BaseFragment() {
     lateinit var binding: FragmentAudioListBinding
-    lateinit var adapter: AudioAdapter
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_audio_list, container, false)
@@ -45,16 +43,14 @@ class PlayPage : BaseFragment() {
     }
 
     private fun initView() {
-        adapter = AudioAdapter(mContext, null)
-                .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
-                    override fun onclick(item: File) {
-                        dialogPlay(item)
-                    }
-                })
-
         binding.apply {
             tvInfo.text = "WAV 播放界面！"
-            rvVideo.adapter = adapter
+            rvVideo.adapter = AudioAdapter(mContext)
+                    .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
+                        override fun onclick(item: File) {
+                            dialogPlay(item)
+                        }
+                    })
 
             srlRefreshLayout
                     .setRefreshHeader(ClassicsHeader(mContext))
@@ -63,6 +59,7 @@ class PlayPage : BaseFragment() {
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun searchFile() {
         Observable.just(File(WavApp.rootPath))
                 .map {
@@ -74,27 +71,22 @@ class PlayPage : BaseFragment() {
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<File>> {
-                    override fun onSubscribe(d: Disposable) {}
-
-                    override fun onNext(files: List<File>) {
-                        binding.tvInfo.text = if (files.isNotEmpty()) {
-                            "点击条目，播放wav文件 ！"
-                        } else {
-                            "没有找到文件，请去录制 ！"
-                        }
-                        binding.srlRefreshLayout.finishRefresh()
-                        adapter.refresh(files)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.e("search error", "e: $e")
-                    }
-
-                    override fun onComplete() {}
-                })
+                .subscribe {
+                    updateVideoData(it)
+                }
     }
 
+    private fun updateVideoData(files: List<File>) {
+        binding.apply {
+            tvInfo.text = if (files.isNotEmpty()) {
+                "点击条目，播放wav文件 ！"
+            } else {
+                "没有找到文件，请去录制 ！"
+            }
+            srlRefreshLayout.finishRefresh()
+            (rvVideo.adapter as AudioAdapter).refresh(files)
+        }
+    }
 
     // 系统播放
     private fun systemPlay(file: File) {

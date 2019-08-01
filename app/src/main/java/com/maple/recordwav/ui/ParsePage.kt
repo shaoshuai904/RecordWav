@@ -29,7 +29,6 @@ import java.util.*
  */
 class ParsePage : BaseFragment() {
     lateinit var binding: FragmentAudioListBinding
-    lateinit var adapter: AudioAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_audio_list, container, false)
@@ -44,16 +43,14 @@ class ParsePage : BaseFragment() {
     }
 
     private fun initView() {
-        adapter = AudioAdapter(mContext, null)
-                .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
-                    override fun onclick(item: File) {
-                        getWavInfo(item.absolutePath)
-                    }
-                })
-
         binding.apply {
             tvInfo.text = "WAV 解析界面！"
-            rvVideo.adapter = adapter
+            rvVideo.adapter = AudioAdapter(mContext)
+                    .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
+                        override fun onclick(item: File) {
+                            getWavInfo(item.absolutePath)
+                        }
+                    })
 
             srlRefreshLayout
                     .setRefreshHeader(ClassicsHeader(mContext))
@@ -77,13 +74,7 @@ class ParsePage : BaseFragment() {
                     override fun onSubscribe(d: Disposable) {}
 
                     override fun onNext(files: List<File>) {
-                        binding.tvInfo.text = if (files.isNotEmpty()) {
-                            "点击条目，获取wav文件的信息 ！"
-                        } else {
-                            "没有找到文件，请去录制 ！"
-                        }
-                        binding.srlRefreshLayout.finishRefresh()
-                        adapter.refresh(files)
+                        updateVideoData(files)
                     }
 
                     override fun onError(e: Throwable) {
@@ -92,6 +83,18 @@ class ParsePage : BaseFragment() {
 
                     override fun onComplete() {}
                 })
+    }
+
+    private fun updateVideoData(files: List<File>) {
+        binding.apply {
+            tvInfo.text = if (files.isNotEmpty()) {
+                "点击条目，获取wav文件的信息 ！"
+            } else {
+                "没有找到文件，请去录制 ！"
+            }
+            srlRefreshLayout.finishRefresh()
+            (rvVideo.adapter as AudioAdapter).refresh(files)
+        }
     }
 
     private fun getWavInfo(filename: String) {

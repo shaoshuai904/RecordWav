@@ -14,11 +14,10 @@ import java.io.File
  * @author maple
  * @time 2019-07-25
  */
-class AudioAdapter(
-        var mContext: Context,
-        var data: List<File>?
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var mData: List<File> = data ?: ArrayList()
+class AudioAdapter(var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var mData: List<File> = ArrayList()
+
+    override fun getItemCount() = mData.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemVideoViewBinding>(
@@ -32,15 +31,6 @@ class AudioAdapter(
         holder.binding.root.setOnClickListener {
             mItemClickListener?.onclick(taskItem)
         }
-    }
-
-    override fun getItemCount(): Int {
-        return mData.size
-    }
-
-    fun refresh(dataList: List<File>?) {
-        mData = dataList ?: ArrayList()
-        this.notifyDataSetChanged()
     }
 
     class ItemViewHolder(val binding: ItemVideoViewBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -63,6 +53,11 @@ class AudioAdapter(
                 else -> String.format("%.2f MB", size.div(1024 * 1024f))
             }
         }
+    }
+
+    fun refresh(dataList: List<File>?) {
+        mData = dataList ?: ArrayList()
+        this.notifyDataSetChanged()
     }
 
     // ----------------- item click ----------------------
