@@ -45,15 +45,16 @@ class PlayPage : BaseFragment() {
     }
 
     private fun initView() {
-        adapter = AudioAdapter(mContext)
+        adapter = AudioAdapter(mContext, null)
+                .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
+                    override fun onclick(item: File) {
+                        dialogPlay(item)
+                    }
+                })
 
         binding.apply {
             tvInfo.text = "WAV 播放界面！"
-            lvParse.adapter = adapter
-            lvParse.setOnItemClickListener { _, _, position, _ ->
-                val file = adapter.getItem(position)
-                dialogPlay(file)
-            }
+            rvVideo.adapter = adapter
 
             srlRefreshLayout
                     .setRefreshHeader(ClassicsHeader(mContext))
@@ -78,7 +79,7 @@ class PlayPage : BaseFragment() {
 
                     override fun onNext(files: List<File>) {
                         binding.tvInfo.text = if (files.isNotEmpty()) {
-                            "点击条目，获取wav文件的信息 ！"
+                            "点击条目，播放wav文件 ！"
                         } else {
                             "没有找到文件，请去录制 ！"
                         }

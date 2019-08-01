@@ -2,10 +2,9 @@ package com.maple.recordwav.ui
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.maple.recordwav.R
 import com.maple.recordwav.databinding.ItemVideoViewBinding
 import java.io.File
@@ -15,53 +14,66 @@ import java.io.File
  * @author maple
  * @time 2019-07-25
  */
-class AudioAdapter(private val context: Context) : BaseAdapter() {
-    private var dataList: List<File> = arrayListOf()
+class AudioAdapter(
+        var mContext: Context,
+        var data: List<File>?
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var mData: List<File> = data ?: ArrayList()
 
-    override fun getCount() = dataList.size
-    override fun getItem(position: Int) = dataList[position]
-    override fun getItemId(position: Int) = position.toLong()
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val file = dataList[position]
-
-        val holder: ViewHolder
-        val view: View
-        if (convertView == null) {
-            val binding: ItemVideoViewBinding = DataBindingUtil.inflate(LayoutInflater.from(context),
-                    R.layout.item_video_view, parent, false)
-            holder = ViewHolder(binding)
-            view = holder.binding.root
-            view.tag = holder
-        } else {
-            view = convertView
-            holder = convertView.tag as ViewHolder
-        }
-
-        holder.binding.apply {
-            tvTitle.text = file.name
-            tvSize.text = getFileSize(file)
-            tvType.text = file.extension
-        }
-        return view
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val binding = DataBindingUtil.inflate<ItemVideoViewBinding>(
+                LayoutInflater.from(mContext), R.layout.item_video_view, parent, false)
+        return ItemViewHolder(binding)
     }
 
-    fun refresh(datas: List<File>?) {
-        dataList = datas ?: arrayListOf()
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val taskItem = mData[position]
+        (holder as ItemViewHolder).bindView(taskItem)
+        holder.binding.root.setOnClickListener {
+            mItemClickListener?.onclick(taskItem)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return mData.size
+    }
+
+    fun refresh(dataList: List<File>?) {
+        mData = dataList ?: ArrayList()
         this.notifyDataSetChanged()
     }
 
-    class ViewHolder(val binding: ItemVideoViewBinding)
-
-    /**
-     * 文件大小 B
-     */
-    private fun getFileSize(file: File): String {
-        val size = file.length()
-        return when {
-            size < 1024 -> "$size B"
-            size < (1024 * 1024) -> String.format("%.2f KB", size.div(1024f))
-            else -> String.format("%.2f MB", size.div(1024 * 1024f))
+    class ItemViewHolder(val binding: ItemVideoViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bindView(file: File) {
+            binding.apply {
+                tvTitle.text = file.name
+                tvSize.text = getFileSize(file)
+                tvType.text = file.extension
+            }
         }
+
+        /**
+         * 文件大小 B
+         */
+        private fun getFileSize(file: File): String {
+            val size = file.length()
+            return when {
+                size < 1024 -> "$size B"
+                size < (1024 * 1024) -> String.format("%.2f KB", size.div(1024f))
+                else -> String.format("%.2f MB", size.div(1024 * 1024f))
+            }
+        }
+    }
+
+    // ----------------- item click ----------------------
+    private var mItemClickListener: OnItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onclick(item: File)
+    }
+
+    fun setOnItemClickListener(itemClickListener: OnItemClickListener): AudioAdapter {
+        this.mItemClickListener = itemClickListener
+        return this
     }
 }

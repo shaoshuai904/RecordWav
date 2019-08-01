@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">WAV工具</string>
 
-    <string-array name="tab_fun_array">
-        <item>录制</item>
-        <item>播放</item>
-        <item>信息</item>
-    </string-array>
+    <string name="home">录制</string>
+    <string name="play">播放</string>
+    <string name="info">信息</string>
 
     <string name="record">开始</string>
     <string name="pause">暂停</string>

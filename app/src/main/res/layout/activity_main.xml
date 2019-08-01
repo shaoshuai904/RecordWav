@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,28 +13,24 @@
             android:layout_height="48dp"
             android:background="@color/top_bar_bg_color"
             android:gravity="center"
+            android:text="@string/app_name"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <FrameLayout
             android:id="@+id/fl_content"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
             android:background="@color/mainBGColor" />
 
-        <androidx.fragment.app.FragmentTabHost
-            android:id="@+id/tabhost"
-            android:layout_width="fill_parent"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_tab_background">
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/bottom_nav_menu" />
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0" />
-        </androidx.fragment.app.FragmentTabHost>
     </LinearLayout>
 
 </layout>

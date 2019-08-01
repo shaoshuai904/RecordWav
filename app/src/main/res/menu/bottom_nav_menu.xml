@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nvg_home"
+        android:icon="@drawable/ic_record_sel"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/nvg_play"
+        android:icon="@drawable/tab_play_icon"
+        android:title="@string/play" />
+
+    <item
+        android:id="@+id/nvg_info"
+        android:icon="@drawable/tab_parse_icon"
+        android:title="@string/info" />
+
+</menu>

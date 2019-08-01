@@ -44,15 +44,16 @@ class ParsePage : BaseFragment() {
     }
 
     private fun initView() {
-        adapter = AudioAdapter(mContext)
+        adapter = AudioAdapter(mContext, null)
+                .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
+                    override fun onclick(item: File) {
+                        getWavInfo(item.absolutePath)
+                    }
+                })
 
         binding.apply {
             tvInfo.text = "WAV 解析界面！"
-            lvParse.adapter = adapter
-            lvParse.setOnItemClickListener { _, _, position, _ ->
-                val file = adapter.getItem(position)
-                getWavInfo(file.absolutePath)
-            }
+            rvVideo.adapter = adapter
 
             srlRefreshLayout
                     .setRefreshHeader(ClassicsHeader(mContext))

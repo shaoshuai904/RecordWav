@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="top_bar_bg_color">#186C93</color>
+    <color name="top_bar_bg_color">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
     <color name="mainBGColor">#ffffff</color>
 
     <color name="tab_bar_bg">#E2E2E2</color>
