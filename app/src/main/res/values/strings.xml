@@ -1,17 +1,19 @@
 <resources>
-    <string name="app_name">WAV工具</string>
+    <string name="app_name">WAV Helper</string>
 
-    <string name="record">录制</string>
-    <string name="play">播放</string>
-    <string name="info">信息</string>
+    <string name="record">Record</string>
+    <string name="play">Play</string>
+    <string name="info">Info</string>
 
-    <string name="start">开始</string>
-    <string name="pause">暂停</string>
-    <string name="resume">继续</string>
-    <string name="stop">停止</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="stop">Stop</string>
 
-    <string name="skip_silent_zone">跳过沉默区</string>
-    <string name="skip_silent_zone_des">只记录\'有\'声音部分，低于【阀值】的录音部分视为静默噪音，将不写入录音文件，结果录音文件会非常紧凑。</string>
+    <string name="skip_silent_zone">Skip silent zone</string>
+    <string name="skip_silent_zone_des">Only the \'with\' sound part is recorded.
+        Parts recorded below [Threshold] are considered to be silent noise and will not be written to the recording file.
+        The resulting recording file will be very compact.</string>
 
     <!-- crash alert -->
     <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>

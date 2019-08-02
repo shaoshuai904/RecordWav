@@ -41,6 +41,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_base_fillet_border_bg"
                 android:text="@string/start"
+                android:textAllCaps="false"
                 android:textColor="@color/selector_text_color"
                 android:textSize="20sp" />
 
@@ -52,6 +53,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_base_fillet_border_bg"
                 android:text="@string/pause"
+                android:textAllCaps="false"
                 android:textColor="@color/selector_text_color"
                 android:textSize="20sp" />
 
@@ -63,6 +65,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_base_fillet_border_bg"
                 android:text="@string/stop"
+                android:textAllCaps="false"
                 android:textColor="@color/selector_text_color"
                 android:textSize="20sp" />
 
