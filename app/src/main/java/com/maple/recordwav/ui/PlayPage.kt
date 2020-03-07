@@ -12,6 +12,8 @@ import com.maple.recorder.player.PlayDialog
 import com.maple.recorder.player.PlayUtils
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
+import com.maple.recordwav.base.BaseFragment
+import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -27,7 +29,16 @@ import java.io.File
  * @time 2016/5/20
  */
 class PlayPage : BaseFragment() {
-    lateinit var binding: FragmentAudioListBinding
+    private lateinit var binding: FragmentAudioListBinding
+    private val mAdapter by lazy {
+        AudioAdapter(mContext).apply {
+            onItemClickListener = object : BaseQuickAdapter.OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+                    dialogPlay(getItem(position))
+                }
+            }
+        }
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -45,15 +56,8 @@ class PlayPage : BaseFragment() {
     private fun initView() {
         binding.apply {
             tvInfo.text = "WAV 播放界面！"
-            rvVideo.adapter = AudioAdapter(mContext)
-                    .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
-                        override fun onclick(item: File) {
-                            dialogPlay(item)
-                        }
-                    })
-
-            srlRefreshLayout
-                    .setRefreshHeader(ClassicsHeader(mContext))
+            rvVideo.adapter = mAdapter
+            srlRefreshLayout.setRefreshHeader(ClassicsHeader(mContext))
                     .setOnRefreshListener { searchFile() }
                     .isEnableLoadMore = false
         }
@@ -84,7 +88,7 @@ class PlayPage : BaseFragment() {
                 "没有找到文件，请去录制 ！"
             }
             srlRefreshLayout.finishRefresh()
-            (rvVideo.adapter as AudioAdapter).refresh(files)
+            mAdapter.refreshData(files)
         }
     }
 

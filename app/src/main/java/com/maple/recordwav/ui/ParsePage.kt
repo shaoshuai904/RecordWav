@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import com.maple.recorder.parse.WaveFileReader
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
+import com.maple.recordwav.base.BaseFragment
+import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
 import com.maple.recordwav.utils.T
@@ -28,7 +30,16 @@ import java.util.*
  * @time 2016/5/20
  */
 class ParsePage : BaseFragment() {
-    lateinit var binding: FragmentAudioListBinding
+    private lateinit var binding: FragmentAudioListBinding
+    private val adapter by lazy {
+        AudioAdapter(mContext).apply {
+            onItemClickListener = object : BaseQuickAdapter.OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+                    getWavInfo(getItem(position).absolutePath)
+                }
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_audio_list, container, false)
@@ -45,15 +56,8 @@ class ParsePage : BaseFragment() {
     private fun initView() {
         binding.apply {
             tvInfo.text = "WAV 解析界面！"
-            rvVideo.adapter = AudioAdapter(mContext)
-                    .setOnItemClickListener(object : AudioAdapter.OnItemClickListener {
-                        override fun onclick(item: File) {
-                            getWavInfo(item.absolutePath)
-                        }
-                    })
-
-            srlRefreshLayout
-                    .setRefreshHeader(ClassicsHeader(mContext))
+            rvVideo.adapter = adapter
+            srlRefreshLayout.setRefreshHeader(ClassicsHeader(mContext))
                     .setOnRefreshListener { searchFile() }
                     .isEnableLoadMore = false
         }
@@ -93,7 +97,7 @@ class ParsePage : BaseFragment() {
                 "没有找到文件，请去录制 ！"
             }
             srlRefreshLayout.finishRefresh()
-            (rvVideo.adapter as AudioAdapter).refresh(files)
+            adapter.refreshData(files)
         }
     }
 

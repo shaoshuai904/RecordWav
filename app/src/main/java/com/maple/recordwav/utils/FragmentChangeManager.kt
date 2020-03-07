@@ -1,7 +1,7 @@
 package com.maple.recordwav.utils
 
 import androidx.fragment.app.FragmentManager
-import com.maple.recordwav.ui.BaseFragment
+import com.maple.recordwav.base.BaseFragment
 import java.util.*
 
 /**

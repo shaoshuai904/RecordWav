@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.maple.recordwav.R
+import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.ItemVideoViewBinding
 import java.io.File
 
@@ -14,27 +15,21 @@ import java.io.File
  * @author maple
  * @time 2019-07-25
  */
-class AudioAdapter(var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var mData: List<File> = ArrayList()
+class AudioAdapter(var mContext: Context) : BaseQuickAdapter<File, RecyclerView.ViewHolder>() {
 
-    override fun getItemCount() = mData.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = DataBindingUtil.inflate<ItemVideoViewBinding>(
-                LayoutInflater.from(mContext), R.layout.item_video_view, parent, false)
-        return ItemViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        return ItemViewHolder(DataBindingUtil.inflate(LayoutInflater.from(mContext),
+                R.layout.item_video_view, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val taskItem = mData[position]
-        (holder as ItemViewHolder).bindView(taskItem)
-        holder.binding.root.setOnClickListener {
-            mItemClickListener?.onclick(taskItem)
-        }
+        (holder as ItemViewHolder).bindView(getItem(position))
     }
 
-    class ItemViewHolder(val binding: ItemVideoViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ItemViewHolder(private val binding: ItemVideoViewBinding)
+        : RecyclerView.ViewHolder(binding.root) {
         fun bindView(file: File) {
+            bindViewClickListener(this)
             binding.apply {
                 tvTitle.text = file.name
                 tvSize.text = getFileSize(file)
@@ -42,9 +37,7 @@ class AudioAdapter(var mContext: Context) : RecyclerView.Adapter<RecyclerView.Vi
             }
         }
 
-        /**
-         * 文件大小 B
-         */
+        // 文件大小 B
         private fun getFileSize(file: File): String {
             val size = file.length()
             return when {
@@ -55,20 +48,4 @@ class AudioAdapter(var mContext: Context) : RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    fun refresh(dataList: List<File>?) {
-        mData = dataList ?: ArrayList()
-        this.notifyDataSetChanged()
-    }
-
-    // ----------------- item click ----------------------
-    private var mItemClickListener: OnItemClickListener? = null
-
-    interface OnItemClickListener {
-        fun onclick(item: File)
-    }
-
-    fun setOnItemClickListener(itemClickListener: OnItemClickListener): AudioAdapter {
-        this.mItemClickListener = itemClickListener
-        return this
-    }
 }
