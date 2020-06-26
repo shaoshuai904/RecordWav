@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.maple.recordwav.R
 import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.ItemVideoViewBinding
+import com.maple.recordwav.utils.ConversionUtils
 import java.io.File
 
 /**
@@ -32,18 +33,8 @@ class AudioAdapter(var mContext: Context) : BaseQuickAdapter<File, RecyclerView.
             bindViewClickListener(this)
             binding.apply {
                 tvTitle.text = file.name
-                tvSize.text = getFileSize(file)
+                tvSize.text = ConversionUtils.convertB(file.length())
                 tvType.text = file.extension
-            }
-        }
-
-        // 文件大小 B
-        private fun getFileSize(file: File): String {
-            val size = file.length()
-            return when {
-                size < 1024 -> "$size B"
-                size < (1024 * 1024) -> String.format("%.2f KB", size.div(1024f))
-                else -> String.format("%.2f MB", size.div(1024 * 1024f))
             }
         }
     }

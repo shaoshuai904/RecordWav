@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
     implementation 'ch.acra:acra:4.11'// 崩溃上报 5.5.0
+    implementation 'com.github.shaoshuai904:iOS_Style_Dialog:1.4.3'
 }
 repositories {
     mavenCentral()
