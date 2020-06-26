@@ -10,7 +10,6 @@ import com.maple.recorder.parse.WaveFileReader
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
 import com.maple.recordwav.base.BaseFragment
-import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
 import com.maple.recordwav.utils.T
@@ -33,10 +32,8 @@ class ParsePage : BaseFragment() {
     private lateinit var binding: FragmentAudioListBinding
     private val adapter by lazy {
         AudioAdapter(mContext).apply {
-            onItemClickListener = object : BaseQuickAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    getWavInfo(getItem(position).absolutePath)
-                }
+            setOnItemClickListener { item, _ ->
+                getWavInfo(item.absolutePath)
             }
         }
     }

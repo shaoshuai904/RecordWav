@@ -13,7 +13,6 @@ import com.maple.recorder.player.PlayUtils
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
 import com.maple.recordwav.base.BaseFragment
-import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
@@ -32,14 +31,11 @@ class PlayPage : BaseFragment() {
     private lateinit var binding: FragmentAudioListBinding
     private val mAdapter by lazy {
         AudioAdapter(mContext).apply {
-            onItemClickListener = object : BaseQuickAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    dialogPlay(getItem(position))
-                }
+            setOnItemClickListener { item, _ ->
+                dialogPlay(item)
             }
         }
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_audio_list, container, false)
