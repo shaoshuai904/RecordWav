@@ -39,10 +39,10 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/selector_base_fillet_border_bg"
+                android:background="@drawable/sel_base_fillet_border_bg"
                 android:text="@string/start"
                 android:textAllCaps="false"
-                android:textColor="@color/selector_text_color"
+                android:textColor="@color/sel_text_color"
                 android:textSize="20sp" />
 
             <Button
@@ -51,10 +51,10 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/selector_base_fillet_border_bg"
+                android:background="@drawable/sel_base_fillet_border_bg"
                 android:text="@string/pause"
                 android:textAllCaps="false"
-                android:textColor="@color/selector_text_color"
+                android:textColor="@color/sel_text_color"
                 android:textSize="20sp" />
 
             <Button
@@ -63,10 +63,10 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/selector_base_fillet_border_bg"
+                android:background="@drawable/sel_base_fillet_border_bg"
                 android:text="@string/stop"
                 android:textAllCaps="false"
-                android:textColor="@color/selector_text_color"
+                android:textColor="@color/sel_text_color"
                 android:textSize="20sp" />
 
         </LinearLayout>
