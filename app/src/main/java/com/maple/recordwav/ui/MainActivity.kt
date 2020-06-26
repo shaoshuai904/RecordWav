@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
  * @time 2018/4/8.
  */
 class MainActivity : FragmentActivity() {
-    lateinit var fgManager: FragmentChangeManager
+    private lateinit var fgManager: FragmentChangeManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

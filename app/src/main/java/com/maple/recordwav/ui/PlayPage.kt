@@ -59,7 +59,7 @@ class PlayPage : BaseFragment() {
             rvVideo.adapter = mAdapter
             srlRefreshLayout.setRefreshHeader(ClassicsHeader(mContext))
                     .setOnRefreshListener { searchFile() }
-                    .isEnableLoadMore = false
+                    .setEnableLoadMore(false)
         }
     }
 

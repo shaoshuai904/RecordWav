@@ -59,7 +59,7 @@ class ParsePage : BaseFragment() {
             rvVideo.adapter = adapter
             srlRefreshLayout.setRefreshHeader(ClassicsHeader(mContext))
                     .setOnRefreshListener { searchFile() }
-                    .isEnableLoadMore = false
+                    .setEnableLoadMore(false)
         }
     }
 
