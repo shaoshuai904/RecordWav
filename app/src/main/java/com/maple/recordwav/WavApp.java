@@ -12,7 +12,7 @@ import java.io.File;
 
 @ReportsCrashes(
         mode = ReportingInteractionMode.DIALOG,
-        mailTo = "maple.shao@everbridge.com",
+        mailTo = "shaoshuai904@gmail.com",
         resToastText = R.string.crash_toast_text,
         resDialogText = R.string.crash_dialog_text,
         resDialogIcon = R.drawable.ic_launcher,

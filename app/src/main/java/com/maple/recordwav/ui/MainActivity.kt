@@ -3,7 +3,6 @@ package com.maple.recordwav.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
@@ -34,7 +33,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initView() {
-        val fragmentList = arrayListOf(RecordPage(), PlayPage(), ParsePage())
+        val fragmentList = arrayListOf(RecordPage(), PlayParsePage(), AboutPage())
         val iconArr = arrayListOf(R.drawable.sel_tab_record_icon, R.drawable.sel_tab_play_icon, R.drawable.sel_tab_parse_icon)
         val titleArr = arrayListOf(getString(R.string.record), getString(R.string.play), getString(R.string.info))
         fragmentList.forEachIndexed { index, _ ->
