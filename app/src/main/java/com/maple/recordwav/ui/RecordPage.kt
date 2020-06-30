@@ -138,7 +138,7 @@ class RecordPage : BaseFragment() {
     private fun getRecorder(): Recorder {
         return MsRecorder.wav(
                 File(getVoicePath()),
-                AudioRecordConfig.Default(),
+                AudioRecordConfig(),
                 PullTransport.Default().setOnAudioChunkPulledListener { audioChunk ->
                     Log.e("max  ", "amplitude: ${audioChunk.maxAmplitude()} ")
                     animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
@@ -150,7 +150,7 @@ class RecordPage : BaseFragment() {
     private fun getNoiseRecorder(): Recorder {
         return MsRecorder.wav(
                 File(getVoicePath()),
-                AudioRecordConfig.Default(),
+                AudioRecordConfig(),
                 PullTransport.Noise().setOnAudioChunkPulledListener { audioChunk ->
                     Log.e("max  ", "amplitude: ${audioChunk.maxAmplitude()} ")
                     animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())

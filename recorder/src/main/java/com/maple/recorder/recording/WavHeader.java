@@ -21,8 +21,8 @@ public class WavHeader {
      * 返回WAV文件头的byte数组
      */
     public byte[] toBytes() {
-        long sampleRateInHz = config.sampleRateInHz();
-        int channels = (config.channelConfig() == AudioFormat.CHANNEL_IN_MONO ? 1 : 2);
+        long sampleRateInHz = config.getSampleRateInHz();
+        int channels = (config.getChannelConfig() == AudioFormat.CHANNEL_IN_MONO ? 1 : 2);
         byte bitsPerSample = config.bitsPerSample();
         return wavFileHeader(
                 totalAudioLength - 44,

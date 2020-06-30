@@ -32,9 +32,9 @@ public class BaseDataRecorder implements Recorder {
         this.pullTransport = pullTransport;
         // 计算缓冲区大小
         this.bufferSizeInBytes = AudioRecord.getMinBufferSize(
-                config.sampleRateInHz(),
-                config.channelConfig(),
-                config.audioFormat()
+                config.getSampleRateInHz(),
+                config.getChannelConfig(),
+                config.getAudioFormat()
         );
     }
 
@@ -51,8 +51,8 @@ public class BaseDataRecorder implements Recorder {
     private void startRecord() {
         try {
             if (audioRecord == null) {
-                audioRecord = new AudioRecord(config.audioSource(), config.sampleRateInHz(),
-                        config.channelConfig(), config.audioFormat(), bufferSizeInBytes);
+                audioRecord = new AudioRecord(config.getAudioSource(), config.getSampleRateInHz(),
+                        config.getChannelConfig(), config.getAudioFormat(), bufferSizeInBytes);
             }
             if (outputStream == null) {
                 outputStream = new FileOutputStream(file);

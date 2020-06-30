@@ -9,26 +9,26 @@ import android.media.MediaRecorder;
  * @author maple
  * @time 2018/4/10.
  */
-public interface AudioRecordConfig {
+public class AudioRecordConfig {
 
     /**
      * 音频通道（声道数）
      * {@link AudioFormat#CHANNEL_IN_MONO} 单声道
      * {@link AudioFormat#CHANNEL_IN_STEREO} 立体声，所有设备可用
      */
-    int channelConfig();
+    private int channelConfig = AudioFormat.CHANNEL_IN_MONO;
 
     /**
      * 音频源，详见 {@link MediaRecorder.AudioSource}
      */
-    int audioSource();
+    private int audioSource = MediaRecorder.AudioSource.MIC;
 
     /**
      * 采样率 赫兹
      * 44100Hz 所有设备均可用
      * 22050Hz  16000Hz  11025Hz
      */
-    int sampleRateInHz();
+    private int sampleRateInHz = 44100;
 
     /**
      * 音频数据格式
@@ -36,60 +36,60 @@ public interface AudioRecordConfig {
      * {@link AudioFormat#ENCODING_PCM_16BIT},每个样本16位，保证所有设备支持
      * {@link AudioFormat#ENCODING_PCM_FLOAT},每个样本 单精度Float
      */
-    int audioFormat(); // audioFormat
+    private int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
 
-    byte bitsPerSample();
 
-    /**
-     * Application should use this default implementation of {@link AudioRecordConfig} to configure
-     * the Audio Record Source.
-     */
-    class Default implements AudioRecordConfig {
-        private final int audioSource;
-        private final int channelConfig;
-        private final int sampleRateInHz;
-        private final int audioFormat;
+    public AudioRecordConfig() {
+    }
 
-        public Default() {
-            this(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100);
+    public AudioRecordConfig(int audioSource, int audioFormat, int channelConfig, int sampleRateInHz) {
+        this.audioSource = audioSource;
+        this.audioFormat = audioFormat;
+        this.channelConfig = channelConfig;
+        this.sampleRateInHz = sampleRateInHz;
+    }
+
+    public byte bitsPerSample() {
+        if (audioFormat == AudioFormat.ENCODING_PCM_16BIT) {
+            return 16;
+        } else if (audioFormat == AudioFormat.ENCODING_PCM_8BIT) {
+            return 8;
+        } else {
+            return 16;
         }
+    }
 
-        public Default(int audioSource, int audioFormat, int channelConfig, int sampleRateInHz) {
-            this.audioSource = audioSource;
-            this.audioFormat = audioFormat;
-            this.channelConfig = channelConfig;
-            this.sampleRateInHz = sampleRateInHz;
-        }
+    // -------------------------- get/set ----------------------------------
 
-        @Override
-        public int channelConfig() {
-            return channelConfig;
-        }
+    public int getChannelConfig() {
+        return channelConfig;
+    }
 
-        @Override
-        public int audioSource() {
-            return audioSource;
-        }
+    public void setChannelConfig(int channelConfig) {
+        this.channelConfig = channelConfig;
+    }
 
-        @Override
-        public int sampleRateInHz() {
-            return sampleRateInHz;
-        }
+    public int getAudioSource() {
+        return audioSource;
+    }
 
-        @Override
-        public int audioFormat() {
-            return audioFormat;
-        }
+    public void setAudioSource(int audioSource) {
+        this.audioSource = audioSource;
+    }
 
-        @Override
-        public byte bitsPerSample() {
-            if (audioFormat == AudioFormat.ENCODING_PCM_16BIT) {
-                return 16;
-            } else if (audioFormat == AudioFormat.ENCODING_PCM_8BIT) {
-                return 8;
-            } else {
-                return 16;
-            }
-        }
+    public int getSampleRateInHz() {
+        return sampleRateInHz;
+    }
+
+    public void setSampleRateInHz(int sampleRateInHz) {
+        this.sampleRateInHz = sampleRateInHz;
+    }
+
+    public int getAudioFormat() {
+        return audioFormat;
+    }
+
+    public void setAudioFormat(int audioFormat) {
+        this.audioFormat = audioFormat;
     }
 }
