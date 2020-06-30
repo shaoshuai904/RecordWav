@@ -3,7 +3,6 @@ package com.maple.recorder.recording;
 import android.media.AudioRecord;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,7 +18,7 @@ import java.util.concurrent.Executors;
 public class BaseDataRecorder implements Recorder {
     protected PullTransport pullTransport;
     protected AudioRecordConfig config;
-    protected int pullSizeInBytes;// 缓冲区大小
+    protected int bufferSizeInBytes;// 缓冲区大小
     protected File file;
 
     private AudioRecord audioRecord;
@@ -32,10 +31,10 @@ public class BaseDataRecorder implements Recorder {
         this.config = config;
         this.pullTransport = pullTransport;
         // 计算缓冲区大小
-        this.pullSizeInBytes = AudioRecord.getMinBufferSize(
-                config.frequency(),
-                config.channelPositionMask(),
-                config.audioEncoding()
+        this.bufferSizeInBytes = AudioRecord.getMinBufferSize(
+                config.sampleRateInHz(),
+                config.channelConfig(),
+                config.audioFormat()
         );
     }
 
@@ -52,15 +51,15 @@ public class BaseDataRecorder implements Recorder {
     private void startRecord() {
         try {
             if (audioRecord == null) {
-                audioRecord = new AudioRecord(config.audioSource(), config.frequency(),
-                        config.channelPositionMask(), config.audioEncoding(), pullSizeInBytes);
+                audioRecord = new AudioRecord(config.audioSource(), config.sampleRateInHz(),
+                        config.channelConfig(), config.audioFormat(), bufferSizeInBytes);
             }
             if (outputStream == null) {
                 outputStream = new FileOutputStream(file);
             }
             audioRecord.startRecording();
             pullTransport.isEnableToBePulled(true);
-            pullTransport.startPoolingAndWriting(audioRecord, pullSizeInBytes, outputStream);
+            pullTransport.startPoolingAndWriting(audioRecord, bufferSizeInBytes, outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
