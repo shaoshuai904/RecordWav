@@ -166,8 +166,7 @@ class RecordPage : BaseFragment() {
                             val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
                             Log.e("降噪模式", message)
                             T.showShort(mContext, message)
-                        }
-        )
+                        })
     }
 
     // 录音文件存储名称

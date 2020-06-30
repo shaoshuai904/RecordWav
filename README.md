@@ -1,7 +1,7 @@
 ﻿# RecordWav
 
 
-[![demo](https://img.shields.io/badge/download-demo-blue.svg)](https://github.com/shaoshuai904/RecordWav/blob/master/screens/app_v1.0.2_11.apk)
+[![demo](https://img.shields.io/badge/download-demo-blue.svg)](https://github.com/shaoshuai904/RecordWav/blob/master/screens/app_v1.0.3_12.apk)
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
 
 
@@ -37,15 +37,18 @@
 
 ```groovy 
     dependencies {
-        implementation 'com.github.shaoshuai904:RecordWav:1.0.2'
+        implementation 'com.github.shaoshuai904:RecordWav:1.0.3'
     }
 ```
 
 
-###  快速使用 
+###  示例代码 
 
 	构造参数:[ 文件保存路径 + 参数配置 + 各类监听回调(音频数据块拉取监听/沉默监听) ]
 	方法：startRecording  pauseRecording  resumeRecording  stopRecording
+
+
+获取普通录音机（java）
 
 ```java 
     	Recorder recorder;
@@ -84,7 +87,7 @@
                         // 沉默监听
                         .setOnSilenceListener { silenceTime, discardTime ->
                             Log.e("降噪模式", "沉默时间：$silenceTime ,丢弃时间：$discardTime")
-                        }
+                        })
 ```
 
 

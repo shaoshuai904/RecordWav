@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_info"
+        <WebView
+            android:id="@+id/wb_web"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#abcdef"
-            android:padding="10dp"
-            tools:text="获取信息" />
+            android:layout_height="match_parent" />
+
+        <!--        <ImageView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="30dp"-->
+        <!--            android:src="@drawable/ic_launcher" />-->
+
+        <!--        <TextView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:text="Email: maple904@163.com \n Github: https://github.com/shaoshuai904/RecordWav" />-->
+
+        <!--        <TextView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="30dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:padding="10dp"-->
+        <!--            android:text="欢迎Star和Issues\n\n和你的start是我不断更新的动力！"-->
+        <!--            android:textSize="18sp" />-->
 
     </LinearLayout>
 
