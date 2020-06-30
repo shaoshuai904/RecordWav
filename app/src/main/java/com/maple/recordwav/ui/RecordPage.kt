@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.maple.recorder.recording.*
+import com.maple.recorder.recording.AudioRecordConfig
+import com.maple.recorder.recording.MsRecorder
+import com.maple.recorder.recording.PullTransport
+import com.maple.recorder.recording.Recorder
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
 import com.maple.recordwav.base.BaseFragment
@@ -139,8 +142,9 @@ class RecordPage : BaseFragment() {
         return MsRecorder.wav(
                 File(getVoicePath()),
                 AudioRecordConfig(),
+                // AudioRecordConfig(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100),
                 PullTransport.Default().setOnAudioChunkPulledListener { audioChunk ->
-                    Log.e("max  ", "amplitude: ${audioChunk.maxAmplitude()} ")
+                    Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
                     animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
                 }
         )
@@ -151,17 +155,22 @@ class RecordPage : BaseFragment() {
         return MsRecorder.wav(
                 File(getVoicePath()),
                 AudioRecordConfig(),
-                PullTransport.Noise().setOnAudioChunkPulledListener { audioChunk ->
-                    Log.e("max  ", "amplitude: ${audioChunk.maxAmplitude()} ")
-                    animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
-                }.setOnSilenceListener { silenceTime, discardTime ->
-                    val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
-                    Log.e("降噪模式", message)
-                    T.showShort(mContext, message)
-                }
+                PullTransport.Noise()
+                        // 数据监听
+                        .setOnAudioChunkPulledListener { audioChunk ->
+                            Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                            animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
+                        }
+                        // 沉默监听
+                        .setOnSilenceListener { silenceTime, discardTime ->
+                            val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
+                            Log.e("降噪模式", message)
+                            T.showShort(mContext, message)
+                        }
         )
     }
 
+    // 录音文件存储名称
     private fun getVoicePath(): String {
         val name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss")
         return WavApp.rootPath + name + ".wav"

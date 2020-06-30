@@ -42,7 +42,7 @@
 ```
 
 
-###  MsRecorder 
+###  快速使用 
 
 	构造参数:[ 文件保存路径 + 参数配置 + 各类监听回调(音频数据块拉取监听/沉默监听) ]
 	方法：startRecording  pauseRecording  resumeRecording  stopRecording
@@ -51,22 +51,40 @@
     	Recorder recorder;
         recorder = MsRecorder.wav(
                 new File(voicePath),
-                new AudioRecordConfig.Default(),
+                new AudioRecordConfig(),
                 new PullTransport.Default()
                         .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
                             @Override
                             public void onAudioChunkPulled(AudioChunk audioChunk) {
-                                Log.e("max  ", "amplitude: " + audioChunk.maxAmplitude());
+                                Log.e("数据监听", "amplitude: " + audioChunk.maxAmplitude());
                             }
                         })
 
         );
 
-        recorder.startRecording(); 
-        recorder.pauseRecording();
-        recorder.resumeRecording();
-        recorder.stopRecording();
+        recorder.startRecording(); // 开始
+        recorder.pauseRecording(); // 暂停
+        recorder.resumeRecording(); // 重新开始
+        recorder.stopRecording(); // 结束
 
+```
+
+    获取降噪录音机，跳过沉默区，只录"有声音"的部分（kotlin）
+
+```java 
+        MsRecorder.wav(
+                File(getVoicePath()),
+                AudioRecordConfig(),
+                // AudioRecordConfig(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100),
+                PullTransport.Noise()
+                        // 数据监听
+                        .setOnAudioChunkPulledListener { audioChunk ->
+                            Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                        }
+                        // 沉默监听
+                        .setOnSilenceListener { silenceTime, discardTime ->
+                            Log.e("降噪模式", "沉默时间：$silenceTime ,丢弃时间：$discardTime")
+                        }
 ```
 
 
