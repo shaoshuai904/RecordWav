@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.maple.msdialog.adapter.BaseQuickAdapter
 import com.maple.recordwav.R
-import com.maple.recordwav.base.BaseQuickAdapter
 import com.maple.recordwav.databinding.ItemVideoViewBinding
 import com.maple.recordwav.utils.ConversionUtils
 import java.io.File
