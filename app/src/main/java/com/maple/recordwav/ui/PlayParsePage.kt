@@ -68,9 +68,9 @@ class PlayParsePage : BaseFragment() {
         Observable.just(File(WavApp.rootPath))
                 .map {
                     SearchFileUtils.search(it, arrayOf(".wav")).apply {
-                        sortWith(Comparator { o1, o2 ->
+                        sortWith { o1, o2 ->
                             o2.name.compareTo(o1.name)
-                        })
+                        }
                     }
                 }
                 .subscribeOn(Schedulers.io())

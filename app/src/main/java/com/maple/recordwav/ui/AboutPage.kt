@@ -51,7 +51,7 @@ class AboutPage : BaseFragment() {
                     setCanceledOnTouchOutside(false)
                     setTitle("连个网？")
                     setLeftButton("拒绝")
-                    setRightButton("再选一次", View.OnClickListener { requestPermission() })
+                    setRightButton("再选一次") { requestPermission() }
                 }.show()
             }
         }

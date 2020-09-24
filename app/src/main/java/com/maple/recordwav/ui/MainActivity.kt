@@ -3,7 +3,6 @@ package com.maple.recordwav.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
@@ -71,8 +70,8 @@ class MainActivity : FragmentActivity() {
                     setCanceledOnTouchOutside(false)
                     setTitle("权限不足！")
                     setMessage("录音必须要有“RECORD_AUDIO”和“WRITE_EXTERNAL_STORAGE”权限哦，否则无法录音和存储。")
-                    setLeftButton("退出", View.OnClickListener { this@MainActivity.finish() })
-                    setRightButton("再选一次", View.OnClickListener { requestPermission() })
+                    setLeftButton("退出") { this@MainActivity.finish() }
+                    setRightButton("再选一次") { requestPermission() }
                 }.show()
             }
         }
