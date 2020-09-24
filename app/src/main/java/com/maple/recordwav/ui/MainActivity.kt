@@ -32,7 +32,11 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initView() {
-        val fragmentList = arrayListOf(RecordPage(), PlayParsePage(), AboutPage())
+        val fragmentList = arrayListOf(
+                supportFragmentManager.findFragmentByTag("tab_0") ?: RecordPage(),
+                supportFragmentManager.findFragmentByTag("tab_1") ?: PlayParsePage(),
+                supportFragmentManager.findFragmentByTag("tab_2") ?: AboutPage()
+        )
         val iconArr = arrayListOf(R.drawable.sel_tab_record_icon, R.drawable.sel_tab_play_icon, R.drawable.sel_tab_parse_icon)
         val titleArr = arrayListOf(getString(R.string.record), getString(R.string.play), getString(R.string.info))
         fragmentList.forEachIndexed { index, _ ->
@@ -43,11 +47,12 @@ class MainActivity : FragmentActivity() {
             }
             binding.tlTab.addTab(tab)
         }
-        val fgManager = FragmentChangeManager(supportFragmentManager, R.id.fl_content, fragmentList)
+        val fgManager = FragmentChangeManager(supportFragmentManager, R.id.fl_content, fragmentList, tabIndex)
         binding.tlTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 tabIndex = tab.position
                 fgManager.setCurrentFragment(tabIndex)
+                (tab.customView as BottomTabView?)?.setSelectStatus(true)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}

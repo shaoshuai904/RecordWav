@@ -1,8 +1,7 @@
 package com.maple.recordwav.utils
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.maple.recordwav.base.BaseFragment
-import java.util.*
 
 /**
  * Fragment manager
@@ -13,27 +12,33 @@ import java.util.*
 class FragmentChangeManager(
         private val mFragmentManager: FragmentManager,
         private val mContainerViewId: Int,
-        private val mFragments: ArrayList<BaseFragment>
+        private val mFragments: List<Fragment>,
+        private var currentTab: Int = 0
 ) {
-    private var currentTab: Int = 0
 
     init {
         mFragmentManager.beginTransaction().apply {
-            for (fragment in mFragments) {
-                this.add(mContainerViewId, fragment).hide(fragment)
+            mFragments.forEachIndexed { index, fragment ->
+                val tag = "tab_${index}"
+                // mFragmentManager.findFragmentByTag(tag)?.let { remove(it) }
+                if (!fragment.isAdded) {
+                    add(mContainerViewId, fragment, tag).hide(fragment)
+                }
             }
         }.commit()
-        setCurrentFragment(0)
+        setCurrentFragment(currentTab)
     }
 
     fun setCurrentFragment(index: Int) {
+        // tab相同 且 页面已添加，不再更新
+        if (currentTab == index && mFragments[index].isVisible && mFragmentManager.fragments.size > 0)
+            return
         mFragmentManager.beginTransaction().apply {
-            for (i in mFragments.indices) {
-                val fragment = mFragments[i]
+            mFragments.forEachIndexed { i, fragment ->
                 if (i == index) {
-                    this.show(fragment)
+                    show(fragment)
                 } else {
-                    this.hide(fragment)
+                    hide(fragment)
                 }
             }
         }.commit()
