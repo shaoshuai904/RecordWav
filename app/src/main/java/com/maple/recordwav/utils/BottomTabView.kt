@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.maple.recordwav.R
 import com.maple.recordwav.databinding.ItemButtomTabViewBinding
@@ -56,7 +57,7 @@ class BottomTabView : FrameLayout {
     fun setSelectStatus(select: Boolean) {
         if (select && animatorRes != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
-                val drawable = context.getDrawable(animatorRes!!)
+                val drawable = ContextCompat.getDrawable(context, animatorRes!!)
                 binding.ivIcon.setImageDrawable(drawable)
                 if (drawable is AnimatedVectorDrawable) {
                     drawable.registerAnimationCallback(object : Animatable2.AnimationCallback() {

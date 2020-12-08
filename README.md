@@ -16,7 +16,7 @@
 - 解析本地`wav`文件的信息
 
 
-![show_recorder](https://github.com/shaoshuai904/RecordWav/blob/master/screens/show_02.png)
+![show_recorder](/screens/show_02.png)
 
 
 ### 快速使用
@@ -34,6 +34,7 @@
 ```
 
 **Step 2.** Add the dependency
+[![](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
 
 ```groovy 
     dependencies {
