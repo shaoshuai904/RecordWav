@@ -30,7 +30,6 @@
             maven { url 'https://jitpack.io' }
         }
     }
-
 ```
 
 **Step 2.** Add the dependency
