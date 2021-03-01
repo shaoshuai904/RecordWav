@@ -1,5 +1,6 @@
 package com.maple.recordwav.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -7,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.maple.popups.lib.MsNormalPopup
+import com.maple.popups.lib.MsPopup
+import com.maple.popups.utils.DensityUtils.dp2px
 import com.maple.recorder.recording.AudioRecordConfig
 import com.maple.recorder.recording.MsRecorder
 import com.maple.recorder.recording.PullTransport
@@ -16,6 +20,7 @@ import com.maple.recordwav.WavApp
 import com.maple.recordwav.base.BaseFragment
 import com.maple.recordwav.databinding.FragmentRecordBinding
 import com.maple.recordwav.utils.DateUtils
+import com.maple.recordwav.utils.RecordConfigView
 import com.maple.recordwav.utils.T
 import java.io.File
 
@@ -27,6 +32,8 @@ import java.io.File
  */
 class RecordPage : BaseFragment() {
     private lateinit var binding: FragmentRecordBinding
+    private lateinit var recorder: Recorder
+    private var recordConfig = AudioRecordConfig() // 参数配置
     private var isRecording = false
     private var curBase: Long = 0
 
@@ -39,36 +46,33 @@ class RecordPage : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        var recorder = getRecorder()
-        updateRecordStatus(RecordStatus.NoStart)
+        createRecorder()
+        updateRecordStatusUI(RecordStatus.NoStart)
 
         binding.apply {
             btStart.setOnClickListener {
                 recorder.startRecording()
-                updateRecordStatus(RecordStatus.Recording)
+                updateRecordStatusUI(RecordStatus.Recording)
             }
             btStop.setOnClickListener {
                 recorder.stopRecording()
-                updateRecordStatus(RecordStatus.Stop)
+                updateRecordStatusUI(RecordStatus.Stop)
             }
             btPauseResume.setOnClickListener {
                 if (isRecording) {
                     recorder.pauseRecording()
-                    updateRecordStatus(RecordStatus.Pause)
+                    updateRecordStatusUI(RecordStatus.Pause)
                 } else {
                     recorder.resumeRecording()
-                    updateRecordStatus(RecordStatus.Resume)
+                    updateRecordStatusUI(RecordStatus.Resume)
                 }
             }
             skipSilence.setOnCheckedChangeListener { _, isChecked ->
-                recorder = if (isChecked) {
-                    getNoiseRecorder()
-                } else {
-                    getRecorder()
-                }
+                createRecorder(isChecked)
             }
+            tvRecordConfig.text = "$recordConfig"
+            tvRecordConfig.setOnClickListener { showConfigWindow(it) }
         }
-
     }
 
     enum class RecordStatus {
@@ -80,7 +84,7 @@ class RecordPage : BaseFragment() {
     }
 
     // update UI
-    private fun updateRecordStatus(status: RecordStatus) {
+    private fun updateRecordStatusUI(status: RecordStatus) {
         when (status) {
             // 未开始   停止
             RecordStatus.NoStart,
@@ -137,16 +141,25 @@ class RecordPage : BaseFragment() {
         }
     }
 
+    private fun createRecorder(skipSilence: Boolean = binding.skipSilence.isChecked) {
+        recorder = if (skipSilence) {
+            getNoiseRecorder()
+        } else {
+            getRecorder()
+        }
+    }
+
     // 获取普通录音机
     private fun getRecorder(): Recorder {
         return MsRecorder.wav(
                 File(getVoicePath()),
-                AudioRecordConfig(),
+                recordConfig,
                 // AudioRecordConfig(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100),
-                PullTransport.Default().setOnAudioChunkPulledListener { audioChunk ->
-                    Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
-                    animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
-                }
+                PullTransport.Default()// 普通录音模式
+                        .setOnAudioChunkPulledListener { audioChunk ->
+                            Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                            animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
+                        }
         )
     }
 
@@ -154,17 +167,15 @@ class RecordPage : BaseFragment() {
     private fun getNoiseRecorder(): Recorder {
         return MsRecorder.wav(
                 File(getVoicePath()),
-                AudioRecordConfig(),
-                PullTransport.Noise()
-                        // 数据监听
+                recordConfig,
+                PullTransport.Noise()// 跳过静音区
                         .setOnAudioChunkPulledListener { audioChunk ->
                             Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
                             animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
                         }
-                        // 沉默监听
                         .setOnSilenceListener { silenceTime, discardTime ->
                             val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
-                            Log.e("降噪模式", message)
+                            Log.e("沉默监听", message)
                             T.showShort(mContext, message)
                         })
     }
@@ -175,6 +186,7 @@ class RecordPage : BaseFragment() {
         return WavApp.rootPath + name + ".wav"
     }
 
+    // 做点缩放动画
     private fun animateVoice(maxPeak: Float) {
         if (maxPeak < 0f || maxPeak > 0.5f) {
             return
@@ -186,4 +198,31 @@ class RecordPage : BaseFragment() {
                 .start()
     }
 
+    // 显示录音参数配置窗口
+    private fun showConfigWindow(view: View) {
+        if (!binding.btStart.isEnabled) {
+            // 正在录制中，不可用
+            return
+        }
+        val configView = RecordConfigView(mContext).apply {
+            updateConfig(recordConfig)
+            onConfigChangeListener = object : RecordConfigView.OnRecordConfigChangeListener {
+                override fun onConfigChange(config: AudioRecordConfig) {
+                    recordConfig = config
+                    binding.tvRecordConfig.text = "$recordConfig"
+                    createRecorder()
+                }
+            }
+        }
+        MsPopup(mContext, ViewGroup.LayoutParams.MATCH_PARENT)
+                .setContextView(configView)
+                .arrow(true)
+                .shadow(true)
+                .borderColor(Color.BLACK)
+                .borderWidth(1)
+                .dimAmount(0.3f)
+                .edgeProtection(10f.dp2px(mContext))
+                .preferredDirection(MsNormalPopup.Direction.TOP)
+                .show(view)
+    }
 }

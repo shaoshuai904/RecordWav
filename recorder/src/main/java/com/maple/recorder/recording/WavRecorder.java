@@ -13,6 +13,13 @@ import java.io.RandomAccessFile;
  */
 public class WavRecorder extends BaseDataRecorder {
 
+    /**
+     * 构造方法
+     *
+     * @param file          保存录音的文件
+     * @param config        录音参数配置
+     * @param pullTransport 数据推送器，
+     */
     public WavRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
         super(file, config, pullTransport);
     }

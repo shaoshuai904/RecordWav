@@ -10,14 +10,6 @@ import android.media.MediaRecorder;
  * @time 2018/4/10.
  */
 public class AudioRecordConfig {
-
-    /**
-     * 音频通道（声道数）
-     * {@link AudioFormat#CHANNEL_IN_MONO} 单声道
-     * {@link AudioFormat#CHANNEL_IN_STEREO} 立体声，所有设备可用
-     */
-    private int channelConfig = AudioFormat.CHANNEL_IN_MONO;
-
     /**
      * 音频源，详见 {@link MediaRecorder.AudioSource}
      */
@@ -31,6 +23,13 @@ public class AudioRecordConfig {
     private int sampleRateInHz = 44100;
 
     /**
+     * 音频通道（声道数）
+     * {@link AudioFormat#CHANNEL_IN_MONO} 单声道
+     * {@link AudioFormat#CHANNEL_IN_STEREO} 立体声，所有设备可用
+     */
+    private int channelConfig = AudioFormat.CHANNEL_IN_MONO;
+
+    /**
      * 音频数据格式
      * {@link AudioFormat#ENCODING_PCM_8BIT},每个样本8位
      * {@link AudioFormat#ENCODING_PCM_16BIT},每个样本16位，保证所有设备支持
@@ -42,11 +41,11 @@ public class AudioRecordConfig {
     public AudioRecordConfig() {
     }
 
-    public AudioRecordConfig(int audioSource, int audioFormat, int channelConfig, int sampleRateInHz) {
+    public AudioRecordConfig(int audioSource, int sampleRateInHz, int channelConfig, int audioFormat) {
         this.audioSource = audioSource;
-        this.audioFormat = audioFormat;
-        this.channelConfig = channelConfig;
         this.sampleRateInHz = sampleRateInHz;
+        this.channelConfig = channelConfig;
+        this.audioFormat = audioFormat;
     }
 
     public byte bitsPerSample() {
@@ -91,5 +90,15 @@ public class AudioRecordConfig {
 
     public void setAudioFormat(int audioFormat) {
         this.audioFormat = audioFormat;
+    }
+
+    @Override
+    public String toString() {
+        return "录音参数配置: \n{" +
+                "audioSource=" + audioSource +
+                ", sampleRateInHz=" + sampleRateInHz +
+                ", channelConfig=" + channelConfig +
+                ", audioFormat=" + audioFormat +
+                '}';
     }
 }
