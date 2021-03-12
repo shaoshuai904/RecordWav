@@ -1,8 +1,9 @@
 ﻿# RecordWav
 
 
-[![demo](https://img.shields.io/badge/download-demo-blue.svg)](https://github.com/shaoshuai904/RecordWav/blob/master/screens/app_v1.0.3_12.apk)
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
+[![demo](https://img.shields.io/badge/download-demo-blue.svg)](https://github.com/shaoshuai904/RecordWav/blob/master/screens/app_v1.0.3_13.apk?raw=true) <-- 点击下载demo
 
 
 集 `录制`、`播放`、`解析` 于一体的wav文件的工具类。

@@ -11,7 +11,7 @@ import java.util.List;
  * @time 2016/5/23
  */
 public class SearchFileUtils {
-    private static List<File> list = new ArrayList<File>();
+    private static final List<File> list = new ArrayList<File>();
 
     /**
      * 搜索SD卡文件
@@ -31,10 +31,10 @@ public class SearchFileUtils {
             if (file.isDirectory()) {// 是目录则遍历
                 File[] listFile = file.listFiles();// listFiles()可以把当前目录下面的文件和子目录都打出来
                 if (listFile != null) {
-                    for (int i = 0; i < listFile.length; i++) {
+                    for (File value : listFile) {
                         // 如果目录可读就执行（一定要加，不然会挂掉）
                         if (file.canRead()) {
-                            searchFile(listFile[i], ext);// 递归查找
+                            searchFile(value, ext);// 递归查找
                         }
                     }
                 }
@@ -43,8 +43,8 @@ public class SearchFileUtils {
                 // file.getName();// 加入名称
                 // file.getPath();// 加入路径
                 // file.length(); // 加入文件大小
-                for (int i = 0; i < ext.length; i++) {
-                    if (filename.endsWith(ext[i])) {
+                for (String type : ext) {
+                    if (filename.endsWith(type)) {
                         list.add(file);
                     }
                 }
