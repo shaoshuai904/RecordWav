@@ -3,10 +3,8 @@ package com.maple.recordwav.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.maple.msdialog.adapter.BaseQuickAdapter
-import com.maple.recordwav.R
 import com.maple.recordwav.databinding.ItemVideoViewBinding
 import com.maple.recordwav.utils.ConversionUtils
 import java.io.File
@@ -19,8 +17,9 @@ import java.io.File
 class AudioAdapter(var mContext: Context) : BaseQuickAdapter<File, RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(DataBindingUtil.inflate(LayoutInflater.from(mContext),
-                R.layout.item_video_view, parent, false))
+        return ItemViewHolder(
+            ItemVideoViewBinding.inflate(LayoutInflater.from(mContext), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

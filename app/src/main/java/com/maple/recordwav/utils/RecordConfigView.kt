@@ -6,7 +6,6 @@ import android.media.MediaRecorder
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.databinding.DataBindingUtil
 import com.maple.recorder.recording.AudioRecordConfig
 import com.maple.recordwav.R
 import com.maple.recordwav.databinding.ViewRecordConfigBinding
@@ -35,7 +34,7 @@ class RecordConfigView : FrameLayout {
     }
 
     private fun init(context: Context) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_record_config, this, true)
+        binding = ViewRecordConfigBinding.inflate(LayoutInflater.from(context), this, true)
         updateConfig(recordConfig)
         with(binding) {
             // 音频源

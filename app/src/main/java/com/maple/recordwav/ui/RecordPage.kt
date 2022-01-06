@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.maple.popups.lib.MsNormalPopup
 import com.maple.popups.lib.MsPopup
 import com.maple.popups.utils.DensityUtils.dp2px
@@ -38,8 +37,7 @@ class RecordPage : BaseFragment() {
     private var curBase: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record, container, false)
-        binding.lifecycleOwner = this
+        binding = FragmentRecordBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -1,111 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_voice_img"
+            android:layout_width="wrap_content"
+            android:layout_height="260dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="60dp"
+            android:src="@drawable/mic_default" />
+
+        <Chronometer
+            android:id="@+id/com_voice_time"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="40sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-            <ImageView
-                android:id="@+id/iv_voice_img"
-                android:layout_width="wrap_content"
-                android:layout_height="260dp"
-                android:layout_gravity="center_horizontal"
-                android:padding="60dp"
-                android:src="@drawable/mic_default" />
+            <Button
+                android:id="@+id/bt_start"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_base_fillet_border_bg"
+                android:text="@string/start"
+                android:textAllCaps="false"
+                android:textColor="@color/sel_text_color"
+                android:textSize="20sp" />
 
-            <Chronometer
-                android:id="@+id/com_voice_time"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center"
-                android:padding="10dp"
-                android:textSize="40sp" />
+            <Button
+                android:id="@+id/bt_pause_resume"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_base_fillet_border_bg"
+                android:text="@string/pause"
+                android:textAllCaps="false"
+                android:textColor="@color/sel_text_color"
+                android:textSize="20sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <Button
-                    android:id="@+id/bt_start"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/sel_base_fillet_border_bg"
-                    android:text="@string/start"
-                    android:textAllCaps="false"
-                    android:textColor="@color/sel_text_color"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:id="@+id/bt_pause_resume"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/sel_base_fillet_border_bg"
-                    android:text="@string/pause"
-                    android:textAllCaps="false"
-                    android:textColor="@color/sel_text_color"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:id="@+id/bt_stop"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/sel_base_fillet_border_bg"
-                    android:text="@string/stop"
-                    android:textAllCaps="false"
-                    android:textColor="@color/sel_text_color"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <CheckBox
-                    android:id="@+id/skipSilence"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/skip_silent_zone" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/skip_silent_zone_des"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_record_config"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="#D0E7FE"
-                android:text="参数配置："
-                android:textColor="#000000"
-                android:textSize="14sp" />
+            <Button
+                android:id="@+id/bt_stop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_base_fillet_border_bg"
+                android:text="@string/stop"
+                android:textAllCaps="false"
+                android:textColor="@color/sel_text_color"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
-</layout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/skipSilence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/skip_silent_zone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/skip_silent_zone_des"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_record_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="#D0E7FE"
+            android:text="参数配置："
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

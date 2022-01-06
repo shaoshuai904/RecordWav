@@ -1,143 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="采样率: sampleRateInHz"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <RadioGroup
+        android:id="@+id/rg_sample_rate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:checkedButton="@id/rb_44100hz"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_44100hz"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="44100Hz" />
+
+        <RadioButton
+            android:id="@+id/rb_22050hz"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="22050Hz" />
+
+        <RadioButton
+            android:id="@+id/rb_16000hz"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="16000Hz" />
+
+        <RadioButton
+            android:id="@+id/rb_11025hz"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="11025Hz" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_channel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/rb_channel_mono"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="采样率: sampleRateInHz"
+            android:text="声道数: "
             android:textColor="#000000"
             android:textSize="18sp" />
 
-        <RadioGroup
-            android:id="@+id/rg_sample_rate"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/rb_channel_mono"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@id/rb_44100hz"
-            android:orientation="horizontal">
+            android:text="单声道" />
 
-            <RadioButton
-                android:id="@+id/rb_44100hz"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="44100Hz" />
-
-            <RadioButton
-                android:id="@+id/rb_22050hz"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="22050Hz" />
-
-            <RadioButton
-                android:id="@+id/rb_16000hz"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="16000Hz" />
-
-            <RadioButton
-                android:id="@+id/rb_11025hz"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="11025Hz" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/rg_channel"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/rb_channel_stereo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@id/rb_channel_mono"
-            android:orientation="horizontal">
+            android:text="立体声" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="声道数: "
-                android:textColor="#000000"
-                android:textSize="18sp" />
+    </RadioGroup>
 
-            <RadioButton
-                android:id="@+id/rb_channel_mono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="单声道" />
+    <RadioGroup
+        android:id="@+id/rg_audio_format"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/rb_16it"
+        android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_channel_stereo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="立体声" />
-
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/rg_audio_format"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@id/rb_16it"
-            android:orientation="horizontal">
+            android:text="数据格式: "
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="数据格式: "
-                android:textColor="#000000"
-                android:textSize="18sp" />
-
-            <RadioButton
-                android:id="@+id/rb_8bit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="8BIT" />
-
-            <RadioButton
-                android:id="@+id/rb_16it"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="16BIT" />
-
-            <RadioButton
-                android:id="@+id/rb_float"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FLOAT" />
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/rg_audio_source"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/rb_8bit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@id/rb_source_mic"
-            android:orientation="horizontal">
+            android:text="8BIT" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="音频源:  "
-                android:textColor="#000000"
-                android:textSize="18sp" />
+        <RadioButton
+            android:id="@+id/rb_16it"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16BIT" />
 
-            <RadioButton
-                android:id="@+id/rb_default"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DEFAULT" />
+        <RadioButton
+            android:id="@+id/rb_float"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FLOAT" />
+    </RadioGroup>
 
-            <RadioButton
-                android:id="@+id/rb_source_mic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="麦克风" />
+    <RadioGroup
+        android:id="@+id/rg_audio_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@id/rb_source_mic"
+        android:orientation="horizontal">
 
-        </RadioGroup>
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="音频源:  "
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
-</layout>
+        <RadioButton
+            android:id="@+id/rb_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DEFAULT" />
+
+        <RadioButton
+            android:id="@+id/rb_source_mic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="麦克风" />
+
+    </RadioGroup>
+</LinearLayout>

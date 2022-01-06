@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.maple.msdialog.AlertDialog
-import com.maple.recordwav.R
 import com.maple.recordwav.base.BaseFragment
 import com.maple.recordwav.databinding.FragmentAboutBinding
 import com.maple.recordwav.utils.permission.RxPermissions
@@ -23,8 +21,7 @@ class AboutPage : BaseFragment() {
     private lateinit var binding: FragmentAboutBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about, container, false)
-        binding.lifecycleOwner = this
+        binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
 

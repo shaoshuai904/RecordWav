@@ -3,7 +3,6 @@ package com.maple.recordwav.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
 import com.maple.msdialog.AlertDialog
@@ -24,8 +23,8 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initView()
         requestPermission()

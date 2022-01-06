@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import com.maple.recordwav.R
 import com.maple.recordwav.databinding.ItemButtomTabViewBinding
 
 /**
@@ -38,9 +36,8 @@ class BottomTabView : FrameLayout {
     }
 
     private fun init(context: Context) {
-        binding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
-                R.layout.item_buttom_tab_view, this, true
+        binding = ItemButtomTabViewBinding.inflate(
+            LayoutInflater.from(context), this, true
         )
     }
 

@@ -7,11 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import com.maple.recorder.parse.WaveFileReader
 import com.maple.recorder.player.PlayDialog
 import com.maple.recorder.player.PlayUtils
-import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
 import com.maple.recordwav.base.BaseFragment
 import com.maple.recordwav.databinding.FragmentAudioListBinding
@@ -42,8 +40,7 @@ class PlayParsePage : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_audio_list, container, false)
-        binding.lifecycleOwner = this
+        binding = FragmentAudioListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
