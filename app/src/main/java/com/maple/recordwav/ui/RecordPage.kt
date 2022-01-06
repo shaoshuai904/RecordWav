@@ -150,32 +150,32 @@ class RecordPage : BaseFragment() {
     // 获取普通录音机
     private fun getRecorder(): Recorder {
         return MsRecorder.wav(
-                File(getVoicePath()),
-                recordConfig,
-                // AudioRecordConfig(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100),
-                PullTransport.Default()// 普通录音模式
-                        .setOnAudioChunkPulledListener { audioChunk ->
-                            Log.d("maple_log", "最大值 : ${audioChunk.maxAmplitude()} ")
-                            animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
-                        }
+            File(getVoicePath()),
+            recordConfig,
+            // AudioRecordConfig(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100),
+            // 普通录音模式
+            PullTransport.Default().setOnAudioChunkPulledListener { audioChunk ->
+                Log.d("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
+            }
         )
     }
 
     // 获取降噪录音机，跳过沉默区，只录"有声音"的部分
     private fun getNoiseRecorder(): Recorder {
         return MsRecorder.wav(
-                File(getVoicePath()),
-                recordConfig,
-                PullTransport.Noise()// 跳过静音区
-                        .setOnAudioChunkPulledListener { audioChunk ->
-                            Log.d("maple_log", "最大值 : ${audioChunk.maxAmplitude()} ")
-                            animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
-                        }
-                        .setOnSilenceListener { silenceTime, discardTime ->
-                            val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
-                            Log.d("maple_log", message)
-                            T.showShort(mContext, message)
-                        })
+            File(getVoicePath()),
+            recordConfig,
+            // 跳过静音区
+            PullTransport.Noise().setOnAudioChunkPulledListener { audioChunk ->
+                Log.d("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
+            }.setOnSilenceListener { silenceTime, discardTime ->
+                val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
+                Log.d("降噪模式", message)
+                T.showShort(mContext, message)
+            }
+        )
     }
 
     // 录音文件存储名称
@@ -192,10 +192,10 @@ class RecordPage : BaseFragment() {
             return
         }
         binding.ivVoiceImg.animate()
-                .scaleX(1 + maxPeak)
-                .scaleY(1 + maxPeak)
-                .setDuration(10)
-                .start()
+            .scaleX(1 + maxPeak)
+            .scaleY(1 + maxPeak)
+            .setDuration(10)
+            .start()
     }
 
     // 显示录音参数配置窗口
@@ -215,14 +215,14 @@ class RecordPage : BaseFragment() {
             }
         }
         MsPopup(mContext, ViewGroup.LayoutParams.MATCH_PARENT)
-                .setContextView(configView)
-                .arrow(true)
-                .shadow(true)
-                .borderColor(Color.BLACK)
-                .borderWidth(1)
-                .dimAmount(0.3f)
-                .edgeProtection(10f.dp2px(mContext))
-                .preferredDirection(MsNormalPopup.Direction.TOP)
-                .show(view)
+            .setContextView(configView)
+            .arrow(true)
+            .shadow(true)
+            .borderColor(Color.BLACK)
+            .borderWidth(1)
+            .dimAmount(0.3f)
+            .edgeProtection(10f.dp2px(mContext))
+            .preferredDirection(MsNormalPopup.Direction.TOP)
+            .show(view)
     }
 }
