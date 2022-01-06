@@ -155,7 +155,7 @@ class RecordPage : BaseFragment() {
                 // AudioRecordConfig(MediaRecorder.AudioSource.MIC, AudioFormat.ENCODING_PCM_16BIT, AudioFormat.CHANNEL_IN_MONO, 44100),
                 PullTransport.Default()// 普通录音模式
                         .setOnAudioChunkPulledListener { audioChunk ->
-                            Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                            Log.d("maple_log", "最大值 : ${audioChunk.maxAmplitude()} ")
                             animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
                         }
         )
@@ -168,12 +168,12 @@ class RecordPage : BaseFragment() {
                 recordConfig,
                 PullTransport.Noise()// 跳过静音区
                         .setOnAudioChunkPulledListener { audioChunk ->
-                            Log.e("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ")
+                            Log.d("maple_log", "最大值 : ${audioChunk.maxAmplitude()} ")
                             animateVoice((audioChunk.maxAmplitude() / 200.0).toFloat())
                         }
                         .setOnSilenceListener { silenceTime, discardTime ->
                             val message = "沉默时间：$silenceTime ,丢弃时间：$discardTime"
-                            Log.e("沉默监听", message)
+                            Log.d("maple_log", message)
                             T.showShort(mContext, message)
                         })
     }
@@ -181,7 +181,9 @@ class RecordPage : BaseFragment() {
     // 录音文件存储名称
     private fun getVoicePath(): String {
         val name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss")
-        return WavApp.rootPath + name + ".wav"
+        val filePath = WavApp.getSaveFile().absolutePath + "/" + name + ".wav"
+        Log.d("maple_log", "filePath: $filePath")
+        return filePath
     }
 
     // 做点缩放动画

@@ -29,7 +29,7 @@ object DateUtils {
      */
     @JvmStatic
     fun date2Str(date: Date, fmt: String): String {
-        val dateFormat = SimpleDateFormat(fmt)
+        val dateFormat = SimpleDateFormat(fmt, Locale.getDefault())
         return dateFormat.format(date)
     }
 
@@ -42,7 +42,7 @@ object DateUtils {
      */
     @JvmStatic
     fun str2Date(strDate: String, fmt: String): Date? {
-        val df = SimpleDateFormat(fmt)
+        val df = SimpleDateFormat(fmt, Locale.getDefault())
         return df.parse(strDate)
     }
 

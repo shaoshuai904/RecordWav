@@ -1,7 +1,6 @@
 package com.maple.recordwav;
 
 import android.app.Application;
-import android.os.Environment;
 import android.util.Log;
 
 import org.acra.ACRA;
@@ -23,8 +22,7 @@ import java.io.File;
 )
 public class WavApp extends Application {
     private static WavApp app;
-
-    public static String rootPath = "/wav_file/";
+    private static File saveFile;
 
     @Override
     public void onCreate() {
@@ -32,25 +30,20 @@ public class WavApp extends Application {
         super.onCreate();
 
         ACRA.init(this);
-        initPath();
     }
 
     /**
-     * 初始化存储路径
+     * 获取存储路径
      */
-    private void initPath() {
-        String ROOT = "";// /storage/emulated/0
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            ROOT = getBaseContext().getFilesDir().getPath();
-            // ROOT = Environment.getExternalStorageDirectory().getPath();
-            Log.e("maple", "系统方法：" + ROOT);
+    public static File getSaveFile() {
+        if (saveFile == null) {
+            saveFile = new File(app().getExternalFilesDir(""), "wav_file");
         }
-        rootPath = ROOT + rootPath;
-
-        File lrcFile = new File(rootPath);
-        if (!lrcFile.exists()) {
-            lrcFile.mkdirs();
+        if (!saveFile.exists()) {
+            saveFile.mkdirs();
         }
+        Log.d("maple_log", "saveFile：" + saveFile.getAbsolutePath());
+        return saveFile;
     }
 
 
