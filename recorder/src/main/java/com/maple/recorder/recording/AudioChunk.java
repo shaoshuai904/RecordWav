@@ -44,7 +44,7 @@ public interface AudioChunk {
      * byte类型数据包装器
      */
     class Bytes extends AbstractAudioChunk {
-        private byte[] bytes;
+        private final byte[] bytes;
 
         Bytes(byte[] bytes) {
             this.bytes = bytes;
@@ -68,7 +68,7 @@ public interface AudioChunk {
      */
     class Shorts extends AbstractAudioChunk {
         private static final short SILENCE_THRESHOLD = 2700;// 沉默阀值（低于该值的不记录）
-        private short[] shorts;
+        private final short[] shorts;
 
         Shorts(short[] bytes) {
             this.shorts = bytes;

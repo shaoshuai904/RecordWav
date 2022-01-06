@@ -23,7 +23,7 @@ public class BaseDataRecorder implements Recorder {
 
     private AudioRecord audioRecord;
     private OutputStream outputStream;
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 
     protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
