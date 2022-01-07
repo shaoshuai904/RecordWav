@@ -54,11 +54,11 @@ public class MainActivityJava extends FragmentActivity {
 
     private void initView() {
         List<Fragment> fragmentList = new ArrayList<Fragment>();
-        Fragment tab0 = getSupportFragmentManager().findFragmentByTag("tab_0");
+        Fragment tab0 = getSupportFragmentManager().findFragmentByTag(FragmentChangeManager.Companion.getFragmentTag(0));
         fragmentList.add(tab0 != null ? tab0 : new RecordPageJava());
-        Fragment tab1 = getSupportFragmentManager().findFragmentByTag("tab_1");
+        Fragment tab1 = getSupportFragmentManager().findFragmentByTag(FragmentChangeManager.Companion.getFragmentTag(1));
         fragmentList.add(tab1 != null ? tab1 : new PlayParsePageJava());
-        Fragment tab2 = getSupportFragmentManager().findFragmentByTag("tab_2");
+        Fragment tab2 = getSupportFragmentManager().findFragmentByTag(FragmentChangeManager.Companion.getFragmentTag(2));
         fragmentList.add(tab2 != null ? tab2 : new AboutPage());
 
         int[] iconArr = {R.drawable.sel_tab_record_icon, R.drawable.sel_tab_play_icon, R.drawable.sel_tab_parse_icon};

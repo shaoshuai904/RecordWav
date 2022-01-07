@@ -19,7 +19,7 @@ class FragmentChangeManager(
     init {
         mFragmentManager.beginTransaction().apply {
             mFragments.forEachIndexed { index, fragment ->
-                val tag = "tab_${index}"
+                val tag = getFragmentTag(index)
                 // mFragmentManager.findFragmentByTag(tag)?.let { remove(it) }
                 if (!fragment.isAdded) {
                     add(mContainerViewId, fragment, tag).hide(fragment)
@@ -27,6 +27,11 @@ class FragmentChangeManager(
             }
         }.commit()
         setCurrentFragment(currentTab)
+    }
+
+    companion object {
+        // 获取指定索引 Fragment 的 Tag
+        fun getFragmentTag(index: Int) = "tab_${index}"
     }
 
     fun setCurrentFragment(index: Int) {

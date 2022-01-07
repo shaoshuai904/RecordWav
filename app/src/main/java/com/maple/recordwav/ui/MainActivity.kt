@@ -46,9 +46,9 @@ class MainActivity : FragmentActivity() {
 
     private fun initView() {
         val fragmentList = arrayListOf(
-            supportFragmentManager.findFragmentByTag("tab_0") ?: RecordPage(),
-            supportFragmentManager.findFragmentByTag("tab_1") ?: PlayParsePage(),
-            supportFragmentManager.findFragmentByTag("tab_2") ?: AboutPage()
+            supportFragmentManager.findFragmentByTag(FragmentChangeManager.getFragmentTag(0)) ?: RecordPage(),
+            supportFragmentManager.findFragmentByTag(FragmentChangeManager.getFragmentTag(1)) ?: PlayParsePage(),
+            supportFragmentManager.findFragmentByTag(FragmentChangeManager.getFragmentTag(2)) ?: AboutPage()
         )
         val iconArr = arrayListOf(R.drawable.sel_tab_record_icon, R.drawable.sel_tab_play_icon, R.drawable.sel_tab_parse_icon)
         val titleArr = arrayListOf(getString(R.string.record), getString(R.string.play), getString(R.string.info))
