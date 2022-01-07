@@ -16,7 +16,6 @@ import com.maple.recorder.recording.PullTransport
 import com.maple.recorder.recording.Recorder
 import com.maple.recordwav.R
 import com.maple.recordwav.WavApp
-import com.maple.recordwav.base.BaseFragment
 import com.maple.recordwav.databinding.FragmentRecordBinding
 import com.maple.recordwav.utils.DateUtils
 import com.maple.recordwav.utils.RecordConfigView

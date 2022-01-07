@@ -1,4 +1,4 @@
-package com.maple.recordwav.base
+package com.maple.recordwav.ui
 
 import android.content.Context
 import android.os.Bundle

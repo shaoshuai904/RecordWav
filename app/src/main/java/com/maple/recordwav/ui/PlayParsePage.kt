@@ -11,7 +11,6 @@ import com.maple.recorder.parse.WaveFileReader
 import com.maple.recorder.player.PlayDialog
 import com.maple.recorder.player.PlayUtils
 import com.maple.recordwav.WavApp
-import com.maple.recordwav.base.BaseFragment
 import com.maple.recordwav.databinding.FragmentAudioListBinding
 import com.maple.recordwav.utils.SearchFileUtils
 import com.maple.recordwav.utils.T

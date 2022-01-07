@@ -2,6 +2,7 @@ package com.maple.recordwav.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
@@ -14,6 +15,8 @@ import com.maple.recordwav.utils.permission.RxPermissions
 
 
 /**
+ * Record Wav 示例（Kotlin版）
+ *
  * @author maple
  * @time 2018/4/8.
  */
@@ -26,15 +29,26 @@ class MainActivity : FragmentActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initTitleBar()
         initView()
         requestPermission()
     }
 
+    private fun initTitleBar() {
+        binding.tvTitle.text = "Wav 助手(Kotlin)"
+        binding.tvSwitch.text = "转Java\n版本"
+        binding.tvSwitch.setOnClickListener {
+            val intent = Intent(this@MainActivity, MainActivityJava::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
     private fun initView() {
         val fragmentList = arrayListOf(
-                supportFragmentManager.findFragmentByTag("tab_0") ?: RecordPage(),
-                supportFragmentManager.findFragmentByTag("tab_1") ?: PlayParsePage(),
-                supportFragmentManager.findFragmentByTag("tab_2") ?: AboutPage()
+            supportFragmentManager.findFragmentByTag("tab_0") ?: RecordPage(),
+            supportFragmentManager.findFragmentByTag("tab_1") ?: PlayParsePage(),
+            supportFragmentManager.findFragmentByTag("tab_2") ?: AboutPage()
         )
         val iconArr = arrayListOf(R.drawable.sel_tab_record_icon, R.drawable.sel_tab_play_icon, R.drawable.sel_tab_parse_icon)
         val titleArr = arrayListOf(getString(R.string.record), getString(R.string.play), getString(R.string.info))
@@ -65,8 +79,8 @@ class MainActivity : FragmentActivity() {
     @SuppressLint("CheckResult")
     private fun requestPermission() {
         RxPermissions(this).request(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.RECORD_AUDIO
         ).subscribe { granted ->
             if (!granted) {
                 AlertDialog(this).apply {

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.maple.msdialog.AlertDialog
-import com.maple.recordwav.base.BaseFragment
 import com.maple.recordwav.databinding.FragmentAboutBinding
 import com.maple.recordwav.utils.permission.RxPermissions
 
@@ -37,19 +36,18 @@ class AboutPage : BaseFragment() {
     @SuppressLint("CheckResult")
     private fun requestPermission() {
         RxPermissions(this).request(
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_NETWORK_STATE
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
         ).subscribe { granted ->
             if (granted) {
                 binding.wbWeb.loadUrl("https://github.com/shaoshuai904/RecordWav")
             } else {
-                AlertDialog(mContext).apply {
-                    setCancelable(false)
-                    setCanceledOnTouchOutside(false)
-                    setTitle("连个网？")
-                    setLeftButton("拒绝")
-                    setRightButton("再选一次") { requestPermission() }
-                }.show()
+                AlertDialog(mContext)
+                    .setDialogCancelable(false)
+                    .setDialogTitle("连个网？")
+                    .setLeftButton("拒绝")
+                    .setRightButton("再选一次") { requestPermission() }
+                    .show()
             }
         }
     }
