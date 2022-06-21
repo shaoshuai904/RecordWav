@@ -22,34 +22,32 @@ import java.io.File;
 )
 public class WavApp extends Application {
     private static WavApp app;
-    private static File saveFile;
+    public static File saveFile;
 
     @Override
     public void onCreate() {
         app = this;
         super.onCreate();
 
+        initFile();
         ACRA.init(this);
     }
 
     /**
      * 获取存储路径
      */
-    public static File getSaveFile() {
+    private void initFile() {
         if (saveFile == null) {
-            saveFile = new File(app().getExternalFilesDir(""), "wav_file");
+            saveFile = getApplicationContext().getExternalFilesDir("wav_file");
         }
         if (!saveFile.exists()) {
             saveFile.mkdirs();
         }
         Log.d("maple_log", "saveFile：" + saveFile.getAbsolutePath());
-        return saveFile;
     }
-
 
     public static WavApp app() {
         return app;
     }
-
 
 }

@@ -2,8 +2,9 @@
     package="com.maple.recorder">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--  文件存在外部沙盒目录，不需要读写权限  -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 
 
 </manifest>

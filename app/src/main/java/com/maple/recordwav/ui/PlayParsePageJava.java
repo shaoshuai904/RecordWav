@@ -86,7 +86,7 @@ public class PlayParsePageJava extends BaseFragment {
 
     @SuppressLint("CheckResult")
     private void searchFile() {
-        Observable.just(WavApp.getSaveFile())
+        Observable.just(WavApp.saveFile)
                 .map(new Function<File, List<File>>() {
                     @Override
                     public List<File> apply(@NonNull File file) throws Exception {

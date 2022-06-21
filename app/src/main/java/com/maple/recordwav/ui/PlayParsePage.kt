@@ -61,7 +61,7 @@ class PlayParsePage : BaseFragment() {
 
     @SuppressLint("CheckResult")
     private fun searchFile() {
-        Observable.just(WavApp.getSaveFile())
+        Observable.just(WavApp.saveFile)
                 .map {
                     SearchFileUtils.search(it, arrayOf(".wav")).apply {
                         sortWith { o1, o2 ->

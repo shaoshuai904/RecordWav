@@ -79,7 +79,6 @@ class MainActivity : FragmentActivity() {
     @SuppressLint("CheckResult")
     private fun requestPermission() {
         RxPermissions(this).request(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO
         ).subscribe { granted ->
             if (!granted) {
@@ -87,7 +86,7 @@ class MainActivity : FragmentActivity() {
                     setCancelable(false)
                     setCanceledOnTouchOutside(false)
                     setTitle("权限不足！")
-                    setMessage("录音必须要有“RECORD_AUDIO”和“WRITE_EXTERNAL_STORAGE”权限哦，否则无法录音和存储。")
+                    setMessage("录音必须要有“RECORD_AUDIO”权限哦，否则无法录音和存储。")
                     setLeftButton("退出") { this@MainActivity.finish() }
                     setRightButton("再选一次") { requestPermission() }
                 }.show()

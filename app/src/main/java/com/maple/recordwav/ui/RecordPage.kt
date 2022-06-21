@@ -180,7 +180,7 @@ class RecordPage : BaseFragment() {
     // 录音文件存储名称
     private fun getVoicePath(): String {
         val name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss")
-        val filePath = WavApp.getSaveFile().absolutePath + "/" + name + ".wav"
+        val filePath = WavApp.saveFile.absolutePath + "/" + name + ".wav"
         Log.d("maple_log", "filePath: $filePath")
         return filePath
     }

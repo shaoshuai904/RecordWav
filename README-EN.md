@@ -1,6 +1,6 @@
-﻿# Android Wav Audio Recorder
+﻿# Android Wav Recorder
 
-中文 | [In English](/README-EN.md)
+[中文](/README.md) | In English
 
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
@@ -52,7 +52,7 @@
     Recorder recorder;
     recorder = MsRecorder.wav(
         new File("savePath"),
-        // new AudioRecordConfig(), // 使用默认配置
+        // new AudioRecordConfig(), // use default config
         new AudioRecordConfig(
             MediaRecorder.AudioSource.MIC, // 音频源
             44100, // 采样率，44100、22050、16000、11025 Hz
@@ -63,15 +63,15 @@
             .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
                 @Override
                 public void onAudioChunkPulled(AudioChunk audioChunk) {
-                    Log.d("数据监听", "最大值: " + audioChunk.maxAmplitude());
+                    Log.d("数据监听", "maxValue: " + audioChunk.maxAmplitude());
                 }
             })
     );
 
-    recorder.startRecording(); // 开始
-    recorder.pauseRecording(); // 暂停
-    recorder.resumeRecording(); // 重新开始
-    recorder.stopRecording(); // 结束
+    recorder.startRecording(); // start
+    recorder.pauseRecording(); // pause
+    recorder.resumeRecording(); // resume
+    recorder.stopRecording(); // stop
 ```
 
 获取降噪录音机，跳过沉默区，只录"有声音"的部分（kotlin）
@@ -81,7 +81,7 @@
         File("savePath"),
         AudioRecordConfig(),
         PullTransport.Noise().setOnAudioChunkPulledListener { audioChunk ->
-            Log.d("maple_log", "最大值 : ${audioChunk.maxAmplitude()} ")
+            Log.d("maple_log", "maxValue : ${audioChunk.maxAmplitude()} ")
         }.setOnSilenceListener { silenceTime, discardTime ->
             Log.e("降噪模式", "沉默时间：$silenceTime ,丢弃时间：$discardTime")
         }

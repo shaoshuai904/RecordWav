@@ -204,7 +204,7 @@ public class RecordPageJava extends BaseFragment {
     // 录音文件存储名称
     private String getVoicePath() {
         String name = "wav-" + DateUtils.date2Str("yyyy-MM-dd-HH-mm-ss");
-        String filePath = WavApp.getSaveFile().getAbsolutePath() + "/" + name + ".wav";
+        String filePath = WavApp.saveFile.getAbsolutePath() + "/" + name + ".wav";
         Log.d("maple_log", "filePath: " + filePath);
         return filePath;
     }
