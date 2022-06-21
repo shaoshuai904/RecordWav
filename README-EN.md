@@ -5,21 +5,21 @@
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
 
-[下载demo.apk](/screens/app_v1.1.0_15.apk?raw=true)
+[download demo.apk](/screens/app_v1.1.0_15.apk?raw=true)
 
-集 `录制`、`播放`、`解析` 于一体的wav文件的工具类。
+A tool for `recording`, `playing` and `parsing` WAV files.
 
-功能包括：
+Features include：
 
-- 录制
-    - 录制`wav`/`pcm`文件。（开始、暂停、继续、完成）
-    - 两种模式：`普通模式` (全录制)，`跳过静默区域模式` (只录有声部分)
-- 播放`wav`文件。（自定义播放、系统播放）
-- 解析本地`wav`文件的信息
+- Recording
+    - Record `wav`/`pcm` files. (start, pause, continue, finish)
+    - Two modes: `normal mode` (full recording) and `skip silent area mode` (recording only the audio part)
+- Play the `wav` file. (custom playback, system playback)
+- Parsing local `wav` file information
 
 ![show_recorder](/screens/show_02.png)
 
-### 快速使用
+### Quick use
 
 **Step 1.** Add it in your root build.gradle at the end of repositories:
 
@@ -41,12 +41,12 @@
     }
 ```
 
-### 示例代码
+### Sample code
 
-	构造参数:[ 文件保存路径 + 参数配置 + 各类监听回调(音频数据块拉取监听/沉默监听) ]
-	方法：startRecording  pauseRecording  resumeRecording  stopRecording
+    Constructor: [file saving path + parameter configuration + various listening callbacks (audio data block pull listening / silent listening)]
+	Method：startRecording  pauseRecording  resumeRecording  stopRecording
 
-获取普通录音机（java）
+Get ordinary recorder（java）
 
 ```java 
     Recorder recorder;
@@ -74,7 +74,7 @@
     recorder.stopRecording(); // stop
 ```
 
-获取降噪录音机，跳过沉默区，只录"有声音"的部分（kotlin）
+Obtain the noise reduction recorder, skip the silence area, and record only the "sound" part（kotlin）
 
 ```java 
     MsRecorder.wav(
@@ -83,7 +83,7 @@
         PullTransport.Noise().setOnAudioChunkPulledListener { audioChunk ->
             Log.d("maple_log", "maxValue : ${audioChunk.maxAmplitude()} ")
         }.setOnSilenceListener { silenceTime, discardTime ->
-            Log.e("降噪模式", "沉默时间：$silenceTime ,丢弃时间：$discardTime")
+            Log.e("NoiseMode", "Silence time：$silenceTime ,Discard time：$discardTime")
         }
     )
 ```
