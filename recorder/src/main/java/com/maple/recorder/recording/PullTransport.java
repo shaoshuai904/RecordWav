@@ -18,10 +18,14 @@ import java.io.OutputStream;
  * @time 2018/4/10.
  */
 public interface PullTransport {
-    // 是否开启拉取
+    /**
+     * 是否开启拉取
+     */
     void isEnableToBePulled(boolean enabledToBePulled);
 
-    // 开始推送数据和写入文件
+    /**
+     * 开始推送数据和写入文件
+     */
     void startPoolingAndWriting(AudioRecord audioRecord, int pullSizeInBytes, OutputStream outputStream) throws IOException;
 
     /**
@@ -60,7 +64,9 @@ public interface PullTransport {
             this.pull = enabledToBePulled;
         }
 
-        // 推送 音频原始数据块
+        /**
+         * 推送 音频原始数据块
+         */
         void postPullEvent(final AudioChunk audioChunk) {
             if (onAudioChunkPulledListener != null) {
                 handler.post(new Runnable() {
@@ -181,7 +187,9 @@ public interface PullTransport {
             }
         }
 
-        // 推送 沉默时间
+        /**
+         * 推送 沉默时间
+         */
         private void postSilenceEvent(final long silenceTime, final long discardTime) {
             if (onSilenceListener != null) {
                 handler.post(new Runnable() {

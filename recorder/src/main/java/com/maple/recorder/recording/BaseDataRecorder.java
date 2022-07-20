@@ -2,6 +2,8 @@ package com.maple.recorder.recording;
 
 import android.media.AudioRecord;
 
+import androidx.annotation.RequiresPermission;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,17 +18,16 @@ import java.util.concurrent.Executors;
  * @time 2018/4/10.
  */
 public class BaseDataRecorder implements Recorder {
-    protected PullTransport pullTransport;
-    protected AudioRecordConfig config;
-    protected int bufferSizeInBytes;// 缓冲区大小
     protected File file;
-
+    protected AudioRecordConfig config;
+    protected PullTransport pullTransport;
+    protected int bufferSizeInBytes;// 缓冲区大小
     private AudioRecord audioRecord;
     private OutputStream outputStream;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-
-    protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
+    @RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+    protected BaseDataRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) throws IllegalArgumentException {
         this.file = file;
         this.config = config;
         this.pullTransport = pullTransport;
@@ -36,6 +37,13 @@ public class BaseDataRecorder implements Recorder {
                 config.getChannelConfig(),
                 config.getAudioFormat()
         );
+        if (audioRecord == null) {
+            audioRecord = new AudioRecord(config.getAudioSource(), config.getSampleRateInHz(),
+                    config.getChannelConfig(), config.getAudioFormat(), bufferSizeInBytes);
+        }
+        if (audioRecord.getState() != AudioRecord.STATE_INITIALIZED) {
+            throw new IllegalStateException("AudioRecord 初始化失败，请检查是否有RECORD_AUDIO权限，或者使用了系统APP才能用的配置项（MediaRecorder.AudioSource.REMOTE_SUBMIX 等）。");
+        }
     }
 
     @Override
@@ -50,10 +58,6 @@ public class BaseDataRecorder implements Recorder {
 
     private void startRecord() {
         try {
-            if (audioRecord == null) {
-                audioRecord = new AudioRecord(config.getAudioSource(), config.getSampleRateInHz(),
-                        config.getChannelConfig(), config.getAudioFormat(), bufferSizeInBytes);
-            }
             if (outputStream == null) {
                 outputStream = new FileOutputStream(file);
             }

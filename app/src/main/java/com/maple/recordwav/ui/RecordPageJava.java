@@ -1,5 +1,7 @@
 package com.maple.recordwav.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -8,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.maple.popups.lib.MsNormalPopup;
 import com.maple.popups.lib.MsPopup;
@@ -49,12 +53,15 @@ public class RecordPageJava extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        createRecorder();
+
         updateRecordStatusUI(RecordStatus.NoStart);
 
         binding.btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (recorder == null) {
+                    createRecorder();
+                }
                 recorder.startRecording();
                 updateRecordStatusUI(RecordStatus.Recording);
             }
@@ -62,6 +69,8 @@ public class RecordPageJava extends BaseFragment {
         binding.btStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (recorder == null)
+                    return;
                 recorder.stopRecording();
                 updateRecordStatusUI(RecordStatus.Stop);
             }
@@ -69,6 +78,8 @@ public class RecordPageJava extends BaseFragment {
         binding.btPauseResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (recorder == null)
+                    return;
                 if (isRecording) {
                     recorder.pauseRecording();
                     updateRecordStatusUI(RecordStatus.Pause);
@@ -161,6 +172,11 @@ public class RecordPageJava extends BaseFragment {
 
     // 获取普通录音机
     private Recorder getRecorder() {
+        // 请确保当前app有 RECORD_AUDIO 权限
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(mContext, "没有 RECORD_AUDIO 权限，无法开始录音～", Toast.LENGTH_SHORT).show();
+            return null;
+        }
         return MsRecorder.wav(
                 new File(getVoicePath()),
                 recordConfig,
@@ -179,6 +195,11 @@ public class RecordPageJava extends BaseFragment {
 
     // 获取降噪录音机，跳过沉默区，只录"有声音"的部分
     private Recorder getNoiseRecorder() {
+        // 请确保当前app有 RECORD_AUDIO 权限
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(mContext, "没有 RECORD_AUDIO 权限，无法开始录音～", Toast.LENGTH_SHORT).show();
+            return null;
+        }
         return MsRecorder.wav(
                 new File(getVoicePath()),
                 recordConfig,

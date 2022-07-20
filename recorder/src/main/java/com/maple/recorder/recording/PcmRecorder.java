@@ -1,5 +1,7 @@
 package com.maple.recorder.recording;
 
+import androidx.annotation.RequiresPermission;
+
 import java.io.File;
 
 /**
@@ -10,7 +12,8 @@ import java.io.File;
  */
 public class PcmRecorder extends BaseDataRecorder {
 
-    public PcmRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) {
+    @RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+    public PcmRecorder(File file, AudioRecordConfig config, PullTransport pullTransport) throws IllegalArgumentException{
         super(file, config, pullTransport);
     }
 

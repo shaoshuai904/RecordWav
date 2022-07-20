@@ -1,5 +1,7 @@
 package com.maple.recordwav.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
@@ -7,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.maple.popups.lib.MsNormalPopup
 import com.maple.popups.lib.MsPopup
 import com.maple.popups.utils.DensityUtils.dp2px
@@ -30,7 +34,7 @@ import java.io.File
  */
 class RecordPage : BaseFragment() {
     private lateinit var binding: FragmentRecordBinding
-    private lateinit var recorder: Recorder
+    private var recorder: Recorder? = null
     private var recordConfig = AudioRecordConfig() // 参数配置
     private var isRecording = false
     private var curBase: Long = 0
@@ -42,25 +46,26 @@ class RecordPage : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        createRecorder()
         updateRecordStatusUI(RecordStatus.NoStart)
 
-        binding.apply {
+        with(binding) {
             btStart.setOnClickListener {
-                recorder.startRecording()
+                if (recorder == null) {
+                    createRecorder()
+                }
+                recorder?.startRecording()
                 updateRecordStatusUI(RecordStatus.Recording)
             }
             btStop.setOnClickListener {
-                recorder.stopRecording()
+                recorder?.stopRecording()
                 updateRecordStatusUI(RecordStatus.Stop)
             }
             btPauseResume.setOnClickListener {
                 if (isRecording) {
-                    recorder.pauseRecording()
+                    recorder?.pauseRecording()
                     updateRecordStatusUI(RecordStatus.Pause)
                 } else {
-                    recorder.resumeRecording()
+                    recorder?.resumeRecording()
                     updateRecordStatusUI(RecordStatus.Resume)
                 }
             }
@@ -82,6 +87,8 @@ class RecordPage : BaseFragment() {
 
     // update UI
     private fun updateRecordStatusUI(status: RecordStatus) {
+        if (recorder == null)
+            return
         when (status) {
             // 未开始   停止
             RecordStatus.NoStart,
@@ -146,8 +153,15 @@ class RecordPage : BaseFragment() {
         }
     }
 
-    // 获取普通录音机
-    private fun getRecorder(): Recorder {
+    /**
+     *  获取普通录音机
+     */
+    private fun getRecorder(): Recorder? {
+        // 请确保当前app有 RECORD_AUDIO 权限
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(mContext, "没有 RECORD_AUDIO 权限，无法开始录音～", Toast.LENGTH_SHORT).show()
+            return null
+        }
         return MsRecorder.wav(
             File(getVoicePath()),
             recordConfig,
@@ -160,8 +174,15 @@ class RecordPage : BaseFragment() {
         )
     }
 
-    // 获取降噪录音机，跳过沉默区，只录"有声音"的部分
-    private fun getNoiseRecorder(): Recorder {
+    /**
+     * 获取降噪录音机，跳过沉默区，只录"有声音"的部分
+     */
+    private fun getNoiseRecorder(): Recorder? {
+        // 请确保当前app有 RECORD_AUDIO 权限
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(mContext, "没有 RECORD_AUDIO 权限，无法开始录音～", Toast.LENGTH_SHORT).show()
+            return null
+        }
         return MsRecorder.wav(
             File(getVoicePath()),
             recordConfig,
