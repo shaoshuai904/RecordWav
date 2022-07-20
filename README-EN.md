@@ -5,7 +5,7 @@
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
 
-[download demo.apk](/screens/app_v1.2.0.apk?raw=true)
+[download demo.apk](/screens/app_v1.2.1.apk?raw=true)
 
 A tool for `recording`, `playing` and `parsing` WAV files.
 
@@ -37,7 +37,7 @@ Features include：
 
 ```groovy 
     dependencies {
-        implementation 'com.github.shaoshuai904:RecordWav:1.2.0'
+        implementation 'com.github.shaoshuai904:RecordWav:1.2.1'
     }
 ```
 
