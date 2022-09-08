@@ -42,7 +42,9 @@ public class BaseDataRecorder implements Recorder {
                     config.getChannelConfig(), config.getAudioFormat(), bufferSizeInBytes);
         }
         if (audioRecord.getState() != AudioRecord.STATE_INITIALIZED) {
-            throw new IllegalStateException("AudioRecord 初始化失败，请检查是否有RECORD_AUDIO权限，或者使用了系统APP才能用的配置项（MediaRecorder.AudioSource.REMOTE_SUBMIX 等）。");
+            throw new IllegalStateException("AudioRecord 初始化失败，请检查是否有RECORD_AUDIO权限。" +
+                    "或者使用了系统APP才能用的配置项（MediaRecorder.AudioSource.REMOTE_SUBMIX 等），" +
+                    "或者使用了该设备不支持的配置项。");
         }
     }
 

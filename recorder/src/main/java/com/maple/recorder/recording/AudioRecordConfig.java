@@ -17,23 +17,23 @@ public class AudioRecordConfig {
 
     /**
      * 采样率 赫兹
-     * 44100Hz 所有设备均可用
-     * 22050Hz  16000Hz  11025Hz
+     * - 44100Hz 所有设备均可用
+     * - 22050Hz  16000Hz  11025Hz
      */
     private int sampleRateInHz = 44100;
 
     /**
      * 音频通道（声道数）
-     * {@link AudioFormat#CHANNEL_IN_MONO} 单声道
-     * {@link AudioFormat#CHANNEL_IN_STEREO} 立体声，所有设备可用
+     * - {@link AudioFormat#CHANNEL_IN_MONO} 单声道
+     * - {@link AudioFormat#CHANNEL_IN_STEREO} 立体声，所有设备可用
      */
     private int channelConfig = AudioFormat.CHANNEL_IN_MONO;
 
     /**
      * 音频数据格式
-     * {@link AudioFormat#ENCODING_PCM_8BIT},每个样本8位
-     * {@link AudioFormat#ENCODING_PCM_16BIT},每个样本16位，保证所有设备支持
-     * {@link AudioFormat#ENCODING_PCM_FLOAT},每个样本 单精度Float
+     * - {@link AudioFormat#ENCODING_PCM_8BIT},每个样本8位
+     * - {@link AudioFormat#ENCODING_PCM_16BIT},每个样本16位，保证所有设备支持
+     * - {@link AudioFormat#ENCODING_PCM_FLOAT},每个样本 单精度Float
      */
     private int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
 
