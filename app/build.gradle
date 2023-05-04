@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.0'
 
     defaultConfig {
         applicationId "com.maple.recordwav"
         minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 11
+        targetSdkVersion 30
+        versionCode 12
         versionName "1.0.2"
     }
     buildTypes {
@@ -21,11 +21,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'ch.acra:acra:4.9.2'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
 
     implementation project(':recorder')
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

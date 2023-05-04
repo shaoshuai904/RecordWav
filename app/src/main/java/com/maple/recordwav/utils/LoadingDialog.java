@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.maple.recordwav.R;
 
-import junit.framework.Assert;
 
 /**
  * loading dialog
@@ -32,7 +31,7 @@ public class LoadingDialog extends Dialog {
         super(context, R.style.CustomDialog);
 
         if (!isShowAsFloatWindow) {
-            Assert.assertTrue("context must be Activity in Dialog.", context instanceof Activity);
+//            Assert.assertTrue("context must be Activity in Dialog.", context instanceof Activity);
         } else {
             getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         }

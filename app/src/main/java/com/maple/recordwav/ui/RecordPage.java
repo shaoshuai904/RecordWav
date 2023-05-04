@@ -24,9 +24,6 @@ import com.maple.recordwav.utils.T;
 
 import java.io.File;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 录制 WavRecorder 界面
  *
@@ -34,12 +31,12 @@ import butterknife.ButterKnife;
  * @time 16/4/18 下午2:53
  */
 public class RecordPage extends BaseFragment {
-    @BindView(R.id.iv_voice_img) ImageView iv_voice_img;
-    @BindView(R.id.com_voice_time) Chronometer com_voice_time;
-    @BindView(R.id.bt_start) Button bt_start;
-    @BindView(R.id.bt_stop) Button bt_stop;
-    @BindView(R.id.bt_pause_resume) Button bt_pause_resume;
-    @BindView(R.id.skipSilence) CheckBox skipSilence;
+    ImageView iv_voice_img;
+    Chronometer com_voice_time;
+    Button bt_start;
+    Button bt_stop;
+    Button bt_pause_resume;
+    CheckBox skipSilence;
 
     Recorder recorder;
     boolean isRecording = false;
@@ -49,7 +46,12 @@ public class RecordPage extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_record, null);
-        ButterKnife.bind(this, view);
+        iv_voice_img = view.findViewById(R.id.iv_voice_img);
+        com_voice_time = view.findViewById(R.id.com_voice_time);
+        bt_start = view.findViewById(R.id.bt_start);
+        bt_stop = view.findViewById(R.id.bt_stop);
+        bt_pause_resume = view.findViewById(R.id.bt_pause_resume);
+        skipSilence = view.findViewById(R.id.skipSilence);
 
         return view;
     }

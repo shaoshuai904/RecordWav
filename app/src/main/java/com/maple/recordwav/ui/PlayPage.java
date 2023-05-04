@@ -25,9 +25,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * wav 文件播放
  *
@@ -37,8 +34,8 @@ import butterknife.ButterKnife;
 public class PlayPage extends BaseFragment {
     public static final int SEARCH_MESSAGE_CODE = 200;
 
-    @BindView(R.id.tv_des) TextView tv_des;
-    @BindView(R.id.lv_wav) ListView lv_wav;
+    TextView tv_des;
+    ListView lv_wav;
 
     ArrayAdapter<String> adapter;
     private List<String> wavFileList;
@@ -65,7 +62,8 @@ public class PlayPage extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_play, null);
-        ButterKnife.bind(this, view);
+        tv_des = view.findViewById(R.id.tv_des);
+        lv_wav = view.findViewById(R.id.lv_wav);
 
         loadingDialog = new LoadingDialog(getActivity());
         tv_des.setText("WAV 播放界面！");

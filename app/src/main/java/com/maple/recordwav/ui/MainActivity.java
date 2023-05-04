@@ -2,43 +2,43 @@ package com.maple.recordwav.ui;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTabHost;
+
 import com.maple.recordwav.R;
 import com.maple.recordwav.utils.T;
 import com.maple.recordwav.utils.permission.PermissionFragment;
 import com.maple.recordwav.utils.permission.PermissionListener;
-
-import butterknife.BindArray;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author maple
  * @time 2018/4/8.
  */
 public class MainActivity extends FragmentActivity {
-    @BindView(R.id.tv_title) TextView mTitle;
-    @BindView(R.id.tabhost) FragmentTabHost mTabHost;
+    TextView mTitle;
+    FragmentTabHost mTabHost;
 
     // Fragment界面
     private Class[] fragmentArray = {RecordPage.class, PlayPage.class, ParsePage.class};
     // 选项卡图片
     private int[] mImageViewArray = {R.drawable.tab_record_icon, R.drawable.tab_play_icon, R.drawable.tab_parse_icon};
     // 选项卡文字
-    @BindArray(R.array.tab_fun_array) String[] mTextViewArray;
+    String[] mTextViewArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        mTitle = findViewById(R.id.tv_title);
+        mTabHost = findViewById(R.id.tabhost);
+
+        mTextViewArray = getResources().getStringArray(R.array.tab_fun_array);
 
         initView();
 

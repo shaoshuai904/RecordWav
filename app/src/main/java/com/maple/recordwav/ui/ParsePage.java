@@ -22,9 +22,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 获取wav文件的信息
  *
@@ -32,8 +29,8 @@ import butterknife.ButterKnife;
  * @time 16/5/20 下午6:40
  */
 public class ParsePage extends BaseFragment {
-    @BindView(R.id.tv_info) TextView tv_info;
-    @BindView(R.id.lv_parse) ListView lv_parse;
+    TextView tv_info;
+    ListView lv_parse;
 
     ArrayAdapter<String> adapter;
     private List<String> wavFilelist;
@@ -61,7 +58,8 @@ public class ParsePage extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater) {
         view = inflater.inflate(R.layout.fragment_parse, null);
-        ButterKnife.bind(this, view);
+        tv_info = view.findViewById(R.id.tv_info);
+        lv_parse = view.findViewById(R.id.lv_parse);
 
         loadingDialog = new LoadingDialog(getActivity());
         tv_info.setText("WAV 解析界面！");
