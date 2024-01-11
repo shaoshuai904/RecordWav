@@ -5,7 +5,7 @@
 [![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
 
-[download demo.apk](/screens/app_v1.2.1.apk?raw=true)
+[download demo.apk](/screens/app_v1.2.2.apk?raw=true)
 
 A tool for `recording`, `playing` and `parsing` WAV files.
 
@@ -37,7 +37,7 @@ Features include：
 
 ```groovy 
     dependencies {
-        implementation 'com.github.shaoshuai904:RecordWav:1.2.1'
+        implementation 'com.github.shaoshuai904:RecordWav:1.2.2'
     }
 ```
 
@@ -88,6 +88,21 @@ Obtain the noise reduction recorder, skip the silence area, and record only the 
     )
 ```
 
+###  License
 
+```
+Copyright 2018 Shuai Shao
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
