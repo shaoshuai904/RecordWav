@@ -30,7 +30,6 @@ import java.io.File
  * 录制 WavRecorder 界面
  *
  * @author maple
- * @time 2016/4/18
  */
 class RecordPage : BaseFragment() {
     private lateinit var binding: FragmentRecordBinding

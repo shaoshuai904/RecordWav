@@ -16,6 +16,7 @@ import com.maple.recordwav.R;
 import com.maple.recordwav.databinding.ActivityMainBinding;
 import com.maple.recordwav.utils.BottomTabView;
 import com.maple.recordwav.utils.FragmentChangeManager;
+import com.maple.recordwav.utils.WindowInsetsKt;
 import com.maple.recordwav.utils.permission.RxPermissions;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class MainActivityJava extends FragmentActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        WindowInsetsKt.setContentViewAndSetWindowInsets(this,
+                binding.getRoot(), binding.flTopBar);
 
         initTitleBar();
         initView();

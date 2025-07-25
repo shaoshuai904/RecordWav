@@ -5,36 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fl_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/top_bar_bg_color"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@color/top_bar_bg_color">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp">
 
-        <TextView
-            android:id="@+id/tv_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:background="#66aaaaaa"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="转Java\n版本"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="#66aaaaaa"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="转Java\n版本"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/fl_content"

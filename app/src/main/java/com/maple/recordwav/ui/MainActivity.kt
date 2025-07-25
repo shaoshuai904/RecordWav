@@ -12,6 +12,7 @@ import com.maple.recordwav.databinding.ActivityMainBinding
 import com.maple.recordwav.utils.BottomTabView
 import com.maple.recordwav.utils.FragmentChangeManager
 import com.maple.recordwav.utils.permission.RxPermissions
+import com.maple.recordwav.utils.setContentViewAndSetWindowInsets
 
 
 /**
@@ -27,7 +28,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentViewAndSetWindowInsets(binding.root, binding.flTopBar)
 
         initTitleBar()
         initView()

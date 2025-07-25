@@ -186,7 +186,7 @@ public class RecordPageJava extends BaseFragment {
                         .setOnAudioChunkPulledListener(new PullTransport.OnAudioChunkPulledListener() {
                             @Override
                             public void onAudioChunkPulled(AudioChunk audioChunk) {
-                                Log.d("数据监听", "最大值 : ${audioChunk.maxAmplitude()} ");
+                                Log.d("数据监听", "最大值 : " + audioChunk.maxAmplitude());
                                 animateVoice((float) (audioChunk.maxAmplitude() / 200.0));
                             }
                         })

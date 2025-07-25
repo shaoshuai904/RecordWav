@@ -131,6 +131,7 @@ class PlayParsePage : BaseFragment() {
 
     //----------------------------------解析----------------------------------------
 
+    @SuppressLint("SetTextI18n")
     private fun getWavInfo(file: File) {
         val filename = file.absolutePath
         val reader = WaveFileReader(filename)

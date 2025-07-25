@@ -2,7 +2,7 @@
 
 [中文](/README.md) | In English
 
-[![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![API](https://img.shields.io/badge/API-21%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
 
 [download demo.apk](/screens/app_v1.2.2.apk?raw=true)

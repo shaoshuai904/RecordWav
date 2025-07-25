@@ -3,6 +3,8 @@ package com.maple.recorder.recording;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
 
+import androidx.annotation.NonNull;
+
 /**
  * 录音参数配置
  *
@@ -92,6 +94,7 @@ public class AudioRecordConfig {
         this.audioFormat = audioFormat;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "录音参数配置: \n{" +
