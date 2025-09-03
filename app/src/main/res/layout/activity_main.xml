@@ -53,7 +53,7 @@
         android:id="@+id/tl_tab"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#fafbfd"
+        android:background="@color/navigation_bar_bg"
         app:tabBackground="@android:color/transparent"
         app:tabIndicatorHeight="0dp"
         app:tabPaddingEnd="0dp"

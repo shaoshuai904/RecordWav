@@ -3,16 +3,27 @@ package com.maple.recordwav.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.tabs.TabLayout
 import com.maple.msdialog.AlertDialog
+import com.maple.msdialog.utils.DensityUtils.dp2px
 import com.maple.recordwav.R
 import com.maple.recordwav.databinding.ActivityMainBinding
 import com.maple.recordwav.utils.BottomTabView
 import com.maple.recordwav.utils.FragmentChangeManager
+import com.maple.recordwav.utils.ViewUtils
 import com.maple.recordwav.utils.permission.RxPermissions
-import com.maple.recordwav.utils.setContentViewAndSetWindowInsets
 
 
 /**
@@ -28,7 +39,25 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentViewAndSetWindowInsets(binding.root, binding.flTopBar)
+        setContentView(binding.root)
+        ViewUtils.setPaddingTopWithStatusBar(binding.flTopBar)
+        if (Build.VERSION.SDK_INT >= 30){
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+                navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            )
+            ViewCompat.setOnApplyWindowInsetsListener(binding.tlTab) { v, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                Log.e("and15", "updateWindowInsetsMargin ${v.tag} : $insets")
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    height = insets.bottom + 50f.dp2px(this@MainActivity)
+                }
+                v.updatePadding(
+                    bottom = insets.bottom
+                )
+                windowInsets
+            }
+        }
 
         initTitleBar()
         initView()
@@ -67,6 +96,11 @@ class MainActivity : FragmentActivity() {
                 tabIndex = tab.position
                 fgManager.setCurrentFragment(tabIndex)
                 (tab.customView as BottomTabView?)?.setSelectStatus(true)
+                when (tabIndex) {
+                    1 -> binding.tlTab.setBackgroundResource(R.color.navigation_bar_bg2)
+                    2 -> binding.tlTab.setBackgroundResource(R.color.navigation_bar_bg3)
+                    else -> binding.tlTab.setBackgroundResource(R.color.navigation_bar_bg)
+                }
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}

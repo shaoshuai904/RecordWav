@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -16,7 +17,7 @@ import com.maple.recordwav.R;
 import com.maple.recordwav.databinding.ActivityMainBinding;
 import com.maple.recordwav.utils.BottomTabView;
 import com.maple.recordwav.utils.FragmentChangeManager;
-import com.maple.recordwav.utils.WindowInsetsKt;
+import com.maple.recordwav.utils.ViewUtils;
 import com.maple.recordwav.utils.permission.RxPermissions;
 
 import java.util.ArrayList;
@@ -33,9 +34,10 @@ public class MainActivityJava extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
-        WindowInsetsKt.setContentViewAndSetWindowInsets(this,
-                binding.getRoot(), binding.flTopBar);
+        ViewUtils.setPaddingTopWithStatusBar(binding.flTopBar);
+        ViewUtils.updateWindowInsetsMargin(binding.getRoot());
 
         initTitleBar();
         initView();

@@ -2,8 +2,12 @@
 <resources>
     <color name="top_bar_bg_color">#008577</color>
 
-    <color name="tab_bar_bg">#E2E2E2</color>
-    <color name="tab_item_bg_def">@color/tab_bar_bg</color>
-    <color name="tab_item_bg_select">#A5A5A5</color>
+<!--    <color name="tab_bar_bg">#E2E2E2</color>-->
+<!--    <color name="tab_item_bg_def">@color/tab_bar_bg</color>-->
+<!--    <color name="tab_item_bg_select">#A5A5A5</color>-->
+
+    <color name="navigation_bar_bg">#E2E2E2</color>
+    <color name="navigation_bar_bg2">#D6F8AD</color>
+    <color name="navigation_bar_bg3">#AEECF4</color>
 
 </resources>
