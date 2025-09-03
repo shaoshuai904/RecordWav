@@ -3,16 +3,26 @@ package com.maple.recordwav.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.SystemBarStyle;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.tabs.TabLayout;
 import com.maple.msdialog.AlertDialog;
+import com.maple.popups.utils.DensityUtils;
 import com.maple.recordwav.R;
 import com.maple.recordwav.databinding.ActivityMainBinding;
 import com.maple.recordwav.utils.BottomTabView;
@@ -34,10 +44,26 @@ public class MainActivityJava extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
         ViewUtils.setPaddingTopWithStatusBar(binding.flTopBar);
-        ViewUtils.updateWindowInsetsMargin(binding.getRoot());
+        if (Build.VERSION.SDK_INT >= 30) {
+            EdgeToEdge.enable(this,
+                    SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+                    SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            );
+            ViewCompat.setOnApplyWindowInsetsListener(binding.tlTab, new OnApplyWindowInsetsListener() {
+                @NonNull
+                @Override
+                public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat insets) {
+                    Insets ins = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    ViewGroup.LayoutParams params = v.getLayoutParams();
+                    params.height = ins.bottom + DensityUtils.dp2px(MainActivityJava.this, 50);
+                    v.setLayoutParams(params);
+                    v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), ins.bottom);
+                    return insets;
+                }
+            });
+        }
 
         initTitleBar();
         initView();
@@ -87,6 +113,13 @@ public class MainActivityJava extends FragmentActivity {
                 View customView = tab.getCustomView();
                 if (customView != null && customView instanceof BottomTabView) {
                     ((BottomTabView) customView).setSelectStatus(true);
+                }
+                if (tabIndex == 1) {
+                    binding.tlTab.setBackgroundResource(R.color.navigation_bar_bg2);
+                } else if (tabIndex == 2) {
+                    binding.tlTab.setBackgroundResource(R.color.navigation_bar_bg3);
+                } else {
+                    binding.tlTab.setBackgroundResource(R.color.navigation_bar_bg);
                 }
             }
 
