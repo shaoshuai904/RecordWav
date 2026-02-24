@@ -5,7 +5,7 @@
 [![API](https://img.shields.io/badge/API-21%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Version](https://jitpack.io/v/shaoshuai904/RecordWav.svg)](https://jitpack.io/#shaoshuai904/RecordWav)
 
-[下载demo.apk](/screens/app_v1.2.2.apk?raw=true)
+[下载demo.apk](/screens/app_v1.2.3.apk?raw=true)
 
 集 `录制`、`播放`、`解析` 于一体的wav文件的工具类。
 
@@ -37,7 +37,7 @@
 
 ```groovy 
     dependencies {
-        implementation 'com.github.shaoshuai904:RecordWav:1.2.2'
+        implementation 'com.github.shaoshuai904:RecordWav:1.2.3'
     }
 ```
 
