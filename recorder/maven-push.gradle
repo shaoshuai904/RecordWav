@@ -1,0 +1,43 @@
+apply plugin: 'maven-publish'
+
+android {
+    publishing {
+        singleVariant("release") {
+            withSourcesJar() // 自动生成源码 JAR
+            withJavadocJar() // 自动生成文档 JAR
+        }
+    }
+}
+
+afterEvaluate { project ->
+    publishing {
+        publications {
+            Production(MavenPublication) {
+                from components.findByName("release")
+                groupId = POM_GROUP_ID
+                artifactId = POM_ARTIFACT_ID
+                version = VERSION_NAME
+            }
+        }
+        if (project.findProperty('use_local_maven') == "true") {
+            repositories {
+                maven {
+                    url = local_maven_url
+                }
+            }
+            println("本地 Maven 地址: " + local_maven_url + "/com/sina/weibo/lib/script_jar_runner/")
+        } else {
+            repositories {
+                maven {
+                    allowInsecureProtocol = true
+                    url = REPOSITORY_URL
+                    // maven 仓库地址，用户名、密码
+//                    credentials {
+//                        username = NEXUS_USERNAME
+//                        password = NEXUS_PASSWORD
+//                    }
+                }
+            }
+        }
+    }
+}
