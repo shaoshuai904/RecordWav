@@ -36,18 +36,18 @@ class AboutPage : BaseFragment() {
     @SuppressLint("CheckResult")
     private fun requestPermission() {
         RxPermissions(this).request(
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_NETWORK_STATE
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE
         ).subscribe { granted ->
             if (granted) {
                 binding.wbWeb.loadUrl("https://github.com/shaoshuai904/RecordWav")
             } else {
                 AlertDialog(mContext)
-                    .setDialogCancelable(false)
-                    .setDialogTitle("连个网？")
-                    .setLeftButton("拒绝")
-                    .setRightButton("再选一次") { requestPermission() }
-                    .show()
+                        .setDialogTitle("连个网？")
+                        .setLeftButton("拒绝")
+                        .setRightButton("再选一次") { requestPermission() }
+                        .setDialogCancelable(false)
+                        .show()
             }
         }
     }

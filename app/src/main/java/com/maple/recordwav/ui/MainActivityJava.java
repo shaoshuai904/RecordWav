@@ -149,11 +149,11 @@ public class MainActivityJava extends FragmentActivity {
         ).subscribe(granted -> {
             if (!granted) {
                 new AlertDialog(MainActivityJava.this)
-                        .setDialogCancelable(false)
                         .setDialogTitle("权限不足！")
                         .setMessage("录音必须要有“RECORD_AUDIO”权限哦，否则无法录音和存储。")
                         .setLeftButton("退出", v -> MainActivityJava.this.finish())
                         .setRightButton("再选一次", v -> requestPermission())
+                        .setDialogCancelable(false)
                         .show();
             }
         });

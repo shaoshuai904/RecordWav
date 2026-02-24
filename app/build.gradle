@@ -11,6 +11,7 @@ android {
         targetSdkVersion 35
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
+        resConfigs "zh", "en" // 只保留中英文
     }
     buildTypes {
         debug {
@@ -41,7 +42,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
-    implementation 'com.github.shaoshuai904:XStyleDialog:2.0.5'
+    implementation 'com.github.shaoshuai904:XStyleDialog:2.1.0'
     implementation 'com.github.shaoshuai904:XPopups:1.0.0'
 }
 repositories {
