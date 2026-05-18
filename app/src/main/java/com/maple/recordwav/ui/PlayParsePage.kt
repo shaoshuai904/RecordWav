@@ -27,7 +27,8 @@ import java.io.File
  * @time 2016/5/20
  */
 class PlayParsePage : BaseFragment() {
-    private lateinit var binding: FragmentAudioListBinding
+    private var _binding: FragmentAudioListBinding? = null
+    private val binding get() = _binding!!
     private val mAdapter by lazy {
         AudioAdapter(mContext).apply {
             setOnItemClickListener { item, _ -> dialogPlay(item) }
@@ -39,7 +40,7 @@ class PlayParsePage : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAudioListBinding.inflate(inflater, container, false)
+        _binding = FragmentAudioListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,6 +48,11 @@ class PlayParsePage : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         searchFile()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initView() {

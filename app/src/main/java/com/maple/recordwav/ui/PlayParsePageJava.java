@@ -55,6 +55,12 @@ public class PlayParsePageJava extends BaseFragment {
         searchFile();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
     private void initView() {
         mAdapter = new AudioAdapter(mContext);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<File>() {

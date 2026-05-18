@@ -32,14 +32,15 @@ import java.io.File
  * @author maple
  */
 class RecordPage : BaseFragment() {
-    private lateinit var binding: FragmentRecordBinding
+    private var _binding: FragmentRecordBinding? = null
+    private val binding get() = _binding!!
     private var recorder: Recorder? = null
     private var recordConfig = AudioRecordConfig() // 参数配置
     private var isRecording = false
     private var curBase: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentRecordBinding.inflate(inflater, container, false)
+        _binding = FragmentRecordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -74,6 +75,11 @@ class RecordPage : BaseFragment() {
             tvRecordConfig.text = "$recordConfig"
             tvRecordConfig.setOnClickListener { showConfigWindow(it) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     enum class RecordStatus {

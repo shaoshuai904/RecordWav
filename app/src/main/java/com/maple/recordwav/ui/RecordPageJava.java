@@ -104,6 +104,12 @@ public class RecordPageJava extends BaseFragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
     enum RecordStatus {
         NoStart,
         Recording,

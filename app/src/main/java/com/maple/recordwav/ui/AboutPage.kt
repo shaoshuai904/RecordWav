@@ -17,11 +17,17 @@ import com.maple.recordwav.utils.permission.RxPermissions
  * @time 2016/5/20
  */
 class AboutPage : BaseFragment() {
-    private lateinit var binding: FragmentAboutBinding
+    private var _binding: FragmentAboutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentAboutBinding.inflate(inflater, container, false)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
